@@ -2,7 +2,10 @@ package com.yash.yotaapi.serviceimpl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.domain.ParentTechnology;
@@ -10,8 +13,6 @@ import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import com.yash.yotaapi.repository.ParentTechnologyRepository;
 import com.yash.yotaapi.service.ParentTechnologyService;
-
-import javax.transaction.Transactional;
 
 
 /**This is service layer class for Parent Technology to write business logic
@@ -39,7 +40,7 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 		try {
 			technology.setName(technology.getName().toUpperCase());
 			return parentTechnologyRepository.save(technology);
-		} catch (Exception e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new ParentTechnologyException("Technology : "+technology.getName().toUpperCase()+" already exists!!");
 		}
 	}
