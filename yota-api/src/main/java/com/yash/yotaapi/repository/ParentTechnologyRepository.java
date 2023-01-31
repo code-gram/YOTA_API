@@ -5,6 +5,7 @@ package com.yash.yotaapi.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.yash.yotaapi.domain.ParentTechnology;
 
@@ -37,5 +38,11 @@ public interface ParentTechnologyRepository extends JpaRepository<ParentTechnolo
 	 * @return List of ParentTechnologies if found otherwise null
 	 */
 	List<ParentTechnology> getByNameContaining(String keyword);
+	/**
+	 * findAll method here is customized according to status of that Technology 
+	 * @return List of ParentTechnologies if status is false it will return in form of List But if it true then it won't return that Technology
+	 */
+	@Query(value = "SELECT * FROM Parent_Technology e WHERE e.status=false ",nativeQuery = true) 
+	List<ParentTechnology> findAll();
 
 }
