@@ -10,39 +10,52 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class Test {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long testId;
+	private long testId;
 	
-	@NotEmpty(message = "Test name is manadatory")
-	String testName;
+	@NotBlank(message = "Test name is manadatory")
+	private  String testName;
 	
-	@NotEmpty(message="Test description is mandatory")
-	String testDescription;
+	@NotBlank(message="Test description is mandatory")
+	private String testDescription;
 	
-	@NotNull(message = "Start date can not be empty or blank")
+	//@NotBlank(message = "Start date can not be empty or blank")
+	@DateTimeFormat(iso = ISO.DATE_TIME)
     @JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date startDate;
+	private Date startDate;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	private Date endDate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date endDate;
-	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
-	Date createdDate =new Date(System.currentTimeMillis());
+	private Date createdDate =new Date(System.currentTimeMillis());
 	 
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date updatedDate =new Date(System.currentTimeMillis());
+	private Date updatedDate =new Date(System.currentTimeMillis());
 
 }
 

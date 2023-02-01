@@ -19,7 +19,7 @@ import com.yash.yotaapi.serviceimpl.ValidationErrorMessageService;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
-@RequestMapping("api/test")
+@RequestMapping("/api/test")
 public class TestController {
 	
 	@Autowired
