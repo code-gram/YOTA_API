@@ -40,28 +40,49 @@ import lombok.ToString;
 @ToString
 public class AssociateDetails {
 	
+	/**
+	 * ID is a primary key and it is generated automatically.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 		
+	/**
+	 * First_Name of associate and this should not be empty.
+	 */
 	@NotBlank(message = "First_Name should not be empty.")
 	private String firstName;
 		
+	/**
+	 * Middle_Name of associate and this should not be empty.
+	 */
+	@NotBlank(message = "Middle_Name should not be empty.")
 	private String middleName;
-		
+	
+	/**
+	 * last_Name of associate and this should not be empty.
+	 */
 	@NotBlank(message = "Last_Name should not be empty.")
 	private String lastName;
 	
+	/**
+	 * Email_Id is necessary field and it should be unique for every associate.
+	 */
 	@Column(unique = true)
 	@Email
 	@NotBlank(message = "Email_Id should not be empty")
 	private String emailId;
 	
+	/**
+	 * Password should be min 8 & max 12 digits, and it should not be empty.
+	 */
 	@NotBlank(message = "Password should not be empty")
 	@Size(min = 8, max = 12, message = "Password should be minimum of 8 and maximum of 12 digits.")
 	private String password;
 	
-	
+	/**
+	 * Contact no should be exactly 10 digits.
+	 */
 	@Size(min = 10,max = 10, message = "Contact_No should be exactly 10 characters.")
 	private String contactNo;
 	

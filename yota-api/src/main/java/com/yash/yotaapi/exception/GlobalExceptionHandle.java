@@ -9,7 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * This is global exception handler class which returns proper error message.
+ * This is global exception handler class which returns proper error message for all controller requests..
  * @author nitin.chougale
  *
  */
@@ -19,10 +19,8 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler{
 	
 	
 	/**
+	 * @return This method handles Associate exception for AssociateDetailsController.
 	 * 
-	 * @param AssociateDetailsException,
-	 * @param request
-	 * @return This method handle Associate exception for POST,PUT request for AssociateDetailsController
 	 */
 	@ExceptionHandler
 	public final ResponseEntity<?> handleAssociateException(AssociateDetailsException associateException, WebRequest request)

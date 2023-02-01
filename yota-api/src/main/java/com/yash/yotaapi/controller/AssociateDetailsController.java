@@ -19,7 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Associate Details controller facilitates CRUD functionality.
+ * Associate_Details_controller interact with service layer to complete the work according to web request.
  *
  */
 @Api(tags = "AssociateDetailsController", value = "Controller of Associate details")
@@ -33,6 +33,9 @@ public class AssociateDetailsController {
 	@Autowired
 	FieldErrorValidationService fieldErrorValidationService;
 	
+	/**
+	 * This controller method handles the HTTP POST request of associate, matching with the given URI.
+	 */
 	@ApiOperation(tags = "Post Associate", value = "Add Associate")
 	@PostMapping("/")
 	public ResponseEntity<?> addAssociate(@Valid @RequestBody AssociateDetails associate, BindingResult result)
