@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ *Used To Store The Exception Error Message From Exception Handler
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -11,24 +11,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.domain.QuestionPaper;
 import com.yash.yotaapi.exception.ErrorResponse;
-import com.yash.yotaapi.service.TestService;
+import com.yash.yotaapi.service.QuestionPaperService;
 import com.yash.yotaapi.serviceimpl.ValidationErrorMessageService;
 
 import lombok.extern.slf4j.Slf4j;
+/**
+ * QuestionPaperController interact with service layer to complete the work 
+ * according to web request.
+ *
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/test")
-public class TestController {
+public class QuestionPaperController {
 	
 	@Autowired
-	TestService testService;
+	QuestionPaperService testService;
 	@Autowired
 	ValidationErrorMessageService validationErrorMessageService;
 	
+	/**
+	 * This Controller Method Handles The HTTP Request Of QuestionPaper,  
+	 * Matching With Given URI
+	 */
 	@PostMapping("/create")
-	public ResponseEntity<?> createTest(@Valid @RequestBody Test test,BindingResult result){
+	public ResponseEntity<?> createTest(@Valid @RequestBody QuestionPaper test,BindingResult result){
 		
 		log.info("Test created successfully");
 		ResponseEntity<?> errorMessage=validationErrorMessageService.ValidationErrorMessage(result);
@@ -36,7 +45,7 @@ public class TestController {
 		return errorMessage;
 		
 		testService.createTest(test);
-		return new ResponseEntity<Test>(test,HttpStatus.CREATED);
+		return new ResponseEntity<QuestionPaper>(test,HttpStatus.CREATED);
 		
 		
 		
