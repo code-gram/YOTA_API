@@ -2,12 +2,6 @@ package com.yash.yotaapi.model;
 
 import java.util.Date;
 
-/**
- * This Question Management model will work as a data transfer object. Field
- * validation will be performed here using jpa annotations.
- * 
- * @author pankaj.ssharma
- */
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +19,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
+/**
+ * This Question Management model will work as a data transfer object. Field
+ * validation will be performed here using jpa annotations.
+ * 
+ * @author priya.m
+ *
+ */
 @Setter
 @Getter
 @Data

@@ -1,5 +1,10 @@
 package com.yash.yotaapi.exception;
 
+/**
+ * 
+ * @author priya.m
+ *
+ */
 public class QuestionExceptionResponse {
 	
 	private String question;

@@ -22,7 +22,16 @@ import com.yash.yotaapi.model.Question;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.serviceimpl.MapValidationErrorService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+
+/**
+ * Question Controller will facilitates CRUD functionalities
+ * @author priya.m
+ *
+ */
+@Api(tags = "Question Controller", value = "Controller of Question")
 @RestController
 @RequestMapping("/api/questions")
 public class QuestionController {
@@ -32,6 +41,13 @@ public class QuestionController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
+	/**
+	 * This method will create new Question and save the question in DB.
+	 * @param question
+	 * @param result
+	 * @return
+	 */
+	@ApiOperation(tags = "Post Question", value = "Add Question")
 	@PostMapping("")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
@@ -40,17 +56,31 @@ public class QuestionController {
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED) ;
 	}
 	
+	/**
+	 * This method is used to get Question by using question type.
+	 * @param questionType
+	 * @return
+	 */
 	@GetMapping("/{questionType}")
 	public ResponseEntity<?> getQuestionByType(@PathVariable String questionType){
 		Question question = questionService.findByQuestionType(questionType);
 		return new ResponseEntity<Question>(question, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is used to get all questions from DB.
+	 * @return
+	 */
 	@GetMapping("/all")
 	public Iterable<Question> getAllQuestions(){
 		return questionService.findAllQuestion();
 	}
 	
+	/**
+	 * This mentod is used to delete question by using question type.
+	 * @param questionType
+	 * @return
+	 */
 	@DeleteMapping("/{questionType}")
 	public ResponseEntity<?> deleteQuestion(@PathVariable String questionType){
 		questionService.deleteQuestionByQuestionType(questionType);

@@ -21,7 +21,20 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
 	// TODO: no need to add crud operations over here, if any customization is required, we can customize the methods.
 
+	/**
+	 *  findByQuestionType method will give the Question details by Type.
+	 * @param type of the Question to be searched
+	 * @return Question object if found otherwise null
+	 */
 	Question findByQuestionType(String questionType);
+	
+	/**
+	 * deleteByQuestionType method will delete the Question by type
+	 * @param type of the question to be deleted
+	 * @return true if Question is deleted, otherwise should throw exception
+	 */
+	boolean deleteByQuestionType(String questionType);
+
 	
 	//Iterable<Question> findAll();
 }
