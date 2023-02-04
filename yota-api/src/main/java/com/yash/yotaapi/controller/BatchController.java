@@ -17,26 +17,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yash.yotaapi.domain.Batch;
-import com.yash.yotaapi.exception.ElementNotFoundException;
+
 import com.yash.yotaapi.service.BatchService;
+import com.yash.yotaapi.util.ValidationErrorMessageService;
 
-import com.yash.yotaapi.serviceimpl.ValidationErrorMessageService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-//batch controller
+/* Batch controller is provide way to communication with client/user */
+
+@Api(tags="BatchController", value = "Controller for batch")
 @RequestMapping("/api/batch")
 public class BatchController {
 	
-	//Autowired services
+	/*
+	 * BatchService is a business logic layer used to interact  Controller with
+	 * Service layer
+	 */
 	@Autowired
-	BatchService batchService;
+	private BatchService batchService;
+	
+	/* ValidationErroeMessageService is used to validate field error. */
 	@Autowired
 	ValidationErrorMessageService validationErrorMessageService;
 	
-	//create batch
+	
+	/* createBatch method is used to create Batch. */
+	@ApiOperation(tags="POST Technology", value = "CRATE Batch")
 	@PostMapping("/create")
 	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result ) {
 		

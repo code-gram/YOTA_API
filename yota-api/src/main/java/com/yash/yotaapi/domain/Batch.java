@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -22,31 +24,72 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+
+/*
+ * This batch model work as a data transfer object, Field validation will be
+ * performed here using jpa annotation
+ */
+
 public class Batch {
 
+	/* BatchId should be primary key and it not be null. */
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long batchId;
-	@NotEmpty(message = "Batch name is manadatory")
-	String batchName;
-	@NotEmpty(message="Batch description is mandatory")
-	String batchDesc;
+	private long batchId;
 	
+	/* batchName should not be empty or blank */
+	@NotEmpty(message = "Batch name is manadatory")
+	private String batchName;
+	
+	/* batchDescription should not be empty or blank */
+	@NotEmpty(message="Batch description is mandatory")
+	private String batchDescription;
+	
+	/* Start date should not be null and yyyy-MM-dd format */
 	@NotNull(message = "Start date can not be empty or blank")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date startDate;
+	private Date startDate;
 	
+	/* End date should be yyyy-MM-dd format */
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date endDate;
+	private Date endDate;
 	
+	/*
+	 * CreatedDate is automatically generated at the time of create, No need to set
+	 * up manually.
+	 */
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date createdDate =new Date(System.currentTimeMillis());
+	private Date createdAt =new Date();
 	
+	
+	/*
+	 * UpdatedDate is automatically generated at the time of updated, No need to set
+	 * up manually.
+	 */
+
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-	Date updatedDate =new Date(System.currentTimeMillis());
+	private Date updatedAt =new Date();
+	
+	/**
+	 * This method will be called before the entity is inserted (persisted) into the
+	 * database.
+	 */
+	@PrePersist
+	public void onCreate() {
+		this.createdAt = new Date();
+	}
+
+	/**
+	 * This method will be called before the entity is updated in the database.
+	 */
+	@PreUpdate
+	public void onUpdate() {
+		this.updatedAt = new Date();
+	}
 	
 }
