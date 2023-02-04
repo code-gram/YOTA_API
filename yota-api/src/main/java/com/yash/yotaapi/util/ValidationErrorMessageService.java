@@ -1,4 +1,4 @@
-package com.yash.yotaapi.serviceimpl;
+package com.yash.yotaapi.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
+/*ValidationErrorMessageService used to provide proper validation error message.*/
 @Service
 public class ValidationErrorMessageService {
 	
+	
+	/* ValidationErrorMessage return validation error message. */
 	public ResponseEntity<?> validationErrorMessage(BindingResult result){
 		
 		if(result.hasErrors()) {
