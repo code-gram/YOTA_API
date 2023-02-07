@@ -41,7 +41,7 @@ public class SwaggerConfig {
 	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Technology Management Swagger Configuration")
+				.title("YOTA API Swagger Configuration")
 				.description("Swagger Configuration for application")
 				.version("1.0.0")
 				.build();

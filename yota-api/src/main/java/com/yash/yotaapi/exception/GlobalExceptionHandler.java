@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *
  */
 @ControllerAdvice
-@RestController
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 {
 	/**
@@ -40,4 +38,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 		ExceptionResponse response= new ExceptionResponse(technologyException.getMessage());
 		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
 	}
+	
+	/**
+	 * 
+	 * @param Question Exception
+	 * @param request
+	 * @return This method handle question exception for POST,PUT request for QuestionController
+	 */
+	@ExceptionHandler
+	public final ResponseEntity<?> handleQuestionException(QuestionException questionException, WebRequest request){
+		ExceptionResponse exceptionResponse = new ExceptionResponse(questionException.getMessage());
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
+		}
 }
