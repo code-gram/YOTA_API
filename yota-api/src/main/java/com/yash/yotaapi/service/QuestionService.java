@@ -19,11 +19,11 @@ public interface QuestionService {
 	//Question save(Question question);
 
 	public Question saveOrUpdate(Question question);
-	
+
 	/**
 	 * findByQuestionType method will fetch question based on its type from DB
 	 * @param questionType
-	 * @return
+	 * @return questions according to questions type
 	 */
 	
 	public Question findByQuestionType(String questionType);

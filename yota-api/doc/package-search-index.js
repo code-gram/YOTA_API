@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.yash.yotaapi"},{"l":"com.yash.yotaapi.config"},{"l":"com.yash.yotaapi.controller"},{"l":"com.yash.yotaapi.exception"},{"l":"com.yash.yotaapi.model"},{"l":"com.yash.yotaapi.repository"},{"l":"com.yash.yotaapi.service"},{"l":"com.yash.yotaapi.serviceimpl"}];updateSearchResults();

@@ -2,7 +2,6 @@ package com.yash.yotaapi.model;
 
 import java.util.Date;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,8 +26,9 @@ import lombok.Setter;
  * @author priya.m
  *
  */
-@Setter
+@Entity
 @Getter
+@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -58,10 +58,35 @@ public class Question {
 	private String question;
 	
 	/**
+	 * Option should not be empty
+	 */
+	@NotBlank(message = "Options is required")
+	private String option1;
+	
+	/**
+	 * Option should not be empty
+	 */
+	@NotBlank(message = "Options is required")
+	private String option2;
+	
+	/**
+	 * Option should not be empty
+	 */
+	@NotBlank(message = "Options is required")
+	private String option3;
+	
+	/**
+	 * Option should not be empty
+	 */
+	@NotBlank(message = "Options is required")
+	private String option4;
+	
+	/**
 	 * Answer of the Question should not be empty
 	 */
 	@NotBlank(message = "Answer is required")
-	private String questionAnswer;
+	private String correctAnswer;
+	
 	
 	/**
 	 *  createDate of the Question Bank, It will be automatically generated at the

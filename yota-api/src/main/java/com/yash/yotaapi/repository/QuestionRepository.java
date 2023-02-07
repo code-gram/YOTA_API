@@ -1,7 +1,6 @@
 package com.yash.yotaapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.yash.yotaapi.model.Question;
@@ -33,7 +32,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	 * @param type of the question to be deleted
 	 * @return true if Question is deleted, otherwise should throw exception
 	 */
-	boolean deleteByQuestionType(String questionType);
+ boolean deleteByQuestionType(String questionType);
 
 	
 	//Iterable<Question> findAll();

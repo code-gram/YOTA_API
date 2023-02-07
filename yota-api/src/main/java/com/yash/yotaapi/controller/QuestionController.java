@@ -2,10 +2,6 @@ package com.yash.yotaapi.controller;
 
 import javax.validation.Valid;
 
-/**
- * Question Management Controller will facilitates CRUD functionalities
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +23,14 @@ import io.swagger.annotations.ApiOperation;
 
 
 /**
- * Question Controller will facilitates CRUD functionalities
+ * A controller basically controls the flow of the data.
+ * It controls the data flow into model object and updates the view whenever data changes.
  * @author priya.m
  *
  */
 @Api(tags = "Question Controller", value = "Controller of Question")
-@RestController
 @RequestMapping("/api/questions")
+@RestController
 public class QuestionController {
 
 	@Autowired
@@ -45,21 +42,21 @@ public class QuestionController {
 	 * This method will create new Question and save the question in DB.
 	 * @param question
 	 * @param result
-	 * @return
+	 * @return saved question
 	 */
-	@ApiOperation(tags = "Post Question", value = "Add Question")
-	@PostMapping("")
-	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result) {
-		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
-		if(errorMap!=null) return errorMap;
-		Question savedQuestion = questionService.saveOrUpdate(question);
-		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED) ;
-	}
 	
+	@ApiOperation(tags = "Post Question", value = "Add Question")
+	@PostMapping("/")
+	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
+		ResponseEntity<?> errmap = mapValidationErrorService.mapValidationError(result);
+		if(errmap!=null) return errmap;
+		Question savedQuestion = questionService.saveOrUpdate(question);
+		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
+	}
 	/**
 	 * This method is used to get Question by using question type.
 	 * @param questionType
-	 * @return
+	 * @return questions
 	 */
 	@GetMapping("/{questionType}")
 	public ResponseEntity<?> getQuestionByType(@PathVariable String questionType){
@@ -69,7 +66,7 @@ public class QuestionController {
 	
 	/**
 	 * This method is used to get all questions from DB.
-	 * @return
+	 * @return all questions
 	 */
 	@GetMapping("/all")
 	public Iterable<Question> getAllQuestions(){
@@ -79,7 +76,7 @@ public class QuestionController {
 	/**
 	 * This mentod is used to delete question by using question type.
 	 * @param questionType
-	 * @return
+	 * @return return message question is deleted
 	 */
 	@DeleteMapping("/{questionType}")
 	public ResponseEntity<?> deleteQuestion(@PathVariable String questionType){
