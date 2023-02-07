@@ -20,8 +20,8 @@ public class QuestionException extends RuntimeException {
 	public QuestionException() {
 		super();
 	}
-	public QuestionException(String errmsg) {
-		super(errmsg);
+	public QuestionException(String errormsg) {
+		super(errormsg);
 	}
 
 }

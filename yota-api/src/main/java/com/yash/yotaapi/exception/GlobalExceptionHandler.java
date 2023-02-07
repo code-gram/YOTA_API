@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 @RestController
-public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	/**
 	 * 
@@ -24,9 +24,15 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	 * @return This method handle question exception for POST,PUT request for QuestionController
 	 */
 	@ExceptionHandler
-	public final ResponseEntity<Object> handleQuestionException(QuestionException ex, WebRequest request){
-		QuestionExceptionResponse exceptionResponse = new QuestionExceptionResponse(ex.getMessage());
+	public final ResponseEntity<?> handleQuestionException(QuestionException questionException, WebRequest request){
+		ExceptionResponse exceptionResponse = new ExceptionResponse(questionException.getMessage());
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 		}
-
+/**
+ * public final ResponseEntity<?> handleTechnologyException(ParentTechnologyException technologyException,WebRequest request)
+	{
+		ParentTechnologyExceptionResponse response= new ParentTechnologyExceptionResponse(technologyException.getMessage());
+		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
+	}
+ */
 }
