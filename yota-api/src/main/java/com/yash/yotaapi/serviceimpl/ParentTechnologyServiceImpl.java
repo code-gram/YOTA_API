@@ -34,14 +34,13 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	/**
 	 * This method is for save ParentTechnology to DB through repository layer
 	 */
-
 	@Override
 	public ParentTechnology save(ParentTechnology technology) {
 		try {
 			technology.setName(technology.getName().toUpperCase());
 			return parentTechnologyRepository.save(technology);
 		} catch (DataIntegrityViolationException e) {
-			throw new ParentTechnologyException("Technology : "+technology.getName().toUpperCase()+" already exists!!");
+			throw new ParentTechnologyException("Technology with Name  "+technology.getName().toUpperCase()+" already exists!!");
 		}
 	}
 

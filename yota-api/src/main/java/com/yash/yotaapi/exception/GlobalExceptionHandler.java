@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 @RestController
-public class CustomResposeEntityExceptionHandler extends ResponseEntityExceptionHandler
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 {
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class CustomResposeEntityExceptionHandler extends ResponseEntityException
 	@ExceptionHandler
 	public final ResponseEntity<?> handleTechnologyException(ParentTechnologyException technologyException,WebRequest request)
 	{
-		ParentTechnologyExceptionResponse response= new ParentTechnologyExceptionResponse(technologyException.getMessage());
+		ExceptionResponse response= new ExceptionResponse(technologyException.getMessage());
 		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
 	}
 	/**
@@ -37,7 +37,7 @@ public class CustomResposeEntityExceptionHandler extends ResponseEntityException
 	@ExceptionHandler
 	public final ResponseEntity<?> handleTechnologyNotFoundException(ParentTechnologyNotFoundException technologyException,WebRequest request)
 	{
-		ParentTechnologyExceptionResponse response= new ParentTechnologyExceptionResponse(technologyException.getMessage());
+		ExceptionResponse response= new ExceptionResponse(technologyException.getMessage());
 		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
 	}
 }

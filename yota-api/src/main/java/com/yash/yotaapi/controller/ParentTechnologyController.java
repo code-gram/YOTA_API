@@ -46,6 +46,8 @@ public class ParentTechnologyController {
 	@Autowired
 	private FieldErrorValidationUtillity validationService;
 	
+	
+	
 	/**
 	 * addParentTechnology method is used add ParentTechnology through service layer
 	 * @param technology 
@@ -61,6 +63,8 @@ public class ParentTechnologyController {
 		}
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.save(technology),HttpStatus.OK);
 	}
+	
+	
 	/**
 	 * getAll method is used to fetch all existing parent technology from DB
 	 * @return List of ParentTechnology
@@ -71,6 +75,8 @@ public class ParentTechnologyController {
 	{
 		return new ResponseEntity<List<ParentTechnology>>(parentTechnologyService.getAllTechs(),HttpStatus.OK);
 	}
+	
+	
 	/**
 	 * getTech method is used to get ParentTechnology from DB on basis name.
 	 * @param name
@@ -82,6 +88,8 @@ public class ParentTechnologyController {
 	{
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.getTech(name),HttpStatus.OK);
 	}
+	
+	
 	/**
 	 * searchTech method is used to get ParentTechnology from DB on basis Keyword.
 	 * @param keyword
@@ -94,6 +102,8 @@ public class ParentTechnologyController {
 		List<ParentTechnology> technologies=parentTechnologyService.searchTech(keyword);
 		return new ResponseEntity<List<ParentTechnology>>(technologies,HttpStatus.OK);
 	}
+	
+	
 	/**
 	 * removeTech method is used to delete ParentTechnology by id.
 	 * @param id
@@ -106,6 +116,8 @@ public class ParentTechnologyController {
 		 parentTechnologyService.removeTech(id);
 		 return new ResponseEntity<String>("Technology with ID :"+id+" deleted.", HttpStatus.OK);
 	}
+	
+	
 	/**
 	 * upadateTech method is used update the existing ParentTechnology from DB otherwise it will save one into DB
 	 * @param technology
