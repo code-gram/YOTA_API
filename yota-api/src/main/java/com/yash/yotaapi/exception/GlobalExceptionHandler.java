@@ -28,11 +28,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(questionException.getMessage());
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 		}
-/**
- * public final ResponseEntity<?> handleTechnologyException(ParentTechnologyException technologyException,WebRequest request)
-	{
-		ParentTechnologyExceptionResponse response= new ParentTechnologyExceptionResponse(technologyException.getMessage());
-		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
-	}
- */
+
 }
