@@ -37,10 +37,10 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public Question findByQuestionType(String questionType) {
-		Question question = questionRepository.findByQuestionType(questionType.toUpperCase());
+	public Question findQuestionById(Long questionId) {
+		Question question = questionRepository.findQuestionById(questionId);
 		if (question==null) {
-			throw new QuestionException("Question type :"+questionType.toUpperCase()+ "Does not exist");
+			throw new QuestionException("Question type :"+questionId+ "Does not exist");
 		}
 		return question;
 	}
@@ -60,11 +60,11 @@ public class QuestionServiceImpl implements QuestionService {
 	 */
 	
 	@Override
-	public void deleteQuestionByQuestionType(String questionType) {
+	public void deleteQuestionById(Long questionId) {
 		
-		Question question = questionRepository.findByQuestionType(questionType.toUpperCase());
+		Question question = questionRepository.findQuestionById(questionId);
 		if (question==null) {
-			throw new QuestionException("Question type :"+questionType.toUpperCase()+ "Does not exist");
+			throw new QuestionException("Question type :"+questionId+ "Does not exist");
 		}
 		
 		questionRepository.delete(question);

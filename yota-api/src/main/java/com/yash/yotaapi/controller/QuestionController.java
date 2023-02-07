@@ -58,9 +58,9 @@ public class QuestionController {
 	 * @param questionType
 	 * @return questions
 	 */
-	@GetMapping("/{questionType}")
-	public ResponseEntity<?> getQuestionByType(@PathVariable String questionType){
-		Question question = questionService.findByQuestionType(questionType);
+	@GetMapping("/{questionId}")
+	public ResponseEntity<?> getQuestionById(@PathVariable Long questionId){
+		Question question = questionService.findQuestionById(questionId);
 		return new ResponseEntity<Question>(question, HttpStatus.OK);
 	}
 	
@@ -78,9 +78,9 @@ public class QuestionController {
 	 * @param questionType
 	 * @return return message question is deleted
 	 */
-	@DeleteMapping("/{questionType}")
-	public ResponseEntity<?> deleteQuestion(@PathVariable String questionType){
-		questionService.deleteQuestionByQuestionType(questionType);
+	@DeleteMapping("/{questionId}")
+	public ResponseEntity<?> deleteQuestionById(@PathVariable Long questionId){
+		questionService.deleteQuestionById(questionId);
 		return new ResponseEntity<String>("question is deleted successfully!", HttpStatus.OK);
 	}
 }

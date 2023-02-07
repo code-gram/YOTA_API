@@ -25,14 +25,14 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	 * @param type of the Question to be searched
 	 * @return Question object if found otherwise null
 	 */
-	Question findByQuestionType(String questionType);
+	Question findQuestionById(Long questionId);
 	
 	/**
 	 * deleteByQuestionType method will delete the Question by type
 	 * @param type of the question to be deleted
 	 * @return true if Question is deleted, otherwise should throw exception
 	 */
- boolean deleteByQuestionType(String questionType);
+ boolean deleteQuestionById(Long questionId);
 
 	
 	//Iterable<Question> findAll();

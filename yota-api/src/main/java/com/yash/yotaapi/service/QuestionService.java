@@ -26,7 +26,7 @@ public interface QuestionService {
 	 * @return questions according to questions type
 	 */
 	
-	public Question findByQuestionType(String questionType);
+	public Question findQuestionById(Long questionId);
 	
 	/**
 	 * findAllQuestion method will fetch all Questions from DB
@@ -40,5 +40,5 @@ public interface QuestionService {
 	 * @return if deleted, otherwise false, in case question is not available then it should throw appropriate exception.
 	 */
 	
-	public void deleteQuestionByQuestionType(String questionType);
+	public void deleteQuestionById(Long questionId);
 }
