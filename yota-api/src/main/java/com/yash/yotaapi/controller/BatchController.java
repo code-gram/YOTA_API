@@ -106,20 +106,20 @@ public class BatchController {
 			
 		}
 		
-		@ApiOperation(tags="UPDATE batch detalis", value="Update batch details for perticular batch id")
-		@PutMapping("/update/{bid}")
-		public ResponseEntity<Batch> updateDetails(@PathVariable long bid,@RequestBody Batch batch ){
-			
-			log.info("Update batch details");
-			try {
-				Batch updateBatch=batchService.updateBatchDetails(bid);
-				return new ResponseEntity<Batch>(updateBatch,HttpStatus.OK);
-			}
-			catch(Exception e){
-				throw new NoSuchElementFoundException("Batch with this id is not present");
-			}
-			
-		}
+		/*
+		 * @ApiOperation(tags="UPDATE batch detalis",
+		 * value="Update batch details for perticular batch id")
+		 * 
+		 * @PutMapping("/update/{bid}") public ResponseEntity<Batch>
+		 * updateDetails(@RequestBody Batch batch,@PathVariable long bid){
+		 * 
+		 * log.info("Update batch details"); try { Batch
+		 * updateBatch=batchService.updateBatchDetails(bid); return new
+		 * ResponseEntity<Batch>(updateBatch,HttpStatus.OK); } catch(Exception e){ throw
+		 * new NoSuchElementFoundException("Batch with this id is not present"); }
+		 * 
+		 * }
+		 */
 		
 }
 

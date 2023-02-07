@@ -41,12 +41,12 @@ public class BatchServiceImpl implements BatchService{
 		return batchDetail.get();
 	}
 
-	@Override
-	public Batch updateBatchDetails(long bid) {
-		
-		Optional<Batch> optupdateBatchDetails=batchRepository.findById(bid);
-		Batch updateBatchDetails=optupdateBatchDetails.get();
-		return batchRepository.save(updateBatchDetails);
-	}
+	/*
+	 * @Override public Batch updateBatchDetails(long bid) {
+	 * 
+	 * Optional<Batch> optupdateBatchDetails=batchRepository.findById(bid); Batch
+	 * updateBatchDetails=optupdateBatchDetails.get(); return
+	 * batchRepository.save(updateBatchDetails); }
+	 */
 
 }

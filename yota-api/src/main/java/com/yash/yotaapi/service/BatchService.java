@@ -17,6 +17,7 @@ public interface BatchService {
 
 	public Batch getSingleBatchDetail(long bid);
 
-	public Batch updateBatchDetails(long bid);
-
+	/*
+	 * public Batch updateBatchDetails(long bid);
+	 */
 }
