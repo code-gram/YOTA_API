@@ -27,7 +27,8 @@ import lombok.NoArgsConstructor;
 
 /*
  * This batch model work as a data transfer object, Field validation will be
- * performed here using jpa annotation
+ * performed here using jpa annotation.
+ * @author anil.shimpi
  */
 
 public class Batch {
