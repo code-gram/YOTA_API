@@ -13,11 +13,18 @@ public interface BatchService {
 	
 	public void createBatch(Batch batch);
 
-	public List<Batch> getAllDetails();
+	/* public List<Batch> findAllFilter(boolean isDeleted); */
 
 	public Batch getSingleBatchDetail(long bid);
 
-	/*
-	 * public Batch updateBatchDetails(long bid);
-	 */
+	public Batch updateBatchDetails(Batch batch, long batchId);
+
+	public void deleteBatchDetails(long batchId);
+
+	public List<Batch> getAllDetails();
+
+	public List<Batch> searchBatch(String keyword); 
+
+
+	
 }

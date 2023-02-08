@@ -2,17 +2,25 @@ package com.yash.yotaapi.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+
 
 /*
  * This batch model work as a data transfer object, Field validation will be
@@ -31,12 +39,34 @@ import lombok.NoArgsConstructor;
  * @author anil.shimpi
  */
 
+/*
+ * SQLDelete annotation overrode delete command to updated command in project,
+ * when we execute delete command it turned into update command and set deleted
+ * field value is true.
+ */
+//@SQLDelete(sql="UPDATE BATCH_MANAGEMENT SET deleted = true WHERE BATCH_ID=?")
+
+/* FilterDef annotations  can dynamically add conditions as needed */
+@FilterDef(
+		name="detetedBatchFilter",
+		parameters = @ParamDef(
+				name="isDeleted", 
+				type="boolean"))
+
+/* Filter annotations we can dynamically add conditions as needed */
+@Filter(
+		name="deletedBatchFilter", 
+		condition = "deleted= :isDeleted")
+
+@Table(name = "Batch_Management")
+@Entity
 public class Batch {
 
 	/* BatchId should be primary key and it not be null. */
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "batchId")
 	private long batchId;
 	
 	/* batchName should not be empty or blank */
@@ -92,5 +122,8 @@ public class Batch {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
+
+	/* set boolean flag for soft delete */
+	private boolean deleted=Boolean.FALSE;
 	
 }

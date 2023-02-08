@@ -15,10 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse {
-	int status;
-	HttpStatus error;
+	
 	String msg;
-	Date date;
-	String path;
+	
 
 }

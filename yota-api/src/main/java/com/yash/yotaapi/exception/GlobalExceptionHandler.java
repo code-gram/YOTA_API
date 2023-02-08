@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(BatchNotFoundException.class)
-	public ResponseEntity<ErrorResponse> BatchNotFoundException(BatchNotFoundException e,HttpServletRequest request){
+	public ResponseEntity<ErrorResponse> BatchNotFoundException(BatchNotFoundException e, HttpServletRequest request){
 		
-		ErrorResponse error=new ErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, e.getMessage(), new Date(), request.getRequestURI());
+		ErrorResponse error=new ErrorResponse(e.getMessage());
 		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(NoSuchElementFoundException.class)
 	public ResponseEntity<ErrorResponse> NoSuchElementFound(NoSuchElementFoundException e,HttpServletRequest request){
 		
-		ErrorResponse error=new ErrorResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, e.getMessage(), new Date(), request.getRequestURI());
+		ErrorResponse error=new ErrorResponse(e.getMessage());
 		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_FOUND);
 	}
 	
