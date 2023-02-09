@@ -61,7 +61,7 @@ public class BatchController {
 	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result) {
 
 		log.info("Batch created successfully");
-		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationErrorMessage(result);
+		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
 		if (errorMessage != null)
 			return errorMessage;
 

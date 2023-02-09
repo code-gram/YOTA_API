@@ -15,7 +15,7 @@ public class FieldErrorValidationUtillity {
 	
 	
 	/* ValidationErrorMessage return validation error message. */
-	public ResponseEntity<?> validationErrorMessage(BindingResult result){
+	public ResponseEntity<?> validationError(BindingResult result){
 		
 		if(result.hasErrors()) {
 			Map<String,String> errorMap=new HashMap<>();
