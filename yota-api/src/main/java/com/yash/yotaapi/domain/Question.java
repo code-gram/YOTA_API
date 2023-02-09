@@ -1,4 +1,4 @@
-package com.yash.yotaapi.model;
+package com.yash.yotaapi.domain;
 
 import java.util.Date;
 

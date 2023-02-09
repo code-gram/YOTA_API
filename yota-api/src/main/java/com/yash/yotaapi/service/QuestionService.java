@@ -1,6 +1,6 @@
 package com.yash.yotaapi.service;
 
-import com.yash.yotaapi.model.Question;
+import com.yash.yotaapi.domain.Question;
 
 /**
  * QuestionService will be performing business logic related to Question Bank.

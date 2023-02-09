@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yash.yotaapi.model.Question;
+import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
-import com.yash.yotaapi.serviceimpl.MapValidationErrorService;
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 	@Autowired
-	private MapValidationErrorService mapValidationErrorService;
+	private FieldErrorValidationUtillity mapValidationErrorService;
 	
 	/**
 	 * This method will create new Question and save the question in DB.

@@ -4,8 +4,8 @@ import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.exception.QuestionException;
-import com.yash.yotaapi.model.Question;
 import com.yash.yotaapi.repository.QuestionRepository;
 import com.yash.yotaapi.service.QuestionService;
 

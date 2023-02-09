@@ -1,4 +1,4 @@
-package com.yash.yotaapi.serviceimpl;
+package com.yash.yotaapi.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +15,14 @@ import org.springframework.validation.FieldError;
  *
  */
 @Service
-public class MapValidationErrorService {
+public class FieldErrorValidationUtillity {
 	
 	/**
 	 * This method is used to handle the errors on bad requests
 	 * @param result
 	 * @return error with bad request msg
 	 */
-	public ResponseEntity<?> mapValidationError(BindingResult result){
+	public ResponseEntity<?> validationError(BindingResult result){
 		if(result.hasErrors()) {
 			Map<String, String> errorMap = new HashMap<>();
 			for(FieldError fieldError : result.getFieldErrors()) {
