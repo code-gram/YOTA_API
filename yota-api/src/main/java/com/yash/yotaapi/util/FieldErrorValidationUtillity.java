@@ -11,7 +11,7 @@ import org.springframework.validation.FieldError;
 
 /*ValidationErrorMessageService used to provide proper validation error message.*/
 @Service
-public class ValidationErrorMessageService {
+public class FieldErrorValidationUtillity {
 	
 	
 	/* ValidationErrorMessage return validation error message. */

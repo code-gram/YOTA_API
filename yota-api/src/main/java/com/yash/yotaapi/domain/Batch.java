@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -39,25 +40,22 @@ import lombok.NoArgsConstructor;
  * @author anil.shimpi
  */
 
+
+
+/* FilterDef annotations  can dynamically add conditions as needed */
+
+ // @FilterDef( name="detetedBatchFilter", parameters = @ParamDef(name="isDeleted", type="boolean"))
+ 
+/* Filter annotations we can dynamically add conditions as needed */
+
+  //@Filter( name="deletedBatchFilter", condition = "deleted= :isDeleted")
+
 /*
  * SQLDelete annotation overrode delete command to updated command in project,
  * when we execute delete command it turned into update command and set deleted
  * field value is true.
  */
-//@SQLDelete(sql="UPDATE BATCH_MANAGEMENT SET deleted = true WHERE BATCH_ID=?")
-
-/* FilterDef annotations  can dynamically add conditions as needed */
-@FilterDef(
-		name="detetedBatchFilter",
-		parameters = @ParamDef(
-				name="isDeleted", 
-				type="boolean"))
-
-/* Filter annotations we can dynamically add conditions as needed */
-@Filter(
-		name="deletedBatchFilter", 
-		condition = "deleted= :isDeleted")
-
+@SQLDelete(sql="UPDATE BATCH_MANAGEMENT SET Status = true WHERE BATCH_ID=?")
 @Table(name = "Batch_Management")
 @Entity
 public class Batch {
@@ -124,6 +122,6 @@ public class Batch {
 	}
 
 	/* set boolean flag for soft delete */
-	private boolean deleted=Boolean.FALSE;
+	private boolean status;
 	
 }

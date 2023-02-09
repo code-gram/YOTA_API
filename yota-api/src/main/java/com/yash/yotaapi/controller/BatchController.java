@@ -26,7 +26,7 @@ import com.yash.yotaapi.exception.BatchNotFoundException;
 import com.yash.yotaapi.exception.ErrorResponse;
 import com.yash.yotaapi.exception.NoSuchElementFoundException;
 import com.yash.yotaapi.service.BatchService;
-import com.yash.yotaapi.util.ValidationErrorMessageService;
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +53,7 @@ public class BatchController {
 
 	/* ValidationErroeMessageService is used to validate field error. */
 	@Autowired
-	ValidationErrorMessageService validationErrorMessageService;
+	FieldErrorValidationUtillity fileErrorValidationUtillity;
 
 	/* createBatch method is used to create Batch. */
 	@ApiOperation(tags = "POST Batch", value = "CRATE Batch")
@@ -61,7 +61,7 @@ public class BatchController {
 	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result) {
 
 		log.info("Batch created successfully");
-		ResponseEntity<?> errorMessage = validationErrorMessageService.validationErrorMessage(result);
+		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationErrorMessage(result);
 		if (errorMessage != null)
 			return errorMessage;
 
@@ -69,15 +69,15 @@ public class BatchController {
 		return new ResponseEntity<Batch>(batch, HttpStatus.CREATED);
 	}
 
+	
+	/* batchDetails() method retrive all batch details present in database */
+	  
 	/*
-	 * batchDetails() method retrive all batch details present in database
-	 * 
 	 * @ApiOperation(tags = "GET all Batch", value = "Display Batch details")
 	 * 
-	 * @GetMapping("/details") public ResponseEntity<List<Batch>> findAll(
-	 * 
-	 * @RequestParam(value = "isDeleted", required = false, defaultValue = "false")
-	 * boolean isDeleted) {
+	 * @GetMapping("/findall") public ResponseEntity<List<Batch>>
+	 * findAll( @RequestParam(value = "isDeleted", required = false, defaultValue =
+	 * "false") boolean isDeleted) {
 	 * 
 	 * log.info("Get all Batch details");
 	 * 
@@ -90,8 +90,8 @@ public class BatchController {
 	 * throw new BatchNotFoundException("No Batch details are available");
 	 * 
 	 * }
+	 * 
 	 */
-	
 
 	/* batchDetails() method retrive all batch details present in database */
 
@@ -152,13 +152,13 @@ public class BatchController {
 	/* deleteBatch api delete batch accourding to batchId enter by user. */
 	@ApiOperation(tags = "DELETE batch", value = "Delete batch details for perticular batchId")
 	@DeleteMapping("/delete/{batchId}")
-	public ResponseEntity<?> deleteBatch(@PathVariable long batchId) {
+	public ResponseEntity<?> removeBatch(@PathVariable long batchId) {
 
 		log.info("Delete batch details");
 
 		try {
 
-			batchService.deleteBatchDetails(batchId);
+			batchService.removeBatchDetails(batchId);
 
 			return new ResponseEntity<String>("Batch with id: " + batchId + " is delete sucessfully", HttpStatus.OK);
 

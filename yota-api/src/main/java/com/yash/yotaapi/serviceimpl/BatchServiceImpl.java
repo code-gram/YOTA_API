@@ -23,8 +23,8 @@ public class BatchServiceImpl implements BatchService {
 	@Autowired
 	private BatchRepository batchRepository;
 
-	@Autowired
-	private EntityManager entityManager;
+	//@Autowired
+	//private EntityManager entityManager;
 
 	/* This method is used to store value into database */
 	@Override
@@ -75,11 +75,10 @@ public class BatchServiceImpl implements BatchService {
 	}
 
 	/*
-	 * This method delete batch details from database for mention batch id by user
-	 * from database.
+	 * This method temporally hide batch details for mention batch id by user.
 	 */
 	@Override
-	public void deleteBatchDetails(long batchId) {
+	public void removeBatchDetails(long batchId) {
 
 		Batch batchDelete = batchRepository.findById(batchId).get();
 		if (batchDelete != null) {
@@ -92,15 +91,18 @@ public class BatchServiceImpl implements BatchService {
 	/*
 	 * @Override public List<Batch> findAllFilter(boolean isDeleted) {
 	 * 
-	 * Session session = entityManager.unwrap(Session.class); Filter filter =
-	 * session.enableFilter("deletedBatchFilter"); filter.setParameter("isDeleted",
+	 * Session session = entityManager.unwrap(Session.class); Filter filter
+	 * =session.enableFilter("deletedBatchFilter"); filter.setParameter("isDeleted",
 	 * isDeleted); List<Batch> batchDetails = batchRepository.findAll();
-	 * session.disableFilter("deletedBatchFilter"); return batchDetails; }
+	 * session.disableFilter("deletedBatchFilter"); return batchDetails;
+	 * 
+	 * }
 	 */
+	 
 
 
 
-	/* This menthod search batch and display details by keyword from database. */
+	/* This method search batch and display details by keyword from database. */
 	@Override
 	public List<Batch> searchBatch(String keyword) {
 		 List<Batch> search=batchRepository.findByBatchNameContaining(keyword);
