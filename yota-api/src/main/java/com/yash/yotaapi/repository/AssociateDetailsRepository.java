@@ -1,5 +1,7 @@
 package com.yash.yotaapi.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.yash.yotaapi.domain.AssociateDetails;
@@ -12,4 +14,11 @@ import com.yash.yotaapi.domain.AssociateDetails;
  */
 public interface AssociateDetailsRepository extends JpaRepository<AssociateDetails, Long>{
 
+	
+	/**
+	 * getByEmailIdContaining will give the associate details using Mail Id.
+	 * @param keyword
+	 */
+	List<AssociateDetails> getByEmailIdContaining(String keyword);
+	
 }

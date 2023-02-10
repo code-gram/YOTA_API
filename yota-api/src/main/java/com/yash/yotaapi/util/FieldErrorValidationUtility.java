@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+/**
+ * This ValidationError Component will help to map the Field Error in errorMap. 
+ * This can be used with any model error mapping. 
+ * @author nitin.chougale
+ */
 @Service
-public class FieldErrorValidationService {
+public class FieldErrorValidationUtility {
 	
 	/**
 	 * @param result
