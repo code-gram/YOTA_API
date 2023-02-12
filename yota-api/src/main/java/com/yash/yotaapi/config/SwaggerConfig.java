@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * This SwaggerConfic component will be used for API Documentation. Do not change anything over here. 
  * It will be a global configuration. 
  * visit the swagger ui on : swagger-ui.html link.
- * @author nitin.chougale
+ * @author pankaj.sharma
  *
  */
 @Configuration
@@ -32,7 +32,7 @@ public class SwaggerConfig {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.yash"))
+				.apis(RequestHandlerSelectors.basePackage("com.yash.yotaapi"))
 				.build();
 	}
 	/**
@@ -41,7 +41,7 @@ public class SwaggerConfig {
 	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("Associate Management Swagger Configuration")
+				.title("YOTA API Swagger Configuration")
 				.description("Swagger Configuration for application")
 				.version("1.0.0")
 				.build();
