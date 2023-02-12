@@ -55,7 +55,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService{
 	public void deleteAssociate(long id) {
 		try
 		{
-			AssociateDetails associateDetails = associateDetailsRepository.findById(id).get();
+			associateDetailsRepository.findById(id).get();
 		}catch (NoSuchElementException e) {
 			throw new AssociateDetailsException("Associate with Id:"+id+" does not exist.");
 		}
@@ -80,7 +80,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService{
 	@Override
 	@Transactional
 	public AssociateDetails updateAssociate(AssociateDetails associate) {
-		AssociateDetails availableAssociate = associateDetailsRepository.getById(associate.getId());
+		AssociateDetails availableAssociate = associateDetailsRepository.findById(associate.getId()).get();
 		if(availableAssociate==null) {
 			return associateDetailsRepository.save(associate);
 		}else {
