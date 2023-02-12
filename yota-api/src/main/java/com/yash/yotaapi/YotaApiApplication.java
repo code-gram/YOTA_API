@@ -8,6 +8,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication
 public class YotaApiApplication {
 
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(YotaApiApplication.class, args);
 	}

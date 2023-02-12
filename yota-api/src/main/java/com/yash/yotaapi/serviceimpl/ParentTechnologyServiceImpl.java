@@ -1,6 +1,7 @@
 package com.yash.yotaapi.serviceimpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -27,9 +28,6 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 */
 	@Autowired
 	private ParentTechnologyRepository parentTechnologyRepository;
-
-
-	
 
 	/**
 	 * This method is for save ParentTechnology to DB through repository layer
@@ -58,8 +56,9 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	@Override
 	@Transactional
 	public void removeTech(long id) {
-		ParentTechnology parentTechnology=parentTechnologyRepository.findById(id).get();
-		if (parentTechnology==null) {
+		try {
+			parentTechnologyRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
 			throw new ParentTechnologyException("Technology with ID :"+id+" does not exist");
 		}
 		parentTechnologyRepository.deleteById(id);

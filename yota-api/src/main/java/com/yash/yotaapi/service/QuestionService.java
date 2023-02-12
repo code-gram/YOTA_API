@@ -22,10 +22,9 @@ public interface QuestionService {
 
 	/**
 	 * findByQuestionType method will fetch question based on its type from DB
-	 * @param questionType
+	 * @param questionId
 	 * @return questions according to questions type
 	 */
-	
 	public Question findQuestionById(Long questionId);
 	
 	/**
@@ -36,8 +35,8 @@ public interface QuestionService {
 	
 	/**
 	 * deleteQuestionByQuestionType method will delete the question that is mentioned
-	 * @param questionType
-	 * @return if deleted, otherwise false, in case question is not available then it should throw appropriate exception.
+	 * @param questionId
+	 *  if deleted, otherwise false, in case question is not available then it should throw appropriate exception.
 	 */
 	
 	public void deleteQuestionById(Long questionId);

@@ -41,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 	
 	/**
 	 * 
-	 * @param Question Exception
+	 * @param questionException
 	 * @param request
 	 * @return This method handle question exception for POST,PUT request for QuestionController
 	 */

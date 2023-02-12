@@ -13,7 +13,7 @@ import org.springframework.validation.FieldError;
 /**
  * This FieldErrorValidationUtillity Component will help to map the Field Error in errorMap. 
  * This can be used with any model error mapping. 
- * @author pankaj.ssharma
+ * @author pratik.kurbet
 
  */
 @Component

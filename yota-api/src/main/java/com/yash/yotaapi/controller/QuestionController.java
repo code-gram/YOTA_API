@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
-import com.yash.yotaapi.serviceimpl.MapValidationErrorService;
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class QuestionController {
 	@Autowired
 	private QuestionService questionService;
 	@Autowired
-	private MapValidationErrorService mapValidationErrorService;
+	private FieldErrorValidationUtillity mapValidationErrorService;
 	
 	/**
 	 * This method will create new Question and save the question in DB.
@@ -48,14 +48,14 @@ public class QuestionController {
 	@ApiOperation(tags = "Post Question", value = "Add Question")
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
-		ResponseEntity<?> errmap = mapValidationErrorService.mapValidationError(result);
+		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if(errmap!=null) return errmap;
 		Question savedQuestion = questionService.saveOrUpdate(question);
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
 	/**
 	 * This method is used to get Question by using question type.
-	 * @param questionType
+	 * @param questionId
 	 * @return questions
 	 */
 	@GetMapping("/{questionId}")
@@ -75,7 +75,7 @@ public class QuestionController {
 	
 	/**
 	 * This mentod is used to delete question by using question type.
-	 * @param questionType
+	 * @param questionId
 	 * @return return message question is deleted
 	 */
 	@DeleteMapping("/{questionId}")
