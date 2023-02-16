@@ -1,5 +1,8 @@
 package com.yash.yotaapi.config;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +38,8 @@ public class SwaggerConfig {
 				.apis(RequestHandlerSelectors.basePackage("com.yash.yotaapi"))
 				.build();
 	}
+
+	
 	/**
 	 * This method gives title to our swagger documentation page with version
 	 * @return ApiInfo 
@@ -46,4 +51,5 @@ public class SwaggerConfig {
 				.version("1.0.0")
 				.build();
 	}
+	 
 }
