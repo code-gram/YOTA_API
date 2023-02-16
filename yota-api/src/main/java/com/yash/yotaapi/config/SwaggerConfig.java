@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -34,18 +35,23 @@ public class SwaggerConfig {
 	Docket apiDocumentation()
 	{
 		return new Docket(DocumentationType.SWAGGER_2).
-				apiInfo(getInfo()).
+				apiInfo(apiInfo()).
 					select().
-					apis(RequestHandlerSelectors.basePackage("com.yash")).
+					apis(RequestHandlerSelectors.basePackage("com.yash.yotaapi")).
 					build();
 	}
 
 	
-	  private ApiInfo getInfo() {
-	  
-	  return new ApiInfo("YOTA App",
-	  "This project is developed by YASH Technologies", "1.0", "Term of Service",
-	  new Contact("YASH Technologies", "www.hash.com", "support@yash.com"), "",
-	  "",Collections.emptyList()); }
+	/**
+	 * This method gives title to our swagger documentation page with version
+	 * @return ApiInfo 
+	 */
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder()
+				.title("YOTA API Swagger Configuration")
+				.description("Swagger Configuration for application")
+				.version("1.0.0")
+				.build();
+	}
 	 
 }

@@ -1,14 +1,11 @@
 package com.yash.yotaapi.exception;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 /*This is Global exception handler class used handle exception with proper error message.
  * @author anil.shimpi
@@ -17,18 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(BatchNotFoundException.class)
-	public ResponseEntity<ErrorResponse> BatchNotFoundException(BatchNotFoundException e, HttpServletRequest request){
+	public ResponseEntity<ExceptionResponse> BatchNotFoundException(BatchNotFoundException e, WebRequest request){
 		
-		ErrorResponse error=new ErrorResponse(e.getMessage());
-		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_FOUND);
+		ExceptionResponse error=new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(NoSuchElementFoundException.class)
-	public ResponseEntity<ErrorResponse> NoSuchElementFound(NoSuchElementFoundException e,HttpServletRequest request){
-		
-		ErrorResponse error=new ErrorResponse(e.getMessage());
-		return new ResponseEntity<ErrorResponse>(error,HttpStatus.NOT_FOUND);
-	}
 	
 
 }

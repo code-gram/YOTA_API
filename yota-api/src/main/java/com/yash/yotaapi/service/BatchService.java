@@ -11,9 +11,7 @@ import com.yash.yotaapi.domain.Batch;
 
 public interface BatchService {
 	
-	public void createBatch(Batch batch);
-
-	//public List<Batch> findAllFilter(boolean isDeleted); 
+	public Batch createBatch(Batch batch);
 
 	public Batch getSingleBatchDetail(long bid);
 

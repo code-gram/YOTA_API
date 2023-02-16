@@ -7,24 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,15 +32,6 @@ import lombok.NoArgsConstructor;
  * @author anil.shimpi
  */
 
-
-
-/* FilterDef annotations  can dynamically add conditions as needed */
-
- // @FilterDef( name="detetedBatchFilter", parameters = @ParamDef(name="isDeleted", type="boolean"))
- 
-/* Filter annotations we can dynamically add conditions as needed */
-
-  //@Filter( name="deletedBatchFilter", condition = "deleted= :isDeleted")
 
 /*
  * SQLDelete annotation overrode delete command to updated command in project,
@@ -104,6 +87,9 @@ public class Batch {
 	@Temporal(TemporalType.DATE)
 	private Date updatedAt =new Date();
 	
+	/* set boolean flag for soft delete */
+	private boolean status=Boolean.FALSE;
+	
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
 	 * database.
@@ -121,7 +107,6 @@ public class Batch {
 		this.updatedAt = new Date();
 	}
 
-	/* set boolean flag for soft delete */
-	private boolean status;
+	
 	
 }
