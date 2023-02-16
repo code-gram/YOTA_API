@@ -3,11 +3,11 @@ package com.yash.yotaapi.serviceimpl;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.exception.BatchNotFoundException;
 import com.yash.yotaapi.repository.BatchRepository;
@@ -24,53 +24,52 @@ public class BatchServiceImpl implements BatchService {
 	@Autowired
 	private BatchRepository batchRepository;
 
-	//@Autowired
-	//private EntityManager entityManager;
+	// @Autowired
+	// private EntityManager entityManager;
 
 	/* This method is used to store value into database */
 	@Override
 	public Batch createBatch(Batch batch) {
-		
+
 		try {
 			batch.setBatchName(batch.getBatchName().toUpperCase());
 			return batchRepository.save(batch);
-		}
-		catch(DataIntegrityViolationException e) {
-			throw new BatchNotFoundException("Batch with Name " +batch.getBatchName().toUpperCase()+" already exists!!");
+		} catch (DataIntegrityViolationException e) {
+			throw new BatchNotFoundException(
+					"Batch with Name " + batch.getBatchName().toUpperCase() + " already exists!!");
 		}
 
 	}
-	
-	/* This menthod us used to display all batch details from database. */
-	  @Override 
-	  public List<Batch> getAllDetails() {
-		 
-		  List<Batch> batchDetails=batchRepository.findAll();
-		  if(batchDetails==null) {
-			  throw new BatchNotFoundException("Batch details does not exists !!");
-		  }
-		  
-		  return batchDetails;
 
-	  }
-	 
-		/*
-		 * This method display batch details for particular batch id entered user from
-		 * database.
-		 */
+	/* This menthod us used to display all batch details from database. */
+	@Override
+	public List<Batch> getAllDetails() {
+
+		List<Batch> batchDetails = batchRepository.findAll();
+		if (batchDetails == null) {
+			throw new BatchNotFoundException("Batch details does not exists !!");
+		}
+
+		return batchDetails;
+
+	}
+
+	/*
+	 * This method display batch details for particular batch id entered user from
+	 * database.
+	 */
 	@Override
 	public Batch getSingleBatchDetail(long bId) {
-		
-		
-			Batch detail=batchRepository.findById(bId).get();
-			
-			if(detail==null) {
-				
-				throw new BatchNotFoundException("Batch with id : "+bId+" does not exist");
-			}
-			
-			return detail;
-	
+
+		Batch detail = batchRepository.findById(bId).get();
+
+		if (detail == null) {
+
+			throw new BatchNotFoundException("Batch with id : " + bId + " does not exist");
+		}
+
+		return detail;
+
 	}
 
 	/*
@@ -103,25 +102,26 @@ public class BatchServiceImpl implements BatchService {
 	@Override
 	public void removeBatchDetails(long batchId) {
 
-		Batch batchDelete = batchRepository.findById(batchId).get();
-		if (batchDelete != null) {
-			batchRepository.deleteById(batchId);
-		} else
+		try {
+			batchRepository.findById(batchId).get();
+		} catch (NoSuchElementException e) {
 			throw new BatchNotFoundException("Batch id: " + batchId + " is not present in Batch");
+		}
+		batchRepository.deleteById(batchId);
+
 	}
 
-	
 	/* This method search batch and display details by keyword from database. */
 	@Override
 	public List<Batch> searchBatch(String keyword) {
-		
-		 List<Batch> search=batchRepository.findByBatchNameContaining(keyword.toUpperCase());
-		 
-		 if(search.isEmpty()) {
-			 
-			 throw new BatchNotFoundException("Batch containing keyword  : "+keyword+" does not exist");
-		 }
-			
+
+		List<Batch> search = batchRepository.findByBatchNameContaining(keyword.toUpperCase());
+
+		if (search.isEmpty()) {
+
+			throw new BatchNotFoundException("Batch containing keyword  : " + keyword + " does not exist");
+		}
+
 		return batchRepository.findByBatchNameContaining(keyword.toUpperCase());
 	}
 
