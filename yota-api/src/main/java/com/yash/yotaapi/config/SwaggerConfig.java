@@ -9,16 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * This SwaggerConfic component will be used for API Documentation. Do not change anything over here. 
+ * This SwaggerConfig component will be used for API Documentation. Do not change anything over here. 
  * It will be a global configuration. 
  * visit the swagger ui on : swagger-ui.html link.
- * @author pankaj.ssharma
+ * @author pankaj.sharma
  *
  */
 @Configuration
@@ -28,17 +27,16 @@ public class SwaggerConfig {
 	
 	/**
 	 * This method basically scans all api's under specified packages for documentation
+	 * @return Docket Provides sensible defaults and convenience methods for configuration.
 	 */
-	
-
 	@Bean
 	Docket apiDocumentation()
 	{
-		return new Docket(DocumentationType.SWAGGER_2).
-				apiInfo(apiInfo()).
-					select().
-					apis(RequestHandlerSelectors.basePackage("com.yash.yotaapi")).
-					build();
+		return new Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(apiInfo())
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.yash.yotaapi"))
+				.build();
 	}
 
 	

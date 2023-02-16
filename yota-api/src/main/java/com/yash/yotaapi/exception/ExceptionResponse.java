@@ -1,19 +1,24 @@
 package com.yash.yotaapi.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-/*ErrorResponse class is used to customize error message.
- * @author anil.shimpi
- * */
 
-@Data
+/**
+ * 
+ * @author pankaj.ssharma
+*/
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ExceptionResponse {
 	
-	String msg;
-	
+	/**
+	 * This errorMessage field is used to customize the exception response.
+	 */
+	private String errorMessage;
 
 }
