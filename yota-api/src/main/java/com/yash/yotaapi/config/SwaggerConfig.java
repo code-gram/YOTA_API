@@ -11,7 +11,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * This SwaggerConfic component will be used for API Documentation. Do not change anything over here. 
+ * This SwaggerConfig component will be used for API Documentation. Do not change anything over here. 
  * It will be a global configuration. 
  * visit the swagger ui on : swagger-ui.html link.
  * @author pankaj.sharma

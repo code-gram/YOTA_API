@@ -1,8 +1,5 @@
 package com.yash.yotaapi.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 /**
  * This is an unchecked exception. This will be creating the QuestionException Object for two purpose. 
  * 1: To test question Exception at the time of TDD, this will be done by Default Constructor. 
@@ -10,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author priya.m
  *
  */
-@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class QuestionException extends RuntimeException {
 	
 	/**

@@ -25,7 +25,9 @@ public class FieldErrorValidationUtillity {
 	 */
 	public ResponseEntity<?> validationError(BindingResult result)
 	{
-		if (result.hasErrors()) {
+		if (result.hasErrors())
+		{
+			System.out.println(result.hasErrors());
 			Map<String, String> errorMap=new HashMap<>();
 			for (FieldError error:result.getFieldErrors()) {
 				errorMap.put(error.getField(), error.getDefaultMessage());
