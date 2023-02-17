@@ -50,4 +50,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 		ExceptionResponse exceptionResponse = new ExceptionResponse(questionException.getMessage());
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 		}
+	
+	/**
+	 * This method handles Associate exception for AssociateDetailsController.
+	 * @param associateException
+	 * @param request
+	 */
+	@ExceptionHandler
+	public final ResponseEntity<?> handleAssociateException(AssociateDetailsException associateException, WebRequest request)
+	{
+		ExceptionResponse response = new ExceptionResponse(associateException.getMessage());
+		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
+	 * This method handles AssociateDetailsNotFoundException for AssociateDetailsController.
+	 * @param associateException
+	 * @param request
+	 */
+	@ExceptionHandler
+	public final ResponseEntity<?> handleAssociateDetailsNotFoundException(AssociateDetailsNotFoundException associateException, WebRequest request)
+	{
+		ExceptionResponse response = new ExceptionResponse(associateException.getMessage());
+		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
+	}
+  @ExceptionHandler(BatchNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> BatchNotFoundException(BatchNotFoundException e, WebRequest request){
+		
+		ExceptionResponse error=new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.NOT_FOUND);
+	}
 }

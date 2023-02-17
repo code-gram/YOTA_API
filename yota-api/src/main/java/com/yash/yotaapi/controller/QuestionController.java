@@ -35,6 +35,7 @@ public class QuestionController {
 
 	@Autowired
 	private QuestionService questionService;
+	
 	@Autowired
 	private FieldErrorValidationUtillity mapValidationErrorService;
 	
@@ -49,7 +50,9 @@ public class QuestionController {
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
-		if(errmap!=null) return errmap;
+		if(errmap!=null) { 
+			return errmap;
+		}
 		Question savedQuestion = questionService.saveOrUpdate(question);
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
