@@ -1,14 +1,14 @@
 package com.yash.yotaapi.serviceimpl;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.yash.yotaapi.domain.Batch;
+import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.BatchNotFoundException;
 import com.yash.yotaapi.repository.BatchRepository;
 import com.yash.yotaapi.service.BatchService;
@@ -31,12 +31,14 @@ public class BatchServiceImpl implements BatchService {
 	@Override
 	public Batch createBatch(Batch batch) {
 		
+		batch.setBatchName(batch.getBatchName().toUpperCase());
+		batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
 		try {
-			batch.setBatchName(batch.getBatchName().toUpperCase());
+			
 			return batchRepository.save(batch);
 		}
 		catch(DataIntegrityViolationException e) {
-			throw new BatchNotFoundException("Batch with Name " +batch.getBatchName().toUpperCase()+" already exists!!");
+			throw new BatchNotFoundException("Batch with Name " +batch.getBatchName().toUpperCase()+ " is already exists!!");
 		}
 
 	}
@@ -59,14 +61,13 @@ public class BatchServiceImpl implements BatchService {
 		 * database.
 		 */
 	@Override
-	public Batch getSingleBatchDetail(long bId) {
+	public Batch getBatch(String bIdentifier) {
 		
-		
-			Batch detail=batchRepository.findById(bId).get();
+			Batch detail=batchRepository.findByBatchIdentifier(bIdentifier.toUpperCase());
 			
 			if(detail==null) {
 				
-				throw new BatchNotFoundException("Batch with id : "+bId+" does not exist");
+				throw new BatchIdException("Batch with id : "+bIdentifier+" does not exist");
 			}
 			
 			return detail;
@@ -78,20 +79,18 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	public Batch updateBatchDetails(Batch batch, long batchId) {
+	@Transactional
+	public Batch updateBatchDetails(Batch batch) {
 
-		Optional<Batch> optBatchDetails = batchRepository.findById(batchId);
-		Batch batchDetails = optBatchDetails.get();
+		Batch batchDetails = batchRepository.getByBatchIdentifier(batch.getBatchIdentifier());
+		
 		if (batchDetails == null) {
 
-			batchRepository.save(batchDetails);
+			return batchRepository.save(batchDetails);
+			
 		} else {
 			batchDetails.setBatchName(batch.getBatchName());
 			batchDetails.setBatchDescription(batch.getBatchDescription());
-			batchDetails.setStartDate(batch.getStartDate());
-			batchDetails.setEndDate(batch.getEndDate());
-			batchDetails.setCreatedAt(batch.getCreatedAt());
-			batchDetails.setUpdatedAt(batch.getUpdatedAt());
 			batchRepository.save(batchDetails);
 		}
 		return batchDetails;
@@ -101,6 +100,7 @@ public class BatchServiceImpl implements BatchService {
 	 * This method temporally hide batch details for mention batch id by user.
 	 */
 	@Override
+	@Transactional
 	public void removeBatchDetails(long batchId) {
 
 		Batch batchDelete = batchRepository.findById(batchId).get();

@@ -10,12 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +42,7 @@ import lombok.NoArgsConstructor;
  * when we execute delete command it turned into update command and set deleted
  * field value is true.
  */
-@SQLDelete(sql="UPDATE BATCH_MANAGEMENT SET Status = true WHERE BATCH_ID=?")
+@SQLDelete(sql="UPDATE BATCH_MANAGEMENT SET Status = true WHERE id=?") 
 @Table(name = "Batch_Management")
 @Entity
 public class Batch {
@@ -47,35 +51,42 @@ public class Batch {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "batchId")
-	private long batchId;
+		private long id;
+	
+	/* batchIdentifier should not be empty and it not be null */
+	@NotEmpty(message = "Batch Identifier is manadatory")
+	@Column(unique=true,nullable = false,updatable = false)
+	@Size(min=3,max=12 ,message = "Batch identifer name should be inbetween 3 to 12 only")
+	private String batchIdentifier;
 	
 	/* batchName should not be empty or blank */
 	@NotEmpty(message = "Batch name is manadatory")
+	@Column(unique=true,nullable = false)
 	private String batchName;
 	
 	/* batchDescription should not be empty or blank */
-	@NotEmpty(message="Batch description is mandatory")
+	@NotBlank(message="Batch description is mandatory")
 	private String batchDescription;
 	
 	/* Start date should not be null and yyyy-MM-dd format */
-	@NotNull(message = "Start date can not be empty or blank")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
+	@NotNull(message = "Start date can not be Null")
+	@JsonFormat(pattern="MM/dd/YYYY")
+	@DateTimeFormat(iso = ISO.DATE)
 	private Date startDate;
 	
 	/* End date should be yyyy-MM-dd format */
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="MM/dd/YYYY")
+	@DateTimeFormat(iso = ISO.DATE)
 	private Date endDate;
 	
 	/*
 	 * CreatedDate is automatically generated at the time of create, No need to set
 	 * up manually.
 	 */
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
-	private Date createdAt =new Date();
+	@JsonFormat(pattern="MM/dd/YYYY")
+	@DateTimeFormat(iso = ISO.DATE)
+	@CreatedDate
+	private Date createdAt;
 	
 	
 	/*
@@ -83,10 +94,12 @@ public class Batch {
 	 * up manually.
 	 */
 
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
-	private Date updatedAt =new Date();
+	@JsonFormat(pattern="MM/dd/YYYY")
+	@DateTimeFormat(iso = ISO.DATE)
+	@LastModifiedDate
+	private Date updatedAt;
 	
+
 	/* set boolean flag for soft delete */
 	private boolean status=Boolean.FALSE;
 	
@@ -107,6 +120,4 @@ public class Batch {
 		this.updatedAt = new Date();
 	}
 
-	
-	
 }

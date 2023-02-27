@@ -75,9 +75,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
 	}
   @ExceptionHandler(BatchNotFoundException.class)
-	public ResponseEntity<ExceptionResponse> BatchNotFoundException(BatchNotFoundException e, WebRequest request){
+  public ResponseEntity<ExceptionResponse> BatchNotFoundException(BatchNotFoundException e, WebRequest request){
 		
 		ExceptionResponse error=new ExceptionResponse(e.getMessage());
-		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.BAD_REQUEST);
+	}
+  
+  @ExceptionHandler(BatchIdException.class)
+  public ResponseEntity<ExceptionResponse> handelBatchException(BatchIdException e, WebRequest request){
+		
+		ExceptionResponse error=new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.BAD_REQUEST);
 	}
 }

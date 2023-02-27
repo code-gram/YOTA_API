@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.service.BatchService;
@@ -33,7 +34,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @Api(tags = "BatchController", value = "Controller for batch")
-@RequestMapping("/yota/batch")
+@RequestMapping("/api/batches")
 public class BatchController {
 
 	/*
@@ -49,11 +50,12 @@ public class BatchController {
 
 	/* createBatch method is used to create Batch. */
 	@ApiOperation(tags = "POST Batch", value = "CRATE Batch")
-	@PostMapping("/create")
+	@PostMapping("/")
 	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result) {
 
 		
 		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
+		
 		if (errorMessage != null)
 			return errorMessage;
 
@@ -65,7 +67,7 @@ public class BatchController {
 	/* batchDetails() method retrive all batch details present in database */
 
 	@ApiOperation(tags = "GET all Batch", value = "Display Batch details")
-	@GetMapping("/details")
+	@GetMapping("/")
 	public ResponseEntity<List<Batch>> getAllBatch() {
 
 			return new ResponseEntity<List<Batch>>(batchService.getAllDetails(), HttpStatus.OK);	
@@ -74,12 +76,11 @@ public class BatchController {
 
 	/* singleBatchDetail() method retrive particular id mention batch details */
 	@ApiOperation(tags = "GET single Batch", value = "display batch details for perticular Id")
-	@GetMapping("/detail/{bid}")
-	public ResponseEntity<Batch> singleBatchDetail(@PathVariable long bid) {
-
-	
-			Batch detail = batchService.getSingleBatchDetail(bid);
-			return new ResponseEntity<Batch>(detail, HttpStatus.OK);
+	@GetMapping("/{bIdentifier}")
+	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable String bIdentifier) {
+		
+		Batch details=	batchService.getBatch(bIdentifier);
+			return new ResponseEntity<Batch>(details, HttpStatus.OK);
 
 	}
 
@@ -87,8 +88,8 @@ public class BatchController {
 	 * updateDetails api update batch details according to batchId entered by User.
 	 */
 	@ApiOperation(tags = "UPDATE batch", value = "Update batch details for perticular batch id")
-	@PutMapping("/update/{batchId}")
-	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, @PathVariable long batchId, BindingResult result) {
+	@PutMapping("/")
+	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, BindingResult result) {
 
 		ResponseEntity<?> errorMap= fileErrorValidationUtillity.validationError(result);
 		
@@ -96,14 +97,14 @@ public class BatchController {
 			return errorMap;
 		}
 		
-		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch, batchId),HttpStatus.OK);
+		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch),HttpStatus.OK);
 			
 
 	}
 
-	/* deleteBatch api delete batch accourding to batchId enter by user. */
+/* deleteBatch api delete batch accourding to batchId enter by user. */
 	@ApiOperation(tags = "DELETE batch", value = "Delete batch details for perticular batchId")
-	@DeleteMapping("/delete/{batchId}")
+	@DeleteMapping("/{batchId}")
 	public ResponseEntity<?> removeBatch(@PathVariable long batchId) {
 
 			batchService.removeBatchDetails(batchId);

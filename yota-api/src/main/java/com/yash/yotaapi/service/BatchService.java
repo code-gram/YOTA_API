@@ -13,9 +13,9 @@ public interface BatchService {
 	
 	public Batch createBatch(Batch batch);
 
-	public Batch getSingleBatchDetail(long bid);
+	public Batch getBatch(String bIdentifier);
 
-	public Batch updateBatchDetails(Batch batch, long batchId);
+	public Batch updateBatchDetails(Batch batch);
 
 	public void removeBatchDetails(long batchId);
 
