@@ -2,12 +2,15 @@ package com.yash.yotaapi.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,6 +35,7 @@ import lombok.Setter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"question"})})
 public class Question {
 	
 	@Id
@@ -58,28 +62,34 @@ public class Question {
 	private String question;
 	
 	/**
-	 * Option should not be empty
+	 * Answer type should not be empty
 	 */
-	@NotBlank(message = "Options is required")
-	private String option1;
+	@NotBlank(message = "Answer type is required")
+	private String answerType;
 	
 	/**
 	 * Option should not be empty
 	 */
-	@NotBlank(message = "Options is required")
-	private String option2;
+	@NotBlank(message = "Option A is required")
+	private String a;
 	
 	/**
 	 * Option should not be empty
 	 */
-	@NotBlank(message = "Options is required")
-	private String option3;
+	@NotBlank(message = "Option B is required")
+	private String b;
 	
 	/**
 	 * Option should not be empty
 	 */
-	@NotBlank(message = "Options is required")
-	private String option4;
+	@NotBlank(message = "Option C is required")
+	private String c;
+	
+	/**
+	 * Option should not be empty
+	 */
+	@NotBlank(message = "Option D is required")
+	private String d;
 	
 	/**
 	 * Answer of the Question should not be empty
