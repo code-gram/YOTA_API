@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class AssociateDetailsExceptionResponse {
+public class ExceptionResponse {
 	
 	private String errorMsg;
 }

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *
  */
 @ControllerAdvice
-public class GlobalExceptionHandle extends ResponseEntityExceptionHandler{
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	
 	/**
@@ -25,7 +25,7 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler{
 	@ExceptionHandler
 	public final ResponseEntity<?> handleAssociateException(AssociateDetailsException associateException, WebRequest request)
 	{
-		AssociateDetailsExceptionResponse response = new AssociateDetailsExceptionResponse(associateException.getMessage());
+		ExceptionResponse response = new ExceptionResponse(associateException.getMessage());
 		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -37,7 +37,7 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler{
 	@ExceptionHandler
 	public final ResponseEntity<?> handleAssociateDetailsNotFoundException(AssociateDetailsNotFoundException associateException, WebRequest request)
 	{
-		AssociateDetailsExceptionResponse response = new AssociateDetailsExceptionResponse(associateException.getMessage());
+		ExceptionResponse response = new ExceptionResponse(associateException.getMessage());
 		return new ResponseEntity<Object>(response,HttpStatus.BAD_REQUEST);
 	}
 }

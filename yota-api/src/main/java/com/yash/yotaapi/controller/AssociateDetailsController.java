@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(tags = "AssociateDetailsController", value = "Controller of Associate details")
 @RestController
-@RequestMapping("/yota/associate")
+@RequestMapping("/yota/api/associates")
 public class AssociateDetailsController {
 	
 	@Autowired
@@ -46,8 +46,8 @@ public class AssociateDetailsController {
 	 * @param result
 	 */
 	@ApiOperation(tags = "Register Associate", value = "Add Associate")
-	@PostMapping("/add")
-	public ResponseEntity<?> addAssociate(@Valid @RequestBody AssociateDetails associate, BindingResult result)
+	@PostMapping("/register")
+	public ResponseEntity<?> addAssociate(@Valid @RequestBody final AssociateDetails associate, BindingResult result)
 	{
 		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
 		if (errorMap!=null) {
@@ -63,7 +63,7 @@ public class AssociateDetailsController {
 	@GetMapping("/all")
 	public ResponseEntity<List<AssociateDetails>> getAll()
 	{
-		return new ResponseEntity<List<AssociateDetails>>(associateDetailsService.getAllAssociates(),HttpStatus.OK);
+		return new ResponseEntity<List<AssociateDetails	>>(associateDetailsService.getAllAssociates(),HttpStatus.OK);
 	}
 	
 	/**
@@ -82,6 +82,7 @@ public class AssociateDetailsController {
 	 * This controller method handles the search request for associate using any keyword.
 	 * @param keyword
 	 */
+	
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword)
 	{
@@ -95,25 +96,14 @@ public class AssociateDetailsController {
 	 * @param result
 	 */
 	@ApiOperation(tags = "Update Associate", value = "Update Associate")
-	@PutMapping("/")
-	public ResponseEntity<?> updateAssociate(@Valid @RequestBody AssociateDetails associate,BindingResult result)
+	@PostMapping("/")
+	public ResponseEntity<?> updateAssociate(@RequestBody AssociateDetails associate,BindingResult result)
 	{
 		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
 		if(errorMap!=null) {
 			return errorMap;
 		}
 		return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associate), HttpStatus.OK);
-	}
-
-	/**
-	 * This controller method accepts the request of searching for associate using id.
-	 * @param id
-	 */
-	@ApiOperation(tags = "Get Associate", value = "Get searched Associate")
-	@GetMapping("/{id}")
-	public ResponseEntity<AssociateDetails> getAssociate(@PathVariable long id)
-	{
-		return new ResponseEntity<AssociateDetails>(associateDetailsService.getAssociate(id), HttpStatus.FOUND);
 	}	
 }
 

@@ -1,12 +1,17 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+//import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
 import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.exception.AssociateDetailsException;
@@ -16,27 +21,34 @@ import com.yash.yotaapi.service.AssociateDetailsService;
 
 /**
  * This is service layer class for Associate to write business logic.
+ * 
  * @author nitin.chougale
  *
  */
 
 @Service
-public class AssociateDetailsServiceImpl implements AssociateDetailsService{
-	
+public class AssociateDetailsServiceImpl implements AssociateDetailsService {
+
 	@Autowired
 	private AssociateDetailsRepository associateDetailsRepository;
 
 	/**
-	 * This method saves the Associate details through repository layer. 
+	 * This method saves the Associate details through repository layer.
 	 */
 	@Override
 	public AssociateDetails selfRegister(AssociateDetails associate) {
 		try {
+			if (associate.getEmailId().length() == 0) {
+				throw new AssociateDetailsException("Email Id should not be empty.");
+			}
 			return associateDetailsRepository.save(associate);
+		} 
+		catch (DataIntegrityViolationException e) {
+			if (associate.getEmailId() != null) {
+				throw new AssociateDetailsException("Associate mail Id : " + associate.getEmailId() + " already exists!!");
+			}
 		}
-		catch (Exception e){
-			throw new AssociateDetailsException("Associate mail Id : "+associate.getEmailId()+" already exists!!");
-		}
+		return associate;
 	}
 
 	/**
@@ -53,23 +65,23 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService{
 	@Override
 	@Transactional
 	public void deleteAssociate(long id) {
-		try
-		{
+		try {
 			AssociateDetails associateDetails = associateDetailsRepository.findById(id).get();
-		}catch (NoSuchElementException e) {
-			throw new AssociateDetailsException("Associate with Id:"+id+" does not exist.");
+		} catch (NoSuchElementException e) {
+			throw new AssociateDetailsException("Associate with Id:" + id + " does not exist.");
 		}
 		associateDetailsRepository.deleteById(id);
 	}
 
 	/**
-	 * This method searches for associates using any keyword. This method uses the concept of free-text-searching,
+	 * This method searches for associates using any keyword. This method uses the
+	 * concept of free-text-searching,
 	 */
 	@Override
 	public List<AssociateDetails> searchAssociate(String keyword) {
 		List<AssociateDetails> list = associateDetailsRepository.getByEmailIdContaining(keyword);
-		if(list.isEmpty()) {
-			throw new AssociateDetailsNotFoundException("Associate with keyword "+keyword+ " does not exist.");
+		if (list.isEmpty()) {
+			throw new AssociateDetailsNotFoundException("Associate with keyword " + keyword + " does not exist.");
 		}
 		return associateDetailsRepository.getByEmailIdContaining(keyword);
 	}
@@ -81,36 +93,18 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService{
 	@Transactional
 	public AssociateDetails updateAssociate(AssociateDetails associate) {
 		AssociateDetails availableAssociate = associateDetailsRepository.getById(associate.getId());
-		if(availableAssociate==null) {
-			return associateDetailsRepository.save(associate);
-		}else {
-			availableAssociate.setFirstName(associate.getFirstName());
-			availableAssociate.setMiddleName(associate.getMiddleName());
-			availableAssociate.setLastName(associate.getLastName());
-			availableAssociate.setEmailId(associate.getEmailId());
-			availableAssociate.setContactNo(associate.getContactNo());
-			availableAssociate.setPassword(associate.getPassword());
-			associateDetailsRepository.save(availableAssociate);
+		if (availableAssociate.getEmailId() != null) {
+			associate.setEmailId(availableAssociate.getEmailId());
 		}
-		return associate;
-	}
+		if (availableAssociate.getPassword() != null) {
+			associate.setPassword(availableAssociate.getPassword());
+		}
+		if (availableAssociate.getCreatedAt() != null) {
+			associate.setCreatedAt(availableAssociate.getCreatedAt());
+		}
+		associate.setUpdatedAt(new Date());
 
-	/**
-	 * This method only return the associate details which are searched using available id
-	 * otherwise it will throw an error.   
-	 */
-	@Override
-	public AssociateDetails getAssociate(long id) 
-	{
-		try {
-		AssociateDetails associate = associateDetailsRepository.findById(id).get();
+		associateDetailsRepository.save(associate);
 		return associate;
-		}
-		catch(NoSuchElementException e) {
-			throw new AssociateDetailsNotFoundException("Associate with ID " +id+ " does not exist.");
-		}
-		
 	}
-	
-	
 }

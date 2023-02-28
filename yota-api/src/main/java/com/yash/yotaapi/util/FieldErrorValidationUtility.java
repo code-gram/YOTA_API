@@ -15,7 +15,7 @@ import org.springframework.validation.FieldError;
  * @author nitin.chougale
  */
 @Service
-public class FieldErrorValidationUtility {
+public class FieldErrorValidationUtility{
 	
 	/**
 	 * @param result

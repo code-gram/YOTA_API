@@ -22,12 +22,6 @@ public interface AssociateDetailsService {
 	 * It gives list of all the registered associates.
 	 */
 	List<AssociateDetails> getAllAssociates();
-	
-	/**
-	 * This service gives particular associate searched by id
-	 * @param id
-	 */
-	AssociateDetails getAssociate(long id);
 
 	/**
 	 * Service is to update the associate details.
