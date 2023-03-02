@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -26,70 +27,75 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Associate_Details_controller interact with service layer to complete the work according to web request.
+ * Associate_Details_controller interact with service layer to complete the work
+ * according to web request.
+ * 
  * @author nitin.chougale
  */
 @Api(tags = "AssociateDetailsController", value = "Controller of Associate details")
 @RestController
 @RequestMapping("/yota/api/associates")
 public class AssociateDetailsController {
-	
+
 	@Autowired
 	private AssociateDetailsService associateDetailsService;
-	
+
 	@Autowired
 	FieldErrorValidationUtility fieldErrorValidationService;
-	
+
 	/**
-	 * This controller method handles the HTTP POST request of associate for self registration, matching with the given URI.
+	 * This controller method handles the HTTP POST request of associate for self
+	 * registration, matching with the given URI.
+	 * 
 	 * @param associate
 	 * @param result
 	 */
 	@ApiOperation(tags = "Register Associate", value = "Add Associate")
 	@PostMapping("/register")
-	public ResponseEntity<?> addAssociate(@Valid @RequestBody final AssociateDetails associate, BindingResult result)
-	{
+	public ResponseEntity<?> addAssociate(@Valid @RequestBody final AssociateDetails associate, BindingResult result) {
 		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
-		if (errorMap!=null) {
+		if (errorMap != null) {
 			return errorMap;
 		}
-		return new ResponseEntity<AssociateDetails>(associateDetailsService.selfRegister(associate),HttpStatus.OK);
+		return new ResponseEntity<AssociateDetails>(associateDetailsService.selfRegister(associate), HttpStatus.OK);
 	}
-	
+
 	/**
-	 * This controller method handles the get request to access list of all associates.
+	 * This controller method handles the get request to access list of all
+	 * associates.
 	 */
 	@ApiOperation(tags = "Get All Associates", value = "List of Associates")
 	@GetMapping("/all")
-	public ResponseEntity<List<AssociateDetails>> getAll()
-	{
-		return new ResponseEntity<List<AssociateDetails	>>(associateDetailsService.getAllAssociates(),HttpStatus.OK);
+	public ResponseEntity<List<AssociateDetails>> getAll() {
+		return new ResponseEntity<List<AssociateDetails>>(associateDetailsService.getAllAssociates(), HttpStatus.OK);
 	}
-	
+
 	/**
-	 * This controller method handles the delete the associate using id of associate.
+	 * This controller method handles the delete the associate using id of
+	 * associate.
+	 * 
 	 * @param id
 	 */
 	@ApiOperation(tags = "Delete Associate", value = "Delete Associate")
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteAssociate(@PathVariable long id)
-	{
+	public ResponseEntity<?> deleteAssociate(@PathVariable long id) {
 		associateDetailsService.deleteAssociate(id);
-		return new ResponseEntity<String>("Associate with id: "+id+" deleted successfully.", HttpStatus.OK);
+		return new ResponseEntity<String>("Associate with id: " + id + " deleted successfully.", HttpStatus.OK);
 	}
-	
+
 	/**
-	 * This controller method handles the search request for associate using any keyword.
+	 * This controller method handles the search request for associate using any
+	 * keyword.
+	 * 
 	 * @param keyword
 	 */
-	
+
 	@GetMapping("/search/{keyword}")
-	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword)
-	{
+	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword) {
 		List<AssociateDetails> associates = associateDetailsService.searchAssociate(keyword);
 		return new ResponseEntity<List<AssociateDetails>>(associates, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * This controller method handles the update request for details of an associate.
 	 * @param associate
@@ -104,6 +110,17 @@ public class AssociateDetailsController {
 			return errorMap;
 		}
 		return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associate), HttpStatus.OK);
-	}	
-}
+	}
 
+	/**
+	 * This controller method handles the update request for password only.
+	 * @param updatePassword
+	 * @return
+	 */
+	@ApiOperation(tags = "Update Associate Password", value = "Update Associate password")
+	@PostMapping("/updatePassword")
+	public ResponseEntity<Boolean> updatepassword(@RequestBody HashMap<String, String> updatePassword)
+	{
+		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword),HttpStatus.OK);
+		}
+}

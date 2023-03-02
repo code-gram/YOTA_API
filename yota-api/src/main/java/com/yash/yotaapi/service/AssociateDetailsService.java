@@ -1,5 +1,6 @@
 package com.yash.yotaapi.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.yash.yotaapi.domain.AssociateDetails;
@@ -40,4 +41,10 @@ public interface AssociateDetailsService {
 	 * @param keyword
 	 */
 	List<AssociateDetails> searchAssociate(String keyword);
+
+	/**
+	 * This method is to update the password.
+	 * @param updatePassword
+	 */
+	Boolean updatePassword(HashMap<String, String> updatePassword);
 }

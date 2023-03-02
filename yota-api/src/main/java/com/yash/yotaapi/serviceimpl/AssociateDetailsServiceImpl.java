@@ -1,6 +1,7 @@
 package com.yash.yotaapi.serviceimpl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -42,10 +43,10 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 				throw new AssociateDetailsException("Email Id should not be empty.");
 			}
 			return associateDetailsRepository.save(associate);
-		} 
-		catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			if (associate.getEmailId() != null) {
-				throw new AssociateDetailsException("Associate mail Id : " + associate.getEmailId() + " already exists!!");
+				throw new AssociateDetailsException(
+						"Associate mail Id : " + associate.getEmailId() + " already exists!!");
 			}
 		}
 		return associate;
@@ -106,5 +107,24 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 
 		associateDetailsRepository.save(associate);
 		return associate;
+	}
+
+	
+	/**
+	 * By comparing to the id we can change our password using this method.
+	 */
+	@Override
+	public Boolean updatePassword(HashMap<String, String> updatePassword) {
+		try {
+			System.out.println(updatePassword);
+			Long id = Long.parseLong(updatePassword.get("associateId"));
+			AssociateDetails associate = associateDetailsRepository.findById(id).get();
+			associate.setPassword(updatePassword.get("password"));
+			associateDetailsRepository.save(associate);
+			return Boolean.TRUE;
+		} catch (NoSuchElementException e) {
+			throw new AssociateDetailsNotFoundException("Associate with ID " + updatePassword.get("associateId") + " does not exist.");
+		} finally {
+		}
 	}
 }

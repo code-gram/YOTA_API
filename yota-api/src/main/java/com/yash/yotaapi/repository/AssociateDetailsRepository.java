@@ -16,11 +16,15 @@ public interface AssociateDetailsRepository extends JpaRepository<AssociateDetai
 
 	
 	/**
-	 * getByEmailIdContaining will give the associate details using Mail Id.
+	 * getByEmailIdContaining will give the list of associates using given keyword containing in Mail Id.
 	 * @param keyword
 	 */
 	List<AssociateDetails> getByEmailIdContaining(String keyword);
 	
-	
+	/**
+	 * We can fetch associate using findById method.
+	 * @param Long
+	 */
+	Optional<AssociateDetails> findById(String Long);
 	
 }
