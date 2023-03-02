@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
  * 
- * @author priya.m
- *
- */
+ * @author pankaj.ssharma
+*/
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,5 +20,5 @@ public class ExceptionResponse {
 	 * This errorMessage field is used to customize the exception response.
 	 */
 	private String errorMessage;
-	
+
 }

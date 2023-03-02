@@ -19,11 +19,13 @@ public interface QuestionService {
 	public Question saveOrUpdate(Question question);
 
 	/**
+
 	 * findById method will fetch question based on its id from DB
 	 * @param questionId
 	 * @return questions according to questions id
+
+
 	 */
-	
 	public Question findQuestionById(Long questionId);
 	
 	/**
@@ -33,9 +35,11 @@ public interface QuestionService {
 	public Iterable<Question> findAllQuestion();
 	
 	/**
+
 	 * deleteQuestionById method will delete the question that is mentioned
 	 * @param questionId
 	 * @return if deleted, otherwise false, in case question is not available then it should throw appropriate exception.
+
 	 */
 	
 	public void deleteQuestionById(Long questionId);

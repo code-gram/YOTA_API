@@ -5,33 +5,39 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 /**
- * This MapValidationErrorService class is used to handle errors.
- * @author priya.m
- *
+ * This FieldErrorValidationUtillity Component will help to map the Field Error in errorMap. 
+ * This can be used with any model error mapping. 
+ * @author pratik.kurbet
+
  */
-@Service
+@Component
 public class FieldErrorValidationUtillity {
 	
 	/**
-	 * This method is used to handle the errors on bad requests
 	 * @param result
-	 * @return error with bad request msg
+	 * @return It returns the field name with its validation error
 	 */
-	public ResponseEntity<?> validationError(BindingResult result){
-		if(result.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<>();
-			for(FieldError fieldError : result.getFieldErrors()) {
-				errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-			}
-				return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> validationError(BindingResult result)
+	{
+		if (result.hasErrors())
+		{
+			System.out.println(result.hasErrors());
+			Map<String, String> errorMap=new HashMap<>();
 			
+			for (FieldError error:result.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+			}
+			return new ResponseEntity<Map<String, String>>(errorMap,HttpStatus.BAD_REQUEST);
 		}
 		return null;
 	}
-
+	
+	
 }
