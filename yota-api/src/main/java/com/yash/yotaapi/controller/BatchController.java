@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @Api(tags = "BatchController", value = "Controller for batch")
-@RequestMapping("/api/batches")
+@RequestMapping("/yota/api/batches")
 //@Validated
 public class BatchController {
 
