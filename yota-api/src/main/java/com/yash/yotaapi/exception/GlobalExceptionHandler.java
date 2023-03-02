@@ -94,5 +94,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 		ExceptionResponse error=new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.NOT_FOUND);
 	}
-  
+ 
 }

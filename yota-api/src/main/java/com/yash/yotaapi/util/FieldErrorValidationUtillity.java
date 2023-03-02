@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
 /**
  * This FieldErrorValidationUtillity Component will help to map the Field Error in errorMap. 
@@ -19,7 +18,6 @@ import org.springframework.validation.ObjectError;
  */
 @Component
 public class FieldErrorValidationUtillity {
-	
 	/**
 	 * @param result
 	 * @return It returns the field name with its validation error
