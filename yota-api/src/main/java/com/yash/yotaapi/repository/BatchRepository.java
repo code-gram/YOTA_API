@@ -1,5 +1,6 @@
 package com.yash.yotaapi.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.yash.yotaapi.domain.Batch;
 
-/*BatchRepository interface provide to perform all DB related operation and CRUD opertation.
+/*BatchRepository interface provide to perform all DB related operation and CRUD operation.
  * @author anil.shimpi
  * */
 @Repository
@@ -22,7 +23,10 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 	@Query(value = "SELECT * from BATCH_MANAGEMENT b WHERE b.status =false", nativeQuery = true)
 	public List<Batch> findAll();
 
-
+	/*
+	 * this method used to perform get batch for perticular bathc identifier
+	 * specified by user.
+	 */
 	public Batch getByBatchIdentifier(String batchIdentifier);
 	
 	
@@ -32,5 +36,9 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 	 */
 	  
 	 public Batch findByBatchIdentifier(String batchIdentifier);
+	 
+	 /* find batch details from database between two dates. */
+	@Query(value="SELECT * FROM batch_management b WHERE b.start_date >= :startDate AND b.end_date <= :endDate",nativeQuery=true)
+	List<Batch> findByDateBetween(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
 	
 }

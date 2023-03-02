@@ -87,4 +87,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 		ExceptionResponse error=new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.BAD_REQUEST);
 	}
+  
+  @ExceptionHandler(DateInValidException.class)
+  public ResponseEntity<ExceptionResponse> handelDatteInValidException(DateInValidException e, WebRequest request){
+		
+		ExceptionResponse error=new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error,HttpStatus.NOT_FOUND);
+	}
+  
 }

@@ -1,7 +1,9 @@
 package com.yash.yotaapi.service;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.validation.ConstraintValidator;
 import javax.validation.Valid;
 
 import com.yash.yotaapi.domain.Batch;
@@ -11,8 +13,9 @@ import com.yash.yotaapi.domain.Batch;
 
 public interface BatchService {
 	
-	public Batch createBatch(Batch batch);
-
+	
+	 public Batch createBatch(Batch batch);
+	 
 	public Batch getBatch(String bIdentifier);
 
 	public Batch updateBatchDetails(Batch batch);
@@ -22,6 +25,10 @@ public interface BatchService {
 	public List<Batch> getAllDetails();
 
 	public List<Batch> searchBatch(String keyword); 
+	
+	public List<Batch> getByStartDateAndEndDate(Date startDate, Date endDate);
+
+	
 
 
 	
