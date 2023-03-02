@@ -90,6 +90,7 @@ public class AssociateDetailsController {
 	 * @param keyword
 	 */
 
+	@ApiOperation(tags= "Free text search", value = "Seacrh associate using keyword")
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword) {
 		List<AssociateDetails> associates = associateDetailsService.searchAssociate(keyword);
