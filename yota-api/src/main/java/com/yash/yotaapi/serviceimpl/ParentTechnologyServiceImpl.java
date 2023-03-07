@@ -88,7 +88,7 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 */
 	@Override
 	public ParentTechnology getTech(String name) {
-		ParentTechnology technology=parentTechnologyRepository.getByName(name);
+		ParentTechnology technology=parentTechnologyRepository.getByName(name.toUpperCase());
 		if (technology==null) {
 			throw new ParentTechnologyNotFoundException("Technology with name : "+name+" does not exist");
 		}

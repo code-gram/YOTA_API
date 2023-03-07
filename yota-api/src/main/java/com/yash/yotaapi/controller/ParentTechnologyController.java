@@ -30,8 +30,8 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
-@RestController()
-@RequestMapping("/yota/parent-tech")
+@RestController
+@RequestMapping("/yota/api/technologies")
 public class ParentTechnologyController {
 
 	/**
@@ -84,7 +84,7 @@ public class ParentTechnologyController {
 	 */
 	@ApiOperation(tags ="Get Technology",value = "Get Technology by Name")
 	@GetMapping("/{name}")
-	public ResponseEntity<ParentTechnology> getTech(@RequestParam(value ="name") String name)
+	public ResponseEntity<ParentTechnology> getTech(@PathVariable(value ="name") String name)
 	{
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.getTech(name),HttpStatus.OK);
 	}
