@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @SpringBootApplication
-@EnableJpaRepositories
 public class YotaApiApplication {
 
 	/**

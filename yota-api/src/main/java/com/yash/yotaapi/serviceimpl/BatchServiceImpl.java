@@ -2,12 +2,15 @@ package com.yash.yotaapi.serviceimpl;
 
 import java.util.Date;
 import java.util.List;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.BatchNotFoundException;
@@ -26,18 +29,20 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
+
 	
 
 	/* This method is used to store value into database */
 	@Override
 	public Batch createBatch(Batch batch) {
 
+
 		batch.setBatchName(batch.getBatchName().toUpperCase());
 		batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
-
 		try {
 
 			return batchRepository.save(batch);
+
 
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
@@ -45,11 +50,13 @@ public class BatchServiceImpl implements BatchService {
 		} catch (BatchIdException e) {
 			throw new BatchIdException("Batch with batchIdentifier name " + batch.getBatchIdentifier().toUpperCase()
 					+ " is already exists!!");
+
 		}
 
 	}
 
 	/* This menthod us used to display all batch details from database. */
+
 	@Override
 	public List<Batch> getAllDetails() {
 
@@ -74,6 +81,7 @@ public class BatchServiceImpl implements BatchService {
 		if (detail == null) {
 
 			throw new BatchIdException("Batch with id : " + bIdentifier + " does not exist");
+
 		}
 
 		return detail;
@@ -109,11 +117,13 @@ public class BatchServiceImpl implements BatchService {
 	@Transactional
 	public void removeBatchDetails(long batchId) {
 
-		Batch batchDelete = batchRepository.findById(batchId).get();
-		if (batchDelete != null) {
-			batchRepository.deleteById(batchId);
-		} else
+		try {
+			batchRepository.findById(batchId).get();
+		} catch (NoSuchElementException e) {
 			throw new BatchNotFoundException("Batch id: " + batchId + " is not present in Batch");
+		}
+		batchRepository.deleteById(batchId);
+
 	}
 
 	/* This method search batch and display details by keyword from database. */
