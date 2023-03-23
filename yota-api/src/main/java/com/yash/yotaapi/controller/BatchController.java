@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -33,8 +32,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @Api(tags = "BatchController", value = "Controller for batch")
 @RequestMapping("/yota/api/batches")
-//@Validated
-public class BatchController {
+@Validated
+ public class BatchController {
 
 	/*
 	 * BatchService is a business logic layer used to interact Controller with
@@ -46,11 +45,9 @@ public class BatchController {
 	/* ValidationErroeMessageService is used to validate field error. */
 	@Autowired
 	FieldErrorValidationUtillity fileErrorValidationUtillity;
-	
-	//@Autowired
-	//CompareDateValidator compareDateValidator;
-	
-	
+
+	@Autowired
+	CompareDateValidator compareDateValidator;
 
 	/* createBatch method is used to create Batch. */
 	@ApiOperation(tags = "POST Batch", value = "CRATE Batch")
@@ -61,12 +58,11 @@ public class BatchController {
 
 		if (errorMessage != null)
 			return errorMessage;
-	
+
 		batchService.createBatch(batch);
 		return new ResponseEntity<Batch>(batch, HttpStatus.CREATED);
 	}
 
-	
 	/* batchDetails() method retrive all batch details present in database */
 
 	@ApiOperation(tags = "GET all Batch", value = "Display Batch details")
@@ -126,7 +122,7 @@ public class BatchController {
 
 	}
 
-	// this api display batch details according to start date and end date by uset. 
+	// this Api display batch details according to start date and end date by uset. 
 	@GetMapping("/search/{startDate}/{endDate}")
 	public ResponseEntity<List<Batch>> getByStartDateAndEndDate(
 			@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
@@ -134,5 +130,5 @@ public class BatchController {
 		List<Batch> search = batchService.getByStartDateAndEndDate(startDate, endDate);
 		return new ResponseEntity<List<Batch>>(search, HttpStatus.OK);
 	}
-	
+
 }

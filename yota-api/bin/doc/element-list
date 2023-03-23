@@ -1,9 +1,0 @@
-com.yash.yotaapi
-com.yash.yotaapi.config
-com.yash.yotaapi.controller
-com.yash.yotaapi.domain
-com.yash.yotaapi.exception
-com.yash.yotaapi.repository
-com.yash.yotaapi.service
-com.yash.yotaapi.serviceimpl
-com.yash.yotaapi.util

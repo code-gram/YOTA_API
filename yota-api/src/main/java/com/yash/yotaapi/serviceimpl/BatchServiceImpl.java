@@ -8,15 +8,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
-import com.yash.yotaapi.constraints.CompareDate;
 import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.BatchNotFoundException;
 import com.yash.yotaapi.exception.DateInValidException;
 import com.yash.yotaapi.repository.BatchRepository;
 import com.yash.yotaapi.service.BatchService;
-import com.yash.yotaapi.util.CompareDateValidator;
+
 
 /*This is service layer to implement business logic here.
  * @author anil.shimpi
@@ -28,7 +26,7 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
-
+	
 
 	/* This method is used to store value into database */
 	@Override
@@ -44,6 +42,9 @@ public class BatchServiceImpl implements BatchService {
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
 					"Batch with Name " + batch.getBatchName().toUpperCase() + " is already exists!!");
+		} catch (BatchIdException e) {
+			throw new BatchIdException("Batch with batchIdentifier name " + batch.getBatchIdentifier().toUpperCase()
+					+ " is already exists!!");
 		}
 
 	}

@@ -1,56 +1,40 @@
 package com.yash.yotaapi.util;
 
+import java.lang.reflect.Field;
+import java.util.Date;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import com.yash.yotaapi.constraints.CompareDate;
 import com.yash.yotaapi.domain.Batch;
-//@Component
-public class CompareDateValidator implements ConstraintValidator<CompareDate, Object> {
+import com.yash.yotaapi.exception.DateInValidException;
 
-	private String beforeEndDate;
-	private String afterEndDate;
-	
+/*CompareDateValidator validation api use to check custom validation for start date and end date*/
+@Component
+public class CompareDateValidator implements ConstraintValidator<CompareDate, Batch> {
+
 	@Autowired
 	Batch batch;
 
 	@Override
 	public void initialize(CompareDate compareDate) {
 
-		this.beforeEndDate = compareDate.before();
-		this.afterEndDate = compareDate.after();
-
 	}
 
 	@Override
-	public boolean isValid(Object date, ConstraintValidatorContext context) {
+	public boolean isValid(Batch batch, ConstraintValidatorContext context) {
 
-		try {
+		if (batch.getStartDate().compareTo(batch.getEndDate()) < 0) {
 
-			/*
-			 * final Field beforeFieldDate =
-			 * date.getClass().getDeclaredField(beforeEndDate);
-			 * //beforeFieldDate.setAccessible(true);
-			 * 
-			 * final Field afterFieldDate = date.getClass().getDeclaredField(afterEndDate);
-			 * //afterFieldDate.setAccessible(true);
-			 * 
-			 * final Date beforeDate = (Date) beforeFieldDate.get(date); final Date
-			 * afterDate = (Date) afterFieldDate.get(date);
-			 * 
-			 * return ((beforeDate == null && afterDate == null) || (afterDate != null &&
-			 * afterDate.before(beforeDate)));
-			 */
-			
-			
-
-		} catch (final Exception e) {
-
-			e.printStackTrace();
+			return true;
 		}
+
 		return false;
 	}
 
