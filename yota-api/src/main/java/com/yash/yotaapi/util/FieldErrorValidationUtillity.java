@@ -27,7 +27,7 @@ public class FieldErrorValidationUtillity {
 	{
 		if (result.hasErrors())
 		{
-			System.out.println(result.hasErrors());
+			//System.out.println(result.hasErrors());
 			Map<String, String> errorMap=new HashMap<>();
 			
 			for (FieldError error:result.getFieldErrors()) {
