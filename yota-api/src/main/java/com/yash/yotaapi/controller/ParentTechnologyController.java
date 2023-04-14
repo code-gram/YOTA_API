@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +30,10 @@ import io.swagger.annotations.ApiOperation;
  * @author pratik.kurbet
  *
  */
+
 @Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
-@RestController()
-@RequestMapping("/yota/parent-tech")
+@RestController
+@RequestMapping("/yota/api/technologies")
 public class ParentTechnologyController {
 
 	/**
@@ -84,7 +86,7 @@ public class ParentTechnologyController {
 	 */
 	@ApiOperation(tags ="Get Technology",value = "Get Technology by Name")
 	@GetMapping("/{name}")
-	public ResponseEntity<ParentTechnology> getTech(@RequestParam(value ="name") String name)
+	public ResponseEntity<ParentTechnology> getTech(@PathVariable(value ="name") String name)
 	{
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.getTech(name),HttpStatus.OK);
 	}

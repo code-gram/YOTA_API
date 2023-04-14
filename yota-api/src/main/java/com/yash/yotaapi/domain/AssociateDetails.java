@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,14 +13,24 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import com.yash.yotaapi.util.Status;
 
+import org.apache.catalina.startup.Tomcat.ExistingStandardWrapper;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Columns;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,37 +60,42 @@ public class AssociateDetails {
 	private long id;
 		
 	/**
-	 * First_Name of associate and this should not be empty.
+	 * First_Name of associate.
 	 */
-	@NotBlank(message = "First_Name should not be empty.")
 	private String firstName;
 		
 	/**
-	 * Middle_Name of associate and this should not be empty.
+	 * Middle_Name of associate.
 	 */
-	@NotBlank(message = "Middle_Name should not be empty.")
 	private String middleName;
 	
 	/**
-	 * last_Name of associate and this should not be empty.
+	 * last_Name of associate.
 	 */
-	@NotBlank(message = "Last_Name should not be empty.")
 	private String lastName;
 	
 	/**
 	 * Email_Id is necessary field and it should be unique for every associate.
 	 */
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	@Email
-	@NotBlank(message = "Email_Id should not be empty")
+	@NotNull(message = "Email_Id field is mandatory")
 	private String emailId;
 	
 	/**
 	 * Password should be min 8 & max 12 digits, and it should not be empty.
 	 */
-	@NotBlank(message = "Password should not be empty")
+	@NotBlank(message = "Password is mandatory")
 	@Size(min = 8, max = 12, message = "Password should be minimum of 8 and maximum of 12 digits.")
 	private String password;
+	
+	/**
+	 * Status field shows the status of associate, and its default value is active.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "Status", nullable = false)
+	private Status status = Status.Active;
+
 	
 	/**
 	 * Contact no should be exactly 10 digits.
@@ -92,7 +109,7 @@ public class AssociateDetails {
 	 * client end
 	 */
 	@DateTimeFormat(iso = ISO.DATE)
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date createdAt;
 
 	/**
@@ -101,7 +118,7 @@ public class AssociateDetails {
 	 * client end
 	 */
 	@DateTimeFormat(iso = ISO.DATE)
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date updatedAt;
 	
 	/**

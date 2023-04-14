@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @Api(tags = "Question Controller", value = "Controller of Question")
-@RequestMapping("/api/questions")
+@RequestMapping("/yota/api/questions")
 @RestController
 public class QuestionController {
 
@@ -53,11 +54,14 @@ public class QuestionController {
 		if(errmap!=null) { 
 			return errmap;
 		}
+
 		Question savedQuestion = questionService.saveOrUpdate(question);
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
 	/**
-	 * This method is used to get Question by using question type.
+
+	 * This method is used to get Question by using question Id.
+
 	 * @param questionId
 	 * @return questions
 	 */
@@ -77,7 +81,9 @@ public class QuestionController {
 	}
 	
 	/**
-	 * This mentod is used to delete question by using question type.
+
+	 * This mentod is used to delete question by using question Id.
+
 	 * @param questionId
 	 * @return return message question is deleted
 	 */
@@ -85,5 +91,21 @@ public class QuestionController {
 	public ResponseEntity<?> deleteQuestionById(@PathVariable Long questionId){
 		questionService.deleteQuestionById(questionId);
 		return new ResponseEntity<String>("question is deleted successfully!", HttpStatus.OK);
+	}
+	
+	/**
+	 * This mentod is used to update question by using question Id.
+	 * @param questionId
+	 * @return updated question
+	 */
+	@ApiOperation(tags ="Update Question",value = "Update Question")
+	@PutMapping("/")
+	public ResponseEntity<?> updateQuestion(@Valid @RequestBody Question question,BindingResult result)
+	{
+		ResponseEntity<?> errorMap= mapValidationErrorService.validationError(result);
+		if (errorMap!=null) {
+			return errorMap;
+		}
+		return new ResponseEntity<Question>(questionService.updateQuestion(question),HttpStatus.OK);
 	}
 }

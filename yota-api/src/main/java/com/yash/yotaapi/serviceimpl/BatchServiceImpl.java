@@ -1,17 +1,23 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.domain.Batch;
+import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.BatchNotFoundException;
+import com.yash.yotaapi.exception.DateInValidException;
 import com.yash.yotaapi.repository.BatchRepository;
 import com.yash.yotaapi.service.BatchService;
+
 
 /*This is service layer to implement business logic here.
  * @author anil.shimpi
@@ -24,24 +30,33 @@ public class BatchServiceImpl implements BatchService {
 	@Autowired
 	private BatchRepository batchRepository;
 
-	// @Autowired
-	// private EntityManager entityManager;
+	
 
 	/* This method is used to store value into database */
 	@Override
 	public Batch createBatch(Batch batch) {
 
+
+		batch.setBatchName(batch.getBatchName().toUpperCase());
+		batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
 		try {
-			batch.setBatchName(batch.getBatchName().toUpperCase());
+
 			return batchRepository.save(batch);
+
+
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
-					"Batch with Name " + batch.getBatchName().toUpperCase() + " already exists!!");
+					"Batch with Name " + batch.getBatchName().toUpperCase() + " is already exists!!");
+		} catch (BatchIdException e) {
+			throw new BatchIdException("Batch with batchIdentifier name " + batch.getBatchIdentifier().toUpperCase()
+					+ " is already exists!!");
+
 		}
 
 	}
 
 	/* This menthod us used to display all batch details from database. */
+
 	@Override
 	public List<Batch> getAllDetails() {
 
@@ -59,13 +74,14 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	public Batch getSingleBatchDetail(long bId) {
+	public Batch getBatch(String bIdentifier) {
 
-		Batch detail = batchRepository.findById(bId).get();
+		Batch detail = batchRepository.findByBatchIdentifier(bIdentifier.toUpperCase());
 
 		if (detail == null) {
 
-			throw new BatchNotFoundException("Batch with id : " + bId + " does not exist");
+			throw new BatchIdException("Batch with id : " + bIdentifier + " does not exist");
+
 		}
 
 		return detail;
@@ -77,20 +93,18 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	public Batch updateBatchDetails(Batch batch, long batchId) {
+	@Transactional
+	public Batch updateBatchDetails(Batch batch) {
 
-		Optional<Batch> optBatchDetails = batchRepository.findById(batchId);
-		Batch batchDetails = optBatchDetails.get();
+		Batch batchDetails = batchRepository.getByBatchIdentifier(batch.getBatchIdentifier());
+
 		if (batchDetails == null) {
 
-			batchRepository.save(batchDetails);
+			return batchRepository.save(batchDetails);
+
 		} else {
 			batchDetails.setBatchName(batch.getBatchName());
 			batchDetails.setBatchDescription(batch.getBatchDescription());
-			batchDetails.setStartDate(batch.getStartDate());
-			batchDetails.setEndDate(batch.getEndDate());
-			batchDetails.setCreatedAt(batch.getCreatedAt());
-			batchDetails.setUpdatedAt(batch.getUpdatedAt());
 			batchRepository.save(batchDetails);
 		}
 		return batchDetails;
@@ -100,6 +114,7 @@ public class BatchServiceImpl implements BatchService {
 	 * This method temporally hide batch details for mention batch id by user.
 	 */
 	@Override
+	@Transactional
 	public void removeBatchDetails(long batchId) {
 
 		try {
@@ -123,6 +138,23 @@ public class BatchServiceImpl implements BatchService {
 		}
 
 		return batchRepository.findByBatchNameContaining(keyword.toUpperCase());
+	}
+
+	/* this method filter batch between start date and end date */
+	@Override
+	public List<Batch> getByStartDateAndEndDate(Date startDate, Date endDate) {
+		long diff = endDate.getTime() - startDate.getTime();
+		long dayDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+		System.out.println("Days: " + dayDiff);
+		if (dayDiff < 1) {
+			throw new DateInValidException("End date should be greater than start date");
+		}
+		List<Batch> search = batchRepository.findByDateBetween(startDate, endDate);
+		if (search.isEmpty()) {
+			throw new BatchNotFoundException("Batch containing startDate  : " + startDate + "and"
+					+ "Batch containing endDate  : " + endDate + " does not exist");
+		}
+		return batchRepository.findByDateBetween(startDate, endDate);
 	}
 
 }
