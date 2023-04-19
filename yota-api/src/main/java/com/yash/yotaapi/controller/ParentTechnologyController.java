@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
  * @author pratik.kurbet
  *
  */
-
+@CrossOrigin("*")
 @Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
 @RestController
 @RequestMapping("/yota/api/technologies")
