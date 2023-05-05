@@ -1,5 +1,6 @@
 package com.yash.yotaapi.domain;
 
+
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,15 +72,12 @@ public class Batch {
 
 	/* Start date should not be null and yyyy-MM-dd format */
 	@NotNull(message = "Start date can not be Null")
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "start_date")
 	private Date startDate;
 
 	/* End date should be yyyy-MM-dd format */
-	@JsonFormat(pattern = "yyyy/MM/dd")
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "end_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "EndDate can not be null")
 	private Date endDate;
 
@@ -87,7 +85,7 @@ public class Batch {
 	 * CreatedDate is automatically generated at the time of create, No need to set
 	 * up manually.
 	 */
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(iso = ISO.DATE)
 	@CreatedDate
 	private Date createdAt;
@@ -97,7 +95,7 @@ public class Batch {
 	 * up manually.
 	 */
 
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(iso = ISO.DATE)
 	@LastModifiedDate
 	private Date updatedAt;

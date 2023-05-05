@@ -100,25 +100,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(DateInValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ExceptionResponse> handelDatteInValidException(DateInValidException e, WebRequest request) {
+	public ResponseEntity<ExceptionResponse> handelDateInValidException(DateInValidException e, WebRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 	
-	/*
-	 * public ResponseEntity<?> handleMethodArgNotValid(MethodArgumentNotValid
-	 * e,WebRequest request){
-	 * 
-	 * Map<String,String> errorMap=new HashMap<>();
-	 * e.getBindingResult().getAllErrors().forEach((error)->{
-	 * errorMap.put(((FieldError) error).getField(),error.getDefaultMessage());
-	 * 
-	 * //return new ResponseEntity<Object>(null); });
-	 * 
-	 * return new ResponseEntity<Object>(errorMap,HttpStatus.BAD_REQUEST);
-	 * 
-	 * }
-	 */
-
+	
 }	

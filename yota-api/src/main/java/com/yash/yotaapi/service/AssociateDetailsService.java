@@ -2,6 +2,7 @@ package com.yash.yotaapi.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import com.yash.yotaapi.domain.AssociateDetails;
 
@@ -35,6 +36,13 @@ public interface AssociateDetailsService {
 	 * @param id
 	 */
 	void deleteAssociate(long id);
+	
+	/**
+	 * This service is to get the associate details using id.
+	 * @param id
+	 * @return
+	 */
+	Optional<AssociateDetails> getAssociate(long id);
 	
 	/**
 	 * This service is to search the associate.

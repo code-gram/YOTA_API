@@ -79,10 +79,10 @@ import io.swagger.annotations.ApiOperation;
 
 	/* singleBatchDetail() method retrive particular id mention batch details */
 	@ApiOperation(tags = "GET single Batch", value = "display batch details for perticular Id")
-	@GetMapping("/{bIdentifier}")
-	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable String bIdentifier) {
+	@GetMapping("/{id}")
+	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable long id) {
 
-		Batch details = batchService.getBatch(bIdentifier);
+		Batch details = batchService.getBatch(id);
 		return new ResponseEntity<Batch>(details, HttpStatus.OK);
 
 	}
@@ -91,16 +91,16 @@ import io.swagger.annotations.ApiOperation;
 	 * updateDetails api update batch details according to batchId entered by User.
 	 */
 	@ApiOperation(tags = "UPDATE batch", value = "Update batch details for perticular batch id")
-	@PutMapping("/")
-	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, BindingResult result) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, @PathVariable long id,BindingResult result) {
 
 		ResponseEntity<?> errorMap = fileErrorValidationUtillity.validationError(result);
-
+		System.out.println("API hit");
 		if (errorMap != null) {
 			return errorMap;
 		}
 
-		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch), HttpStatus.OK);
+		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch,id), HttpStatus.OK);
 
 	}
 

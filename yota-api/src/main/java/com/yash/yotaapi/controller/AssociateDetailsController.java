@@ -2,6 +2,7 @@ package com.yash.yotaapi.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -111,6 +112,19 @@ public class AssociateDetailsController {
 			return errorMap;
 		}
 		return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associate), HttpStatus.OK);
+	}
+	
+	/**
+	     * This controller method handles the get request to get single 
+	     * associate.
+	     * @param id
+	     * @return
+	     */
+	@ApiOperation(tags = "Get single Associate", value = "Get Associate using id")
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<AssociateDetails>> getAssociate(@PathVariable long id)
+	{
+	return new ResponseEntity<Optional<AssociateDetails>>(associateDetailsService.getAssociate(id), HttpStatus.OK);
 	}
 
 	/**
