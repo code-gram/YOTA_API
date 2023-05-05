@@ -47,7 +47,7 @@ public class BatchServiceImpl implements BatchService {
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
 					"Batch with Name " + batch.getBatchName().toUpperCase() + " is already exists!!");
-		} catch (BatchIdException e) {
+		} catch (Exception e) {
 			throw new BatchIdException("Batch with batchIdentifier name " + batch.getBatchIdentifier().toUpperCase()
 					+ " is already exists!!");
 
@@ -74,13 +74,13 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	public Batch getBatch(String bIdentifier) {
+	public Batch getBatch(long id) {
 
-		Batch detail = batchRepository.findByBatchIdentifier(bIdentifier.toUpperCase());
+		Batch detail = batchRepository.findById(id).get();
 
 		if (detail == null) {
 
-			throw new BatchIdException("Batch with id : " + bIdentifier + " does not exist");
+			throw new BatchIdException("Batch with id : " + id + " does not exist");
 
 		}
 
@@ -93,22 +93,30 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	@Transactional
-	public Batch updateBatchDetails(Batch batch) {
+	//@Transactional
+	public Batch updateBatchDetails(Batch batch, long id) {
 
-		Batch batchDetails = batchRepository.getByBatchIdentifier(batch.getBatchIdentifier());
-
-		if (batchDetails == null) {
-
-			return batchRepository.save(batchDetails);
-
-		} else {
+		Batch batchDetails = batchRepository.findById(id).get();
+		
+		if(batchDetails==null) {
+			throw new BatchNotFoundException("Batch id: " + id + " is not present in Batch");
+		}
+		
+		else {
 			batchDetails.setBatchName(batch.getBatchName());
 			batchDetails.setBatchDescription(batch.getBatchDescription());
-			batchRepository.save(batchDetails);
+			batchDetails.setStartDate(batch.getStartDate());
+			batchDetails.setEndDate(batch.getEndDate());
+			
+			Batch updateBatchDetails=batchRepository.save(batchDetails);
+			
+			return updateBatchDetails;
 		}
-		return batchDetails;
+		 
 	}
+		
+		
+	
 
 	/*
 	 * This method temporally hide batch details for mention batch id by user.
