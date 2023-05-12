@@ -2,7 +2,10 @@ package com.yash.yotaapi.repository;
 
 import java.util.Date;
 import java.util.List;
+
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -38,4 +41,10 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 	@Query(value = "SELECT * FROM batch_management b WHERE b.start_date >= :startDate AND b.end_date <= :endDate", nativeQuery = true)
 	List<Batch> findByDateBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+	
+	
+//	@Query(value = "UPDATE batch_management b SET b.Status = true WHERE b.id = batchId" , nativeQuery = true)
+//	@Modifying
+//	public void softDelete(long batchId);
 }
+

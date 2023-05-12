@@ -23,9 +23,8 @@ import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.service.BatchService;
 import com.yash.yotaapi.util.CompareDateValidator;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 /*
  * Batch controller is provide way to communication with client/user
@@ -34,9 +33,8 @@ import io.swagger.annotations.ApiOperation;
  */
 @CrossOrigin("*")
 @RestController
-@Api(tags = "BatchController", value = "Controller for batch")
+@Tag(name="Batch Controller", description="Controller for batch")
 @RequestMapping("/yota/api/batches")
-@Validated
  public class BatchController {
 
 	/*
@@ -54,9 +52,9 @@ import io.swagger.annotations.ApiOperation;
 	CompareDateValidator compareDateValidator;
 
 	/* createBatch method is used to create Batch. */
-	@ApiOperation(tags = "POST Batch", value = "CRATE Batch")
+	
 	@PostMapping("/")
-	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result) {
+	public ResponseEntity<?> createBatch(@Validated @RequestBody Batch batch, BindingResult result) {
 
 		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
 
@@ -69,7 +67,7 @@ import io.swagger.annotations.ApiOperation;
 
 	/* batchDetails() method retrive all batch details present in database */
 
-	@ApiOperation(tags = "GET all Batch", value = "Display Batch details")
+	
 	@GetMapping("/")
 	public ResponseEntity<List<Batch>> getAllBatch() {
 
@@ -78,7 +76,7 @@ import io.swagger.annotations.ApiOperation;
 	}
 
 	/* singleBatchDetail() method retrive particular id mention batch details */
-	@ApiOperation(tags = "GET single Batch", value = "display batch details for perticular Id")
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable long id) {
 
@@ -90,9 +88,9 @@ import io.swagger.annotations.ApiOperation;
 	/*
 	 * updateDetails api update batch details according to batchId entered by User.
 	 */
-	@ApiOperation(tags = "UPDATE batch", value = "Update batch details for perticular batch id")
+	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, @PathVariable long id,BindingResult result) {
+	public ResponseEntity<?> updateDetails(@Validated @RequestBody Batch batch, @PathVariable long id,BindingResult result) {
 
 		ResponseEntity<?> errorMap = fileErrorValidationUtillity.validationError(result);
 		System.out.println("API hit");
@@ -105,7 +103,7 @@ import io.swagger.annotations.ApiOperation;
 	}
 
 	/* deleteBatch api delete batch accourding to batchId enter by user. */
-	@ApiOperation(tags = "DELETE batch", value = "Delete batch details for perticular batchId")
+	
 	@DeleteMapping("/{batchId}")
 	public ResponseEntity<?> removeBatch(@PathVariable long batchId) {
 
@@ -117,7 +115,7 @@ import io.swagger.annotations.ApiOperation;
 	/*
 	 * searchBatch api is display batch details accourding to keyword enter by user.
 	 */
-	@ApiOperation(tags = "SEARCH batch", value = "Get batch by keyword")
+	
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
 

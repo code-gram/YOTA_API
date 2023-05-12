@@ -3,9 +3,7 @@ package com.yash.yotaapi.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.service.AssociateDetailsService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * Associate_Details_controller interact with service layer to complete the work
@@ -33,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
  * @author nitin.chougale
  */
 @CrossOrigin("*")
-@Api(tags = "AssociateDetailsController", value = "Controller of Associate details")
+@Tag(name="Associate Controller", description="Controller for Associate")
 @RestController
 @RequestMapping("/yota/api/associates")
 public class AssociateDetailsController {
@@ -51,7 +46,7 @@ public class AssociateDetailsController {
 	 * @param associate
 	 * @param result
 	 */
-	@ApiOperation(tags = "Register Associate", value = "Add Associate")
+	
 	@PostMapping("/register")
 	public ResponseEntity<?> addAssociate(@Valid @RequestBody final AssociateDetails associate, BindingResult result) {
 		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
@@ -65,7 +60,7 @@ public class AssociateDetailsController {
 	 * This controller method handles the get request to access list of all
 	 * associates.
 	 */
-	@ApiOperation(tags = "Get All Associates", value = "List of Associates")
+
 	@GetMapping("/all")
 	public ResponseEntity<List<AssociateDetails>> getAll() {
 		return new ResponseEntity<List<AssociateDetails>>(associateDetailsService.getAllAssociates(), HttpStatus.OK);
@@ -77,7 +72,7 @@ public class AssociateDetailsController {
 	 * 
 	 * @param id
 	 */
-	@ApiOperation(tags = "Delete Associate", value = "Delete Associate")
+	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteAssociate(@PathVariable long id) {
 		associateDetailsService.deleteAssociate(id);
@@ -91,7 +86,7 @@ public class AssociateDetailsController {
 	 * @param keyword
 	 */
 
-	@ApiOperation(tags= "Free text search", value = "Seacrh associate using keyword")
+	
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword) {
 		List<AssociateDetails> associates = associateDetailsService.searchAssociate(keyword);
@@ -103,7 +98,7 @@ public class AssociateDetailsController {
 	 * @param associate
 	 * @param result
 	 */
-	@ApiOperation(tags = "Update Associate", value = "Update Associate")
+	
 	@PostMapping("/")
 	public ResponseEntity<?> updateAssociate(@RequestBody AssociateDetails associate,BindingResult result)
 	{
@@ -120,7 +115,7 @@ public class AssociateDetailsController {
 	     * @param id
 	     * @return
 	     */
-	@ApiOperation(tags = "Get single Associate", value = "Get Associate using id")
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<AssociateDetails>> getAssociate(@PathVariable long id)
 	{
@@ -132,7 +127,7 @@ public class AssociateDetailsController {
 	 * @param updatePassword
 	 * @return
 	 */
-	@ApiOperation(tags = "Update Associate Password", value = "Update Associate password")
+
 	@PostMapping("/updatePassword")
 	public ResponseEntity<Boolean> updatepassword(@RequestBody HashMap<String, String> updatePassword)
 	{
