@@ -122,7 +122,6 @@ public class BatchServiceImpl implements BatchService {
 	 * This method temporally hide batch details for mention batch id by user.
 	 */
 	@Override
-	@Transactional
 	public void removeBatchDetails(long batchId) {
 
 		try {
