@@ -23,15 +23,19 @@ import com.yash.yotaapi.domain.ParentTechnology;
 import com.yash.yotaapi.service.ParentTechnologyService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 
 /** Parent Technology Controller will facilitates CRUD functionalities
  * @author pratik.kurbet
  *
  */
-
-@Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
+@CrossOrigin("*")
+//@Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
+@Tag(name=" Technology Controller",description = "controller for technology")
 @RestController
 @RequestMapping("/yota/api/technologies")
 public class ParentTechnologyController {
@@ -55,7 +59,8 @@ public class ParentTechnologyController {
 	 * @param technology 
 	 * @return generic type 
 	 */
-	@ApiOperation(tags ="Post Technology",value = "Add Technology")
+	//@ApiOperation(tags ="Post Technology",value = "Add Technology")
+	  
 	@PostMapping("/")
 	public ResponseEntity<?> addParentTechnology(@Valid @RequestBody ParentTechnology technology, BindingResult result)
 	{
@@ -71,7 +76,7 @@ public class ParentTechnologyController {
 	 * getAll method is used to fetch all existing parent technology from DB
 	 * @return List of ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get All Technology")
+//	@ApiOperation(tags ="Get Technology",value = "Get All Technology")
 	@GetMapping("/")
 	public ResponseEntity<List<ParentTechnology>> getAll()
 	{
@@ -84,7 +89,7 @@ public class ParentTechnologyController {
 	 * @param name
 	 * @return ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get Technology by Name")
+//	@ApiOperation(tags ="Get Technology",value = "Get Technology by Name")
 	@GetMapping("/{name}")
 	public ResponseEntity<ParentTechnology> getTech(@PathVariable(value ="name") String name)
 	{
@@ -97,7 +102,7 @@ public class ParentTechnologyController {
 	 * @param keyword
 	 * @return List of ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get Technology by Keyword")
+	//@ApiOperation(tags ="Get Technology",value = "Get Technology by Keyword")
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<ParentTechnology>> searchTech(@PathVariable("keyword") String keyword)
 	{
@@ -111,7 +116,7 @@ public class ParentTechnologyController {
 	 * @param id
 	 * @return Generic type
 	 */
-	@ApiOperation(tags ="Delete Technology",value = "Delete Technology by Id")
+//	@ApiOperation(tags ="Delete Technology",value = "Delete Technology by Id")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> removeTech(@PathVariable(value = "id") long id)
 	{
@@ -126,9 +131,10 @@ public class ParentTechnologyController {
 	 * @param result
 	 * @return Updated ParentTechnology
 	 */
-	@ApiOperation(tags ="Update Technology",value = "Update Technology")
+//	@ApiOperation(tags ="Update Technology",value = "Update Technology")
 	@PutMapping("/")
-	public ResponseEntity<?> upadateTech(@Valid @RequestBody ParentTechnology technology,BindingResult result)
+	@ApiResponse(responseCode = "200", description = "successfully updated")
+	public ResponseEntity<?> upadateTech(@Valid @RequestBody ParentTechnology technology, BindingResult result)
 	{
 		ResponseEntity<?> errorMap= validationService.validationError(result);
 		if (errorMap!=null) {

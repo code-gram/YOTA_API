@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,8 @@ import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 
 
 /**
@@ -29,9 +30,10 @@ import io.swagger.annotations.ApiOperation;
  * @author priya.m
  *
  */
-@Api(tags = "Question Controller", value = "Controller of Question")
+//@Api(tags = "Question Controller", value = "Controller of Question")
 @RequestMapping("/yota/api/questions")
 @RestController
+@CrossOrigin("*")
 public class QuestionController {
 
 	@Autowired
@@ -47,7 +49,7 @@ public class QuestionController {
 	 * @return saved question
 	 */
 	
-	@ApiOperation(tags = "Post Question", value = "Add Question")
+	//@ApiOperation(tags = "Post Question", value = "Add Question")
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
@@ -98,7 +100,7 @@ public class QuestionController {
 	 * @param questionId
 	 * @return updated question
 	 */
-	@ApiOperation(tags ="Update Question",value = "Update Question")
+	//@ApiOperation(tags ="Update Question",value = "Update Question")
 	@PutMapping("/")
 	public ResponseEntity<?> updateQuestion(@Valid @RequestBody Question question,BindingResult result)
 	{
