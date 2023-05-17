@@ -21,10 +21,11 @@ public interface AssociateDetailsRepository extends JpaRepository<AssociateDetai
 	 */
 	List<AssociateDetails> getByEmailIdContaining(String keyword);
 	
+	
 	/**
-	 * We can fetch associate using findById method.
-	 * @param Long
-	 */
-	Optional<AssociateDetails> findById(String Long);
+	 * We can fetch associate using findById method.
+	 * @param id
+	 */
+	Optional<AssociateDetails> findById(String id);
 	
 }

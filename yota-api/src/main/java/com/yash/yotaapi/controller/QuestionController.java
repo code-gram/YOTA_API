@@ -20,8 +20,9 @@ import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 
 /**
@@ -30,10 +31,13 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
  * @author priya.m
  *
  */
-//@Api(tags = "Question Controller", value = "Controller of Question")
+
+@CrossOrigin("*")
+@Tag(name="Question Controller", description="Controller for Question")
+
 @RequestMapping("/yota/api/questions")
 @RestController
-@CrossOrigin("*")
+
 public class QuestionController {
 
 	@Autowired
@@ -49,7 +53,7 @@ public class QuestionController {
 	 * @return saved question
 	 */
 	
-	//@ApiOperation(tags = "Post Question", value = "Add Question")
+
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
@@ -100,7 +104,7 @@ public class QuestionController {
 	 * @param questionId
 	 * @return updated question
 	 */
-	//@ApiOperation(tags ="Update Question",value = "Update Question")
+
 	@PutMapping("/")
 	public ResponseEntity<?> updateQuestion(@Valid @RequestBody Question question,BindingResult result)
 	{

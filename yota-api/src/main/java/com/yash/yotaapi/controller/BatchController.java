@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,19 +23,21 @@ import com.yash.yotaapi.domain.Batch;
 import com.yash.yotaapi.service.BatchService;
 import com.yash.yotaapi.util.CompareDateValidator;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
+
 
 /*
  * Batch controller is provide way to communication with client/user
  * 
  * @author anil.shimpi
  */
+@CrossOrigin("*")
 @RestController
-//@Api(tags = "BatchController", value = "Controller for batch")
+
+@Tag(name="Batch Controller", description="Controller for batch")
+
 @RequestMapping("/yota/api/batches")
-@Validated
  public class BatchController {
 
 	/*
@@ -52,9 +55,9 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 	CompareDateValidator compareDateValidator;
 
 	/* createBatch method is used to create Batch. */
-	//@ApiOperation(tags = "POST Batch", value = "CRATE Batch")
+
 	@PostMapping("/")
-	public ResponseEntity<?> createBatch(@Valid @RequestBody Batch batch, BindingResult result) {
+	public ResponseEntity<?> createBatch(@Validated @RequestBody Batch batch, BindingResult result) {
 
 		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
 
@@ -67,7 +70,7 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
 	/* batchDetails() method retrive all batch details present in database */
 
-	//@ApiOperation(tags = "GET all Batch", value = "Display Batch details")
+
 	@GetMapping("/")
 	public ResponseEntity<List<Batch>> getAllBatch() {
 
@@ -76,11 +79,13 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 	}
 
 	/* singleBatchDetail() method retrive particular id mention batch details */
-//	@ApiOperation(tags = "GET single Batch", value = "display batch details for perticular Id")
-	@GetMapping("/{bIdentifier}")
-	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable String bIdentifier) {
 
-		Batch details = batchService.getBatch(bIdentifier);
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Batch> findDetailByBatchIdentifier(@PathVariable long id) {
+
+
+		Batch details = batchService.getBatch(id);
 		return new ResponseEntity<Batch>(details, HttpStatus.OK);
 
 	}
@@ -88,22 +93,24 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 	/*
 	 * updateDetails api update batch details according to batchId entered by User.
 	 */
-	//@ApiOperation(tags = "UPDATE batch", value = "Update batch details for perticular batch id")
-	@PutMapping("/")
-	public ResponseEntity<?> updateDetails(@Valid @RequestBody Batch batch, BindingResult result) {
+
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateDetails(@Validated @RequestBody Batch batch, @PathVariable long id,BindingResult result) {
+
 
 		ResponseEntity<?> errorMap = fileErrorValidationUtillity.validationError(result);
-
+		System.out.println("API hit");
 		if (errorMap != null) {
 			return errorMap;
 		}
 
-		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch), HttpStatus.OK);
+		return new ResponseEntity<Batch>(batchService.updateBatchDetails(batch,id), HttpStatus.OK);
 
 	}
 
 	/* deleteBatch api delete batch accourding to batchId enter by user. */
-	//@ApiOperation(tags = "DELETE batch", value = "Delete batch details for perticular batchId")
+
 	@DeleteMapping("/{batchId}")
 	public ResponseEntity<?> removeBatch(@PathVariable long batchId) {
 
@@ -115,7 +122,7 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 	/*
 	 * searchBatch api is display batch details accourding to keyword enter by user.
 	 */
-//	@ApiOperation(tags = "SEARCH batch", value = "Get batch by keyword")
+
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
 

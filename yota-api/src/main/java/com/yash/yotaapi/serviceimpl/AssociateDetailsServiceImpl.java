@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -84,6 +85,20 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 		}
 		return associateDetailsRepository.getByEmailIdContaining(keyword);
 	}
+	
+	/**
+	 * This method returns the associate using id.
+	 */
+	@Override
+	public Optional<AssociateDetails> getAssociate(long id) {
+		try{
+			Optional<AssociateDetails> associate= associateDetailsRepository.findById(id);
+			return associate;
+			}
+		catch(AssociateDetailsNotFoundException e) {
+			throw new AssociateDetailsNotFoundException("Associate with ID : "+ id +" does not exist");
+			}
+		}
 
 	/**
 	 * This method saves and updates the changes made in associate.
