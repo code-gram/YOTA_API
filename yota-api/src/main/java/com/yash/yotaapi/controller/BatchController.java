@@ -34,6 +34,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "BatchController", value = "Controller for batch")
 @RequestMapping("/yota/batch")
 public class BatchController {
+	
+	
 
 	/*
 	 * BatchService is a business logic layer used to interact Controller with

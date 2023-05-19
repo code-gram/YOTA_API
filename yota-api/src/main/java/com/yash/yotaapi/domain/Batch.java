@@ -28,12 +28,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 
-/*
+
+/**
  * This batch model work as a data transfer object, Field validation will be
  * performed here using jpa annotation.
  * @author anil.shimpi
+ * @author pankaj.ssharma
+ *
  */
-
 
 /*
  * SQLDelete annotation overrode delete command to updated command in project,
