@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,7 +41,8 @@ import lombok.ToString;
 public class ParentTechnology {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(initialValue = 1,name = "id")
 	private Long id;
 
 	/**
@@ -64,7 +66,7 @@ public class ParentTechnology {
 	 * client end
 	 */
 	@DateTimeFormat(iso = ISO.DATE)
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date createdAt;
 
 	/**
@@ -73,7 +75,7 @@ public class ParentTechnology {
 	 * client end
 	 */
 	@DateTimeFormat(iso = ISO.DATE)
-	@JsonFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date updatedAt;
 
 	/**

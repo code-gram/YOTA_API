@@ -1,13 +1,12 @@
 package com.yash.yotaapi.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,23 +14,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.yash.yotaapi.domain.ParentTechnology;
 import com.yash.yotaapi.service.ParentTechnologyService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 /** Parent Technology Controller will facilitates CRUD functionalities
  * @author pratik.kurbet
  *
  */
-@Api(tags = "ParentTechnologyController",value = "Controller for Parent Technology")
-@RestController()
-@RequestMapping("/yota/parent-tech")
+@CrossOrigin("*")
+
+
+@Tag(name="Technology Controller", description="Controller for Technology")
+
+@RestController
+@RequestMapping("/yota/api/technologies")
 public class ParentTechnologyController {
 
 	/**
@@ -53,7 +60,7 @@ public class ParentTechnologyController {
 	 * @param technology 
 	 * @return generic type 
 	 */
-	@ApiOperation(tags ="Post Technology",value = "Add Technology")
+
 	@PostMapping("/")
 	public ResponseEntity<?> addParentTechnology(@Valid @RequestBody ParentTechnology technology, BindingResult result)
 	{
@@ -69,7 +76,7 @@ public class ParentTechnologyController {
 	 * getAll method is used to fetch all existing parent technology from DB
 	 * @return List of ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get All Technology")
+
 	@GetMapping("/")
 	public ResponseEntity<List<ParentTechnology>> getAll()
 	{
@@ -82,9 +89,9 @@ public class ParentTechnologyController {
 	 * @param name
 	 * @return ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get Technology by Name")
+
 	@GetMapping("/{name}")
-	public ResponseEntity<ParentTechnology> getTech(@RequestParam(value ="name") String name)
+	public ResponseEntity<ParentTechnology> getTech(@PathVariable(value ="name") String name)
 	{
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.getTech(name),HttpStatus.OK);
 	}
@@ -95,7 +102,7 @@ public class ParentTechnologyController {
 	 * @param keyword
 	 * @return List of ParentTechnology
 	 */
-	@ApiOperation(tags ="Get Technology",value = "Get Technology by Keyword")
+
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<ParentTechnology>> searchTech(@PathVariable("keyword") String keyword)
 	{
@@ -109,7 +116,7 @@ public class ParentTechnologyController {
 	 * @param id
 	 * @return Generic type
 	 */
-	@ApiOperation(tags ="Delete Technology",value = "Delete Technology by Id")
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> removeTech(@PathVariable(value = "id") long id)
 	{
@@ -124,9 +131,10 @@ public class ParentTechnologyController {
 	 * @param result
 	 * @return Updated ParentTechnology
 	 */
-	@ApiOperation(tags ="Update Technology",value = "Update Technology")
+
 	@PutMapping("/")
-	public ResponseEntity<?> upadateTech(@Valid @RequestBody ParentTechnology technology,BindingResult result)
+	@ApiResponse(responseCode = "200", description = "successfully updated")
+	public ResponseEntity<?> upadateTech(@Valid @RequestBody ParentTechnology technology, BindingResult result)
 	{
 		ResponseEntity<?> errorMap= validationService.validationError(result);
 		if (errorMap!=null) {

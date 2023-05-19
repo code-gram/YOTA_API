@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +20,9 @@ import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 
 /**
@@ -28,9 +31,13 @@ import io.swagger.annotations.ApiOperation;
  * @author priya.m
  *
  */
-@Api(tags = "Question Controller", value = "Controller of Question")
-@RequestMapping("/api/questions")
+
+@CrossOrigin("*")
+@Tag(name="Question Controller", description="Controller for Question")
+
+@RequestMapping("/yota/api/questions")
 @RestController
+
 public class QuestionController {
 
 	@Autowired
@@ -46,18 +53,21 @@ public class QuestionController {
 	 * @return saved question
 	 */
 	
-	@ApiOperation(tags = "Post Question", value = "Add Question")
+
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result){
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if(errmap!=null) { 
 			return errmap;
 		}
+
 		Question savedQuestion = questionService.saveOrUpdate(question);
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
 	/**
-	 * This method is used to get Question by using question type.
+
+	 * This method is used to get Question by using question Id.
+
 	 * @param questionId
 	 * @return questions
 	 */
@@ -77,7 +87,9 @@ public class QuestionController {
 	}
 	
 	/**
-	 * This mentod is used to delete question by using question type.
+
+	 * This mentod is used to delete question by using question Id.
+
 	 * @param questionId
 	 * @return return message question is deleted
 	 */
@@ -85,5 +97,21 @@ public class QuestionController {
 	public ResponseEntity<?> deleteQuestionById(@PathVariable Long questionId){
 		questionService.deleteQuestionById(questionId);
 		return new ResponseEntity<String>("question is deleted successfully!", HttpStatus.OK);
+	}
+	
+	/**
+	 * This mentod is used to update question by using question Id.
+	 * @param questionId
+	 * @return updated question
+	 */
+
+	@PutMapping("/")
+	public ResponseEntity<?> updateQuestion(@Valid @RequestBody Question question,BindingResult result)
+	{
+		ResponseEntity<?> errorMap= mapValidationErrorService.validationError(result);
+		if (errorMap!=null) {
+			return errorMap;
+		}
+		return new ResponseEntity<Question>(questionService.updateQuestion(question),HttpStatus.OK);
 	}
 }

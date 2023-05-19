@@ -1,6 +1,8 @@
 package com.yash.yotaapi.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import com.yash.yotaapi.domain.AssociateDetails;
 
@@ -22,12 +24,6 @@ public interface AssociateDetailsService {
 	 * It gives list of all the registered associates.
 	 */
 	List<AssociateDetails> getAllAssociates();
-	
-	/**
-	 * This service gives particular associate searched by id
-	 * @param id
-	 */
-	AssociateDetails getAssociate(long id);
 
 	/**
 	 * Service is to update the associate details.
@@ -42,8 +38,21 @@ public interface AssociateDetailsService {
 	void deleteAssociate(long id);
 	
 	/**
+	 * This service is to get the associate details using id.
+	 * @param id
+	 * @return
+	 */
+	Optional<AssociateDetails> getAssociate(long id);
+	
+	/**
 	 * This service is to search the associate.
 	 * @param keyword
 	 */
 	List<AssociateDetails> searchAssociate(String keyword);
+
+	/**
+	 * This method is to update the password.
+	 * @param updatePassword
+	 */
+	Boolean updatePassword(HashMap<String, String> updatePassword);
 }
