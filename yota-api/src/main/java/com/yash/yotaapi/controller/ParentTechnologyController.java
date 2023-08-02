@@ -1,6 +1,8 @@
 package com.yash.yotaapi.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -141,5 +143,11 @@ public class ParentTechnologyController {
 			return errorMap;
 		}
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.updateTech(technology),HttpStatus.OK);
+	}
+	
+	@GetMapping("/tests")
+	public ResponseEntity<?> findTests() {
+		
+		return new ResponseEntity<>(parentTechnologyService.findTests(),HttpStatus.OK);
 	}
 }

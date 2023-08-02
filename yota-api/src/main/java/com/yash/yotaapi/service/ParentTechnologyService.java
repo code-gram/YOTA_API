@@ -1,6 +1,7 @@
 package com.yash.yotaapi.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.yash.yotaapi.domain.ParentTechnology;
 
@@ -51,5 +52,7 @@ public interface ParentTechnologyService {
 	 * @return if there are any ParentTechnology by that keyword
 	 */
 	List<ParentTechnology> searchTech(String keyword);
+
+	Map<Object,Long> findTests();
 
 }
