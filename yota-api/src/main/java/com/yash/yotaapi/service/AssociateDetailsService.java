@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.yash.yotaapi.domain.AssignedTest;
 import com.yash.yotaapi.domain.AssociateDetails;
 
 /**
@@ -55,4 +56,6 @@ public interface AssociateDetailsService {
 	 * @param updatePassword
 	 */
 	Boolean updatePassword(HashMap<String, String> updatePassword);
+	
+	List<AssignedTest> getAssociateTestList(long stdId );
 }
