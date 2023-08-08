@@ -130,7 +130,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 			associate.setCreatedAt(availableAssociate.getCreatedAt());
 		}
 		associate.setUpdatedAt(new Date());
-
+		associate.setTest_id(availableAssociate.getTest_id().concat(",".concat(associate.getTest_id())));
 		associateDetailsRepository.save(associate);
 		return associate;
 		}

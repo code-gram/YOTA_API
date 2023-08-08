@@ -121,6 +121,8 @@ public class AssociateDetails {
 	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date updatedAt;
 	
+	private String test_id;
+	
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
 	 * database.
