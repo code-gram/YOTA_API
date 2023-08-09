@@ -123,5 +123,13 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 		List<Test> tests = testRepository.findAll();
 		return tests.stream().collect(Collectors.groupingBy(t->t.getTechnology().getName(),Collectors.counting()));
 	}
+	
+	@Override
+	public Set<Test> getTestDetails(String name)
+	{
+		ParentTechnology technology = parentTechnologyRepository.getByName(name);
+		return testRepository.findByTechnology(technology);
+	}
+	
 
 }

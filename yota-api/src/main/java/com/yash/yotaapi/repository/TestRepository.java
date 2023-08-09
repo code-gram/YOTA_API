@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 
+import com.yash.yotaapi.domain.ParentTechnology;
 import com.yash.yotaapi.domain.Test;
 
 
 
 import com.yash.yotaapi.domain.Test;
+import java.util.List;
+
 
 /**
  * TestRepository will perform all the CRUD Operations on Test Bank. 
@@ -50,5 +53,5 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 	 * @return set of tests according to technologyId
 	 */
  
- 	Set<Test> findByTechnology(Long technologyId);
+ 	Set<Test> findByTechnology(ParentTechnology technology);
 }
