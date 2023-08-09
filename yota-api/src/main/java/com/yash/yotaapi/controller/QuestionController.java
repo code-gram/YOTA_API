@@ -88,7 +88,7 @@ public class QuestionController {
 	
 	/**
 
-	 * This mentod is used to delete question by using question Id.
+	 * This method is used to delete question by using question Id.
 
 	 * @param questionId
 	 * @return return message question is deleted
