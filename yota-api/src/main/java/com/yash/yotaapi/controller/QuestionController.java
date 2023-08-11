@@ -83,6 +83,7 @@ public class QuestionController {
 	 */
 	@GetMapping("/all")
 	public Iterable<Question> getAllQuestions(){
+		System.out.println("hello");
 		return questionService.findAllQuestion();
 	}
 	
