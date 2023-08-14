@@ -94,10 +94,12 @@ public class QuestionController {
 		return questionService.findAllQuestion();
 	}
 
+
 	/**
 	 * 
 	 * This mentod is used to delete question by using question Id.
 	 * 
+
 	 * @param questionId
 	 * @return return message question is deleted
 	 */
