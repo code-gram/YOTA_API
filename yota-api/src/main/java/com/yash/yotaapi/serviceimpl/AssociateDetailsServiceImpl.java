@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.yash.yotaapi.domain.AssignedTest;
 import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.exception.AssociateDetailsException;
 import com.yash.yotaapi.exception.AssociateDetailsNotFoundException;
+import com.yash.yotaapi.repository.AssociateAssignedTest;
 import com.yash.yotaapi.repository.AssociateDetailsRepository;
 import com.yash.yotaapi.service.AssociateDetailsService;
 
@@ -30,7 +32,8 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 
 	@Autowired
 	private AssociateDetailsRepository associateDetailsRepository;
-
+	@Autowired
+	private AssociateAssignedTest associateAssignedTest;
 	/**
 	 * This method saves the Associate details through repository layer.
 	 */
@@ -154,4 +157,6 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 		} finally {
 		}
 	}
+	public List<AssignedTest> getAssociateTestList(long stdId) { 
+		  return associateAssignedTest.getAssignedTestList(stdId); }
 }
