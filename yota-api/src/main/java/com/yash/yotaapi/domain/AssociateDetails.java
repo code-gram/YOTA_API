@@ -137,5 +137,8 @@ public class AssociateDetails {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
+
+	
+	
 }
 

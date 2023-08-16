@@ -16,9 +16,15 @@ import lombok.Setter;
 @Setter
 public class ExceptionResponse {
 	
+
 	/**
 	 * This errorMessage field is used to customize the exception response.
 	 */
 	private String errorMessage;
+	
+//	public ExceptionResponse(String errorMessage) {
+//        super();
+//        this.errorMessage = errorMessage;
+//    }
 
 }
