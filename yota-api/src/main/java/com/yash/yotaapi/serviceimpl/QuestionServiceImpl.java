@@ -1,13 +1,20 @@
 package com.yash.yotaapi.serviceimpl;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.exception.QuestionException;
 import com.yash.yotaapi.repository.QuestionRepository;
 import com.yash.yotaapi.service.QuestionService;
+import com.yash.yotaapi.util.ExcelHelper;
 
 /**
  * This is service layer class for Question Bank Management to write business
@@ -114,6 +121,18 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 		return question;
 	}
-
+	
+	@Override
+	public void saveExcel(MultipartFile file) {
+		
+		try {
+			List<Question> questions = ExcelHelper.convertExcelToListOfQuestion(file.getInputStream());
+			this.questionRepository.saveAll(questions);
+			System.out.println("check1");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
