@@ -94,4 +94,8 @@ public class ParentTechnology {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
+
+	
+	
+	
 }

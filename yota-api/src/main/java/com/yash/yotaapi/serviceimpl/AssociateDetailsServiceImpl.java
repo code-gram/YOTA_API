@@ -37,7 +37,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 	/**
 	 * This method saves the Associate details through repository layer.
 	 */
-	@Override
+	@Override    
 	public AssociateDetails selfRegister(AssociateDetails associate) {
 		try {
 			if (associate.getEmailId().length() == 0) {
