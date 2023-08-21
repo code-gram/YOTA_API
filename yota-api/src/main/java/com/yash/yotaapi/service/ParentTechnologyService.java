@@ -60,7 +60,7 @@ public interface ParentTechnologyService {
 	 * @param keyword in upper case
 	 * @return if there are any ParentTechnology by that keyword
 	 */
-	Map<Object,Long> findTests();
+	List<ParentTechnology> findTests();
 
 	Set<Test> getTestDetails(String name);
 }

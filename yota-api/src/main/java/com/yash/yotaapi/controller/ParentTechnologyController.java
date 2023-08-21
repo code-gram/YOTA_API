@@ -155,7 +155,7 @@ public class ParentTechnologyController {
 	@GetMapping("/tests")
 	public ResponseEntity<?> findTotalTests() {
 		
-		return new ResponseEntity<>(parentTechnologyService.findTests(),HttpStatus.OK);
+		return new ResponseEntity<List<ParentTechnology>>(parentTechnologyService.findTests(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/tests/{technologyName}")

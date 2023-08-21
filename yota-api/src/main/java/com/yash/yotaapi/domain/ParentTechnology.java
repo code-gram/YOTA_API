@@ -1,6 +1,7 @@
 package com.yash.yotaapi.domain;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -84,7 +85,7 @@ public class ParentTechnology {
 	
 	@OneToMany(mappedBy = "technology",cascade = CascadeType.ALL,orphanRemoval = true)
 	@Transient
-	private Set<Test> test;
+	private List<Test> test;
 
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
@@ -106,4 +107,6 @@ public class ParentTechnology {
 	public ParentTechnology(Long technologyId) {
 		this.id = technologyId;
 	}
+	
+	private int testCount;
 }
