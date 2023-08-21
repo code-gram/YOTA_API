@@ -121,9 +121,15 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	@Override
 	public List<ParentTechnology> findTests() {
 		List<Test> tests = testRepository.findAll();
-		Map<ParentTechnology,List<Test>> map = tests.stream().collect(Collectors.groupingBy(t->t.getTechnology()));
+		Map<ParentTechnology,List<Test>> testMap = tests.stream().collect(Collectors.groupingBy(t->t.getTechnology()));
 		List<ParentTechnology> parentTechnologies =  parentTechnologyRepository.findAll();
-		parentTechnologies.forEach(e -> transform(e,map.get(e).size()));
+		parentTechnologies.forEach(e -> {
+            if (testMap.get(e)!=null) {
+            	 transform(e,testMap.get(e).size());
+            } else {
+            	transform(e,0);
+            }
+		});
 		return parentTechnologies;
 	}
 	
@@ -135,7 +141,7 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	}
 	
 	private void transform(ParentTechnology p, int count){
-	    p.setTestCount(count);
+			p.setTestCount(count);
 	}
 	
 
