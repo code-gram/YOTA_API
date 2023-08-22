@@ -61,5 +61,5 @@ public class Test {
 	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="id", nullable=false)
     private ParentTechnology technology;
-
 }
+
