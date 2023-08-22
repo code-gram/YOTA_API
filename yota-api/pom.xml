@@ -42,11 +42,11 @@
 			<artifactId>mysql-connector-j</artifactId>
 		</dependency>
 
-	<dependency>
-		<groupId>org.projectlombok</groupId>
-		<artifactId>lombok</artifactId>
-		<optional>true</optional>
-	</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -66,11 +66,11 @@
 			<version>2.9.2</version>
 
 		</dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-expression -->
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-expression</artifactId>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-expression -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,7 +96,7 @@
 
 
 	</dependencies>
-	<build> 
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
