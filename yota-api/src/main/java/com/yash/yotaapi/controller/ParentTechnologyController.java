@@ -1,6 +1,9 @@
 package com.yash.yotaapi.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.service.ParentTechnologyService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
@@ -141,5 +145,22 @@ public class ParentTechnologyController {
 			return errorMap;
 		}
 		return new ResponseEntity<ParentTechnology>(parentTechnologyService.updateTech(technology),HttpStatus.OK);
+	}
+	
+	/**
+	 * findTotalTests method is used to find total tests in every technology
+	 * @return Map of Technology name and number of tests available 
+	 */
+	
+	@GetMapping("/tests")
+	public ResponseEntity<?> findTotalTests() {
+		
+		return new ResponseEntity<List<ParentTechnology>>(parentTechnologyService.findTests(),HttpStatus.OK);
+	}
+	
+	@GetMapping("/tests/{technologyName}")
+	public ResponseEntity<?> findTestDetails(@PathVariable(value = "technologyName") String technologyName)
+	{
+		return new ResponseEntity<Set<Test>> (parentTechnologyService.getTestDetails(technologyName),HttpStatus.OK);
 	}
 }

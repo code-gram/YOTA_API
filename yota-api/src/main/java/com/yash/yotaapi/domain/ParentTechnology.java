@@ -1,15 +1,20 @@
 package com.yash.yotaapi.domain;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -77,6 +82,10 @@ public class ParentTechnology {
 	@DateTimeFormat(iso = ISO.DATE)
 	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date updatedAt;
+	
+	@OneToMany(mappedBy = "technology",cascade = CascadeType.ALL,orphanRemoval = true)
+	@Transient
+	private List<Test> test;
 
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
@@ -94,8 +103,10 @@ public class ParentTechnology {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
-
 	
+	public ParentTechnology(Long technologyId) {
+		this.id = technologyId;
+	}
 	
-	
+	private int testCount;
 }
