@@ -1,34 +1,18 @@
 package com.yash.yotaapi.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
-
-import ch.qos.logback.core.status.Status;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 /**
  * A controller basically controls the flow of the data. It controls the data
@@ -130,7 +114,8 @@ public class QuestionController {
 		
 		if(ExcelHelper.checkExcelFormat(file)) {
 			this.questionService.saveExcel(file);
-			return ResponseEntity.ok(Map.of("message","Excel File Uploaded Successfully"));
+		//	return ResponseEntity.ok(Map.of("message","Excel File Uploaded Successfully"));
+			return ResponseEntity.status(HttpStatus.OK).body("Excel File Uploaded Successfully.");
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
