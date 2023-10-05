@@ -138,4 +138,5 @@ public class AssociateDetailsController {
 	{
 		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword),HttpStatus.OK);
 		}
+
 }
