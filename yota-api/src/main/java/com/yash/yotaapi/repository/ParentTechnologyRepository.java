@@ -44,7 +44,5 @@ public interface ParentTechnologyRepository extends JpaRepository<ParentTechnolo
 	 */
 	@Query(value = "SELECT * FROM Parent_Technology e WHERE e.status=false ",nativeQuery = true) 
 	List<ParentTechnology> findAll();
-	
-	
 
 }

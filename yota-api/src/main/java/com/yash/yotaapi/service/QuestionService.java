@@ -1,7 +1,5 @@
 package com.yash.yotaapi.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.yash.yotaapi.domain.Question;
 
 /**
@@ -52,6 +50,4 @@ public interface QuestionService {
 	 * @return Updated Question
 	 */
 	public Question updateQuestion(Question question);
-	
-	public void saveExcel(MultipartFile file);
 }

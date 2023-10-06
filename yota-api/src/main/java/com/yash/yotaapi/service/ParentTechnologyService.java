@@ -1,11 +1,8 @@
 package com.yash.yotaapi.service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import com.yash.yotaapi.domain.ParentTechnology;
-import com.yash.yotaapi.domain.Test;
 
 /**
  * ParentTechnologyService will be performing business logic related to ParentTechnology
@@ -55,12 +52,4 @@ public interface ParentTechnologyService {
 	 */
 	List<ParentTechnology> searchTech(String keyword);
 
-	/**
-	 * This searchTech enables us to search free text get the list of technologies
-	 * @param keyword in upper case
-	 * @return if there are any ParentTechnology by that keyword
-	 */
-	List<ParentTechnology> findTests();
-
-	Set<Test> getTestDetails(String name);
 }

@@ -1,53 +1,52 @@
-/*
- * package com.yash.yotaapi.controller;
- * 
- * import org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.http.HttpStatus; import
- * org.springframework.http.ResponseEntity; import
- * org.springframework.security.authentication.AuthenticationManager; import
- * org.springframework.security.authentication.BadCredentialsException; import
- * org.springframework.security.authentication.
- * UsernamePasswordAuthenticationToken; import
- * org.springframework.security.core.userdetails.UserDetails; import
- * org.springframework.security.core.userdetails.UserDetailsService; import
- * org.springframework.web.bind.annotation.PostMapping; import
- * org.springframework.web.bind.annotation.RequestBody; import
- * org.springframework.web.bind.annotation.RequestMapping; import
- * org.springframework.web.bind.annotation.RestController;
- * 
- * import com.yash.yotaapi.springSecurity.JWTAuthResponse; import
- * com.yash.yotaapi.springSecurity.JWTTokenHelper; import
- * com.yash.yotaapi.springSecurity.JwtAuthRequest;
- * 
- * 
- * 
- * @RestController
- * 
- * @RequestMapping("/api/v1/auth/") public class AuthController {
- * 
- * @Autowired private JWTTokenHelper jwtTokenHelper;
- * 
- * @Autowired private UserDetailsService userDetailsService;
- * 
- * @Autowired private AuthenticationManager authenticationManager;
- * 
- * @PostMapping("/login") public ResponseEntity<JWTAuthResponse>
- * createToken(@RequestBody JwtAuthRequest request) throws Exception {
- * this.authenticate(request.getUsername(), request.getPassword()); UserDetails
- * userDetails =
- * this.userDetailsService.loadUserByUsername(request.getUsername()); String
- * token = this.jwtTokenHelper.generateToken(userDetails);
- * 
- * JWTAuthResponse response = new JWTAuthResponse(); response.setToken(token);
- * return new ResponseEntity<JWTAuthResponse>(response, HttpStatus.OK);
- * 
- * }
- * 
- * private void authenticate(String username, String password) throws Exception
- * { UsernamePasswordAuthenticationToken authenticationToken = new
- * UsernamePasswordAuthenticationToken(username, password); try {
- * this.authenticationManager.authenticate(authenticationToken); }
- * catch(BadCredentialsException e) {
- * System.out.println("Invalid Credentials !!"); throw new
- * Exception("Invalid username or password"); } } }
- */
+package com.yash.yotaapi.controller;
+
+import com.yash.yotaapi.domain.YotaUser;
+import com.yash.yotaapi.model.request.AuthenticationRequest;
+import com.yash.yotaapi.model.response.AuthenticationResponse;
+import com.yash.yotaapi.repository.YotaUserRepository;
+import com.yash.yotaapi.security.JWTService;
+import com.yash.yotaapi.security.YotaUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin("*")
+@RequestMapping("/yota/user")
+@RestController
+public class AuthController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private YotaUserRepository yotaUserRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private YotaUserDetailsService yotaUserDetailsService;
+    @Autowired
+    private JWTService jwtService;
+
+    @PostMapping(value = "/register")
+    public String registerYotaUser(@RequestBody YotaUser yotaUser){
+        yotaUser.setPassword(passwordEncoder.encode(yotaUser.getPassword()));
+        yotaUserRepository.save(yotaUser);
+        return "New User Registered Successfully";
+    }
+
+    @PostMapping("/authenticate")
+    public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        } catch (BadCredentialsException badCredentialsException) {
+            throw new Exception("Bad Credentials");
+        }
+        UserDetails userDetails = yotaUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        String token = jwtService.generateToken(userDetails);
+        AuthenticationResponse response = AuthenticationResponse.builder().authToken(token).build();
+        return response;
+    }
+}

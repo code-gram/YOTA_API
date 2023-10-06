@@ -113,8 +113,4 @@ public class Batch {
 		this.updatedAt = new Date();
 	}
 
-	
-	
-	
-
 }

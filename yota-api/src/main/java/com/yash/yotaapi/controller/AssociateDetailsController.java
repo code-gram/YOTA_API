@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.yash.yotaapi.domain.AssignedTest;
 import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.service.AssociateDetailsService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
@@ -140,23 +138,4 @@ public class AssociateDetailsController {
 	{
 		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword),HttpStatus.OK);
 		}
-	// for student dashboard
-	@GetMapping("/testlink/{stdid}")
-	public ResponseEntity<List<AssignedTest>> getAssignedTest1(@PathVariable long stdid) throws Exception {
-		List<AssignedTest> assignedTest = null;
-		try {
-			assignedTest = associateDetailsService.getAssociateTestList(stdid);
-
-			String numberoflink = assignedTest.get(0).getTestId();
-			String[] testnumber = numberoflink.split(",");
-
-			for (String test : testnumber) {
-				System.out.println("test no.-" + test);
-			}
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		return new ResponseEntity<List<AssignedTest>>(assignedTest, HttpStatus.OK);
-	}
 }

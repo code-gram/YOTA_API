@@ -1,13 +1,7 @@
 package com.yash.yotaapi.serviceimpl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -16,11 +10,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.domain.ParentTechnology;
-import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import com.yash.yotaapi.repository.ParentTechnologyRepository;
-import com.yash.yotaapi.repository.TestRepository;
 import com.yash.yotaapi.service.ParentTechnologyService;
 
 
@@ -36,9 +28,6 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 */
 	@Autowired
 	private ParentTechnologyRepository parentTechnologyRepository;
-	
-	@Autowired
-	private TestRepository testRepository;
 
 	/**
 	 * This method is for save ParentTechnology to DB through repository layer
@@ -117,32 +106,5 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 		}
 		return parentTechnologyRepository.getByNameContaining(keyword.toUpperCase());
 	}
-
-	@Override
-	public List<ParentTechnology> findTests() {
-		List<Test> tests = testRepository.findAll();
-		Map<ParentTechnology,List<Test>> testMap = tests.stream().collect(Collectors.groupingBy(t->t.getTechnology()));
-		List<ParentTechnology> parentTechnologies =  parentTechnologyRepository.findAll();
-		parentTechnologies.forEach(e -> {
-            if (testMap.get(e)!=null) {
-            	 transform(e,testMap.get(e).size());
-            } else {
-            	transform(e,0);
-            }
-		});
-		return parentTechnologies;
-	}
-	
-	@Override
-	public Set<Test> getTestDetails(String name)
-	{
-		ParentTechnology technology = parentTechnologyRepository.getByName(name);
-		return testRepository.findByTechnology(technology);
-	}
-	
-	private void transform(ParentTechnology p, int count){
-			p.setTestCount(count);
-	}
-	
 
 }
