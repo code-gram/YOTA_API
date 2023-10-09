@@ -30,7 +30,6 @@ public class ClientQuestionBankController {
 	@PostMapping("/add")
 	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody CreateClientQuestion question,
 			BindingResult result) {
-		System.out.println("ADD CLIENT QUESTION------------");
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if (errmap != null) {
 			return errmap;
@@ -41,7 +40,6 @@ public class ClientQuestionBankController {
 
 	@GetMapping("/getAllQuestion")
 	public Iterable<CreateClientQuestion> getAllQuestions() {
-		System.out.println("getAllQuestion");
 		return clientQuestionBankService.findAllQuestion();
 	}
 }
