@@ -3,9 +3,8 @@ package com.yash.yotaapi.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.yash.yotaapi.domain.CreateClient;
-
+import com.yash.yotaapi.domain.ClientQuestion;
 @Repository
-public interface CreateClientRespository extends JpaRepository<CreateClient, Long> {
+public interface ClientQuestionRepository extends JpaRepository<ClientQuestion, Long> {
 
 }

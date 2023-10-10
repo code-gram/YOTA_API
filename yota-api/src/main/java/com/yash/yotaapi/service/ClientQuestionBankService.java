@@ -1,11 +1,11 @@
 package com.yash.yotaapi.service;
 
-import com.yash.yotaapi.domain.CreateClientQuestion;
+import com.yash.yotaapi.domain.ClientQuestion;
 
 
 public interface ClientQuestionBankService {
 
-	public CreateClientQuestion saveOrUpdate(CreateClientQuestion question);
+	public ClientQuestion saveOrUpdate(ClientQuestion question);
 	
-	public Iterable<CreateClientQuestion> findAllQuestion();
+	public Iterable<ClientQuestion> findAllQuestion();
 }

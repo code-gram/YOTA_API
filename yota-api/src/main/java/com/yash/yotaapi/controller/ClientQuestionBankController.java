@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.yash.yotaapi.domain.CreateClientQuestion;
+import com.yash.yotaapi.domain.ClientQuestion;
 import com.yash.yotaapi.service.ClientQuestionBankService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Question Bank Controller", description = "Controller for Client Question Bank")
-@RequestMapping("/yota/api/clientQuestion")
+@RequestMapping("/yota/api")
 public class ClientQuestionBankController {
 
 	@Autowired
@@ -27,19 +27,19 @@ public class ClientQuestionBankController {
 	@Autowired
 	private FieldErrorValidationUtillity mapValidationErrorService;
 
-	@PostMapping("/add")
-	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody CreateClientQuestion question,
+	@PostMapping("/createQuestion")
+	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody ClientQuestion question,
 			BindingResult result) {
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if (errmap != null) {
 			return errmap;
 		}
-		CreateClientQuestion savedQuestion = clientQuestionBankService.saveOrUpdate(question);
-		return new ResponseEntity<CreateClientQuestion>(savedQuestion, HttpStatus.CREATED);
+		ClientQuestion savedQuestion = clientQuestionBankService.saveOrUpdate(question);
+		return new ResponseEntity<ClientQuestion>(savedQuestion, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/getAllQuestion")
-	public Iterable<CreateClientQuestion> getAllQuestions() {
+	@GetMapping("/questions")
+	public Iterable<ClientQuestion> getAllQuestions() {
 		return clientQuestionBankService.findAllQuestion();
 	}
 }
