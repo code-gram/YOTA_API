@@ -17,25 +17,25 @@ import com.yash.yotaapi.service.MasterService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/yota/api/master/fetch")
+@RequestMapping("/yota/api")
 public class MasterController {
 	
 	@Autowired
 	MasterService masterService;
 
 	@GetMapping("/unit")
-	public ResponseEntity<List<UnitMaster>> getAllUnits() {
-		return new ResponseEntity<>(masterService.getAllUnitDetails(), HttpStatus.OK);
+	public ResponseEntity<List<UnitMaster>> getUnits() {
+		return new ResponseEntity<>(masterService.getUnitDetails(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/competency")
-	public ResponseEntity<List<CompentencyMaster>> getAllCompetency() {
-		return new ResponseEntity<>(masterService.getAllCompetencyDetails(), HttpStatus.OK);
+	public ResponseEntity<List<CompentencyMaster>> getCompetencies() {
+		return new ResponseEntity<>(masterService.getCompetencyDetails(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/trainingtype")
-	public ResponseEntity<List<TrainingTypeMaster>> getAllTrainingType() {
-		return new ResponseEntity<>(masterService.getAllTrainingTypeDetails(), HttpStatus.OK);
+	public ResponseEntity<List<TrainingTypeMaster>> getTrainingTypes() {
+		return new ResponseEntity<>(masterService.getTrainingTypeDetails(), HttpStatus.OK);
 	}
 	
 }

@@ -11,9 +11,9 @@ import com.yash.yotaapi.domain.UnitMaster;
 //@Service
 public interface MasterService {
 
-	public List<UnitMaster> getAllUnitDetails();
+	public List<UnitMaster> getUnitDetails();
 
-	public List<CompentencyMaster> getAllCompetencyDetails();
+	public List<TrainingTypeMaster> getTrainingTypeDetails();
 
-	public List<TrainingTypeMaster> getAllTrainingTypeDetails();
+	public List<CompentencyMaster> getCompetencyDetails();
 }

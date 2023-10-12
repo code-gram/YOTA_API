@@ -27,7 +27,7 @@ public class MasterServiceImpl implements MasterService{
 	TrainingTypeMasterRepository trainingTypeMasterRepository;
 	
 	@Override
-	public List<UnitMaster> getAllUnitDetails() {
+	public List<UnitMaster> getUnitDetails() {
 		List<UnitMaster> unitMasters= unitMasterRepository.findAll();
 		if(unitMasters.isEmpty())
 			throw new NoDataFoundException("Unit Data not found!");
@@ -35,7 +35,7 @@ public class MasterServiceImpl implements MasterService{
 	}
 
 	@Override
-	public List<CompentencyMaster> getAllCompetencyDetails() {
+	public List<CompentencyMaster> getCompetencyDetails(){
 		List<CompentencyMaster> compentencyMasters= compentencyMasterRepository.findAll();
 		if(compentencyMasters.isEmpty())
 			throw new NoDataFoundException("Competency Data Not Found!");
@@ -43,7 +43,7 @@ public class MasterServiceImpl implements MasterService{
 	}
 
 	@Override
-	public List<TrainingTypeMaster> getAllTrainingTypeDetails() {
+	public List<TrainingTypeMaster> getTrainingTypeDetails() {
 		List<TrainingTypeMaster> trainingTypeMasters= trainingTypeMasterRepository.findAll();
 		if(trainingTypeMasters.isEmpty())
 			throw new NoDataFoundException("Training Type Data not found!");
