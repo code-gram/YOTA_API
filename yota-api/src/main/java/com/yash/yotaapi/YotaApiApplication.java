@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 @OpenAPIDefinition(info=@Info(title="YASH ONLINE TEST APPLICATION"))
 public class YotaApiApplication {
 
-	/**
-	 * 
-	 * @param args
-	 */
+	
 	public static void main(String[] args) {
 		SpringApplication.run(YotaApiApplication.class, args);
 	}
