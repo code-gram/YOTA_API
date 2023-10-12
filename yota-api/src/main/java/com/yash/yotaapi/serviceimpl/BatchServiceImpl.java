@@ -37,7 +37,7 @@ public class BatchServiceImpl implements BatchService {
 
 
 		batch.setBatchName(batch.getBatchName().toUpperCase());
-		batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
+		// batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
 		try {
 
 			return batchRepository.save(batch);
@@ -46,10 +46,6 @@ public class BatchServiceImpl implements BatchService {
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
 					"Batch with Name " + batch.getBatchName().toUpperCase() + " is already exists!!");
-		} catch (Exception e) {
-			throw new BatchIdException("Batch with batchIdentifier name " + batch.getBatchIdentifier().toUpperCase()
-					+ " is already exists!!");
-
 		}
 
 	}
@@ -92,30 +88,27 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	//@Transactional
+	// @Transactional
 	public Batch updateBatchDetails(Batch batch, long id) {
 
 		Batch batchDetails = batchRepository.findById(id).get();
-		
-		if(batchDetails==null) {
+
+		if (batchDetails == null) {
 			throw new BatchNotFoundException("Batch id: " + id + " is not present in Batch");
 		}
-		
+
 		else {
 			batchDetails.setBatchName(batch.getBatchName());
 			batchDetails.setBatchDescription(batch.getBatchDescription());
 			batchDetails.setStartDate(batch.getStartDate());
 			batchDetails.setEndDate(batch.getEndDate());
-			
-			Batch updateBatchDetails=batchRepository.save(batchDetails);
-			
+
+			Batch updateBatchDetails = batchRepository.save(batchDetails);
+
 			return updateBatchDetails;
 		}
-		 
+
 	}
-		
-		
-	
 
 	/*
 	 * This method temporally hide batch details for mention batch id by user.

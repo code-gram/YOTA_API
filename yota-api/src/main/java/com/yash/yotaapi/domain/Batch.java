@@ -49,10 +49,15 @@ public class Batch {
 	private long id;
 
 	/* batchIdentifier should not be empty and it not be null */
-	@NotEmpty(message = "Batch Identifier is manadatory")
-	@Column(unique = true, nullable = false, updatable = false)
-	@Size(min = 3, max = 12, message = "Batch identifer name should be inbetween 3 to 12 character only")
-	private String batchIdentifier;
+	/*
+	 * @NotEmpty(message = "Batch Identifier is manadatory")
+	 * 
+	 * @Column(unique = true, nullable = false, updatable = false)
+	 * 
+	 * @Size(min = 3, max = 12, message =
+	 * "Batch identifer name should be inbetween 3 to 12 character only") private
+	 * String batchIdentifier;
+	 */
 
 	/* batchName should not be empty or blank */
 	@NotEmpty(message = "Batch name is manadatory")
@@ -74,6 +79,27 @@ public class Batch {
 	@NotNull(message = "EndDate can not be null")
 	private Date endDate;
 
+	/*
+	 * @NotBlank(message = "Unit is mandatory")
+	 * 
+	 * @Column(name="unit") private String unit;
+	 * 
+	 * @NotBlank(message = "Compenetncy is mandatory")
+	 * 
+	 * @Column(name="compenetncy") private String competency;
+	 * 
+	 * @NotBlank(message = "Training Type is mandatory")
+	 * 
+	 * @Column(name="trainingType") private String trainingType;
+	 * 
+	 * @NotBlank(message = "Month is mandatory")
+	 * 
+	 * @Column(name="month") private String month;
+	 * 
+	 * @NotBlank(message = "Year is mandatory")
+	 * 
+	 * @Column(name="year") private String year;
+	 */
 	/*
 	 * CreatedDate is automatically generated at the time of create, No need to set
 	 * up manually.
@@ -112,5 +138,9 @@ public class Batch {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
+
+	
+	
+	
 
 }
