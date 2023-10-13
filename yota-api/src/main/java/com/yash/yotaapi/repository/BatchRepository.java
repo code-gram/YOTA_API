@@ -28,14 +28,14 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 	 * this method used to perform get batch for perticular bathc identifier
 	 * specified by user.
 	 */
-	public Batch getByBatchIdentifier(String batchIdentifier);
+	//public Batch getByBatchIdentifier(String batchIdentifier);
 
 	/*
 	 * perform CRUD operation find batch details from database according to batch
 	 * identifier name entered by user .
 	 */
 
-	public Batch findByBatchIdentifier(String batchIdentifier);
+	//public Batch findByBatchIdentifier(String batchIdentifier);
 
 	/* find batch details from database between two dates. */
 	@Query(value = "SELECT * FROM batch_management b WHERE b.start_date >= :startDate AND b.end_date <= :endDate", nativeQuery = true)

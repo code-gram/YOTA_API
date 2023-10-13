@@ -107,5 +107,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(NoDataFoundException.class)
+	public ResponseEntity<ExceptionResponse> noDataFoundException(NoDataFoundException e, WebRequest request) {
+
+		ExceptionResponse error = new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 }	
