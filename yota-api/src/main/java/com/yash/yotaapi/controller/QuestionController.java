@@ -142,7 +142,7 @@ public class QuestionController {
 		
 		if(ExcelHelper.checkExcelFormat(file)) {
 			this.questionService.saveExcel(file);
-			return ResponseEntity.ok(Map.of("message","Excel File Uploaded Successfully"));
+			return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
