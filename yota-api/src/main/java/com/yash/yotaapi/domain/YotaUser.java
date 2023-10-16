@@ -15,6 +15,12 @@ public class YotaUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
+    private String emailId;
+
     @Column(nullable = false, unique = true)
     private String username;
 
