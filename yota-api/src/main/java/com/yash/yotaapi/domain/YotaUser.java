@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "YOTA_USER")
 public class YotaUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
