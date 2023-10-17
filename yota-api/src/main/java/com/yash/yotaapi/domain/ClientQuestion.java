@@ -33,8 +33,10 @@ public class ClientQuestion {
 	
 	private String answer;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date created_At;
+//	@JsonFormat(pattern = "yyyy-MM-dd")
+//	private Date created_At;
+	
+	private String level;
 	
 	
 
