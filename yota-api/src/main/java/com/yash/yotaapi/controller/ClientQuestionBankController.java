@@ -50,12 +50,9 @@ public class ClientQuestionBankController {
 	
 	@PostMapping("/clientQuestionUpload")
 	public ResponseEntity<?> uploadClientExcelFile(@RequestParam("file") MultipartFile file) {
-
-		System.out.println("hello");
-		if (ExcelHelper.checkExcelFormat(file)) {
+       if (ExcelHelper.checkExcelFormat(file)) {
 			clientQuestionBankService.saveAll(file);
-		//	return ResponseEntity.ok(Map.of("message", "Excel File Uploaded Successfully"));
-			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 
