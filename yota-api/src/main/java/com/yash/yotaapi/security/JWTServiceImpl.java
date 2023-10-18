@@ -1,6 +1,7 @@
 package com.yash.yotaapi.security;
 
 import com.yash.yotaapi.domain.YotaUser;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -13,14 +14,19 @@ import java.security.Key;
 import java.util.*;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
 
     @Value("${token.signing.key}")
     private String signingKey;
 
     @Override
     public String extractUserName(String token) {
-        return null;
+        Claims claims = Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .parseClaimsJws(token)
+                .getBody();
+        String userName = claims.getSubject();
+        return userName;
     }
 
     @Override
@@ -30,7 +36,7 @@ public class JWTServiceImpl implements JWTService{
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return false;
+        return true;
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
