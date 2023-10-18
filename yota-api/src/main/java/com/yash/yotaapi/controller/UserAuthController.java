@@ -6,6 +6,7 @@ import com.yash.yotaapi.model.response.AuthenticationResponse;
 import com.yash.yotaapi.repository.YotaUserRepository;
 import com.yash.yotaapi.security.JWTService;
 import com.yash.yotaapi.security.YotaUserDetailsService;
+import com.yash.yotaapi.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,23 +18,18 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/yota/user")
 @RestController
-public class AuthController {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private YotaUserRepository yotaUserRepository;
+public class UserAuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private YotaUserDetailsService yotaUserDetailsService;
     @Autowired
     private JWTService jwtService;
-
+    @Autowired
+    private UserAuthService userAuthService;
     @PostMapping(value = "/register")
     public String registerYotaUser(@RequestBody YotaUser yotaUser){
-        yotaUser.setPassword(passwordEncoder.encode(yotaUser.getPassword()));
-        yotaUserRepository.save(yotaUser);
+        userAuthService.registerUser(yotaUser);
         return "New User Registered Successfully";
     }
 
@@ -46,7 +42,7 @@ public class AuthController {
         }
         UserDetails userDetails = yotaUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String token = jwtService.generateToken(userDetails);
-        AuthenticationResponse response = AuthenticationResponse.builder().authToken(token).build();
+        AuthenticationResponse response = AuthenticationResponse.builder().authToken("Bearer "+token).build();
         return response;
     }
 }

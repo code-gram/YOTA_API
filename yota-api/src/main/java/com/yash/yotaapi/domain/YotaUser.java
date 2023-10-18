@@ -16,18 +16,22 @@ public class YotaUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private String fullName;
+    private String name;
 
-    @Column(nullable = false, unique = true)
     private String emailId;
 
-    @Column(nullable = false, unique = true)
     private String username;
 
     private String password;
 
     private boolean enabled;
 
-    private String roles;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private UserRole role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "batch_id", referencedColumnName = "id")
+    private Batch batch;
+
 }
