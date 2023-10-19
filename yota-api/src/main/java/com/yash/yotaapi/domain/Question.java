@@ -33,7 +33,6 @@ import lombok.Setter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Question {
 
 	@Id
@@ -133,6 +132,6 @@ public class Question {
 	private Long parentTechnology_id;
 	
 	@Transient
-  public List<ParentTechnology> parentTechnology;
+  public List<TechnologyMaster> technologyMasters;
 
 }

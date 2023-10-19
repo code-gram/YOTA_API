@@ -1,12 +1,10 @@
 package com.yash.yotaapi.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.yash.yotaapi.serviceimpl.MasterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.domain.Question;
-import com.yash.yotaapi.service.ParentTechnologyService;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import ch.qos.logback.core.status.Status;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -43,12 +39,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
 @Tag(name = "Question Controller", description = "Controller for Question")
-
 @RequestMapping("/yota/api/questions")
 @RestController
-
 public class QuestionController {
-
 	@Autowired
 	private QuestionService questionService;
 
@@ -56,7 +49,7 @@ public class QuestionController {
 	private FieldErrorValidationUtillity mapValidationErrorService;
 	
 	@Autowired
-	private ParentTechnologyService parentTechnologyService;
+	private MasterServiceImpl.TechnologyMasterService technologyMasterService;
 
 	/**
 	 * This method will create new Question and save the question in DB.
@@ -67,8 +60,8 @@ public class QuestionController {
 	 */
 	
 	@GetMapping("/gettechList")
-	public List<ParentTechnology> loadForm() {		
-		List<ParentTechnology> lst = parentTechnologyService.getAllTechs();
+	public List<TechnologyMaster> loadForm() {
+		List<TechnologyMaster> lst = technologyMasterService.getAllTechs();
 		return lst;
 	}
 

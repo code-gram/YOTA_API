@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yash.yotaapi.domain.CompentencyMaster;
-import com.yash.yotaapi.domain.TrainingTypeMaster;
+import com.yash.yotaapi.domain.TrainingMaster;
 import com.yash.yotaapi.domain.UnitMaster;
 import com.yash.yotaapi.service.MasterService;
 
@@ -19,10 +19,8 @@ import com.yash.yotaapi.service.MasterService;
 @RestController
 @RequestMapping("/yota/api")
 public class MasterController {
-	
 	@Autowired
 	MasterService masterService;
-
 	@GetMapping("/unit")
 	public ResponseEntity<List<UnitMaster>> getUnits() {
 		return new ResponseEntity<>(masterService.getUnitDetails(), HttpStatus.OK);
@@ -34,7 +32,7 @@ public class MasterController {
 	}
 	
 	@GetMapping("/trainingtype")
-	public ResponseEntity<List<TrainingTypeMaster>> getTrainingTypes() {
+	public ResponseEntity<List<TrainingMaster>> getTrainingTypes() {
 		return new ResponseEntity<>(masterService.getTrainingTypeDetails(), HttpStatus.OK);
 	}
 	

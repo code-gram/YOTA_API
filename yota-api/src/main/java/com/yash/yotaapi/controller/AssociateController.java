@@ -30,14 +30,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * @author nitin.chougale
  */
 @CrossOrigin("*")
-
 @Tag(name="Associate Controller", description="Controller for Associate")
-
 @RestController
 @RequestMapping("/yota/api/associates")
-
-public class AssociateDetailsController {
-
+public class AssociateController {
 	@Autowired
 	private AssociateDetailsService associateDetailsService;
 
