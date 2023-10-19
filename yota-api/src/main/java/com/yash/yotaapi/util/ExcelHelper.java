@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
+import com.yash.yotaapi.domain.ClientQuestion;
 import com.yash.yotaapi.domain.Question;
 
 public class ExcelHelper {
@@ -33,7 +34,7 @@ public class ExcelHelper {
 			int rowNumber = 0;
 //			Iterator<Row> iterator = sheet.iterator();
 			Iterator<Row> iterator = sheet.iterator();
-			
+
 			while (iterator.hasNext()) {
 				Row row = iterator.next();
 
@@ -88,6 +89,62 @@ public class ExcelHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return questions;
+	}
+
+	public static List<ClientQuestion> convertExcelToListOfClientQuestion(InputStream inputStream) {
+
+		List<ClientQuestion> questions = new ArrayList<>();
+
+		try {
+			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = wb.getSheetAt(0);
+
+			int rowNumber = 0;
+			Iterator<Row> iterator = sheet.iterator();
+
+			while (iterator.hasNext()) {
+				Row row = iterator.next();
+
+				if (rowNumber == 0) {
+					rowNumber++;
+					continue;
+				}
+
+				Iterator<Cell> cells = row.iterator();
+				int cId = 0;
+
+				ClientQuestion ques = new ClientQuestion();
+
+				while (cells.hasNext()) {
+					Cell cell = cells.next();
+					switch (cId) {
+					case 0:
+						ques.setClientId(cell.getStringCellValue());
+						break;
+					case 1:
+						ques.setTechnologyId(cell.getStringCellValue());
+						break;
+					case 2:
+						ques.setClientQuestion(cell.getStringCellValue());
+						break;
+					case 3:
+						ques.setAnswer(cell.getStringCellValue());
+						break;
+					case 4:
+						ques.setLevel(cell.getStringCellValue());
+						break;
+					default:
+						break;
+					}
+					cId++;
+				}
+				questions.add(ques);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return questions;
 	}
 }
