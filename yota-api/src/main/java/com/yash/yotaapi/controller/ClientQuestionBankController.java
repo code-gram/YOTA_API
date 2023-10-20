@@ -1,5 +1,7 @@
 package com.yash.yotaapi.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.yash.yotaapi.domain.ClientQuestion;
+import com.yash.yotaapi.domain.ClientQuestions;
 import com.yash.yotaapi.service.ClientQuestionBankService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
@@ -33,28 +34,32 @@ public class ClientQuestionBankController {
 	private FieldErrorValidationUtillity mapValidationErrorService;
 
 	@PostMapping("/createQuestion")
-	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody ClientQuestion question,
-			BindingResult result) {
-		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
-		if (errmap != null) {
-			return errmap;
+	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody ClientQuestions question, BindingResult result) {
+		List<ClientQuestion> list = new ArrayList<>();
+		ClientQuestion cq = new ClientQuestion();
+		for (int i = 0; i < question.getClientQuestions().size(); i++) {
+			cq = new ClientQuestion();
+			cq.setAnswer((question.getClientQuestions().get(i)).getAnswer());
+			cq.setQuestion((question.getClientQuestions().get(i)).getQuestion());
+			list.add(cq);
 		}
-		ClientQuestion savedQuestion = clientQuestionBankService.saveOrUpdate(question);
-		return new ResponseEntity<ClientQuestion>(savedQuestion, HttpStatus.CREATED);
+		List<ClientQuestion> savedQuestion = clientQuestionBankService.saveall(list);
+		return new ResponseEntity<>(savedQuestion, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/questions")
+	@GetMapping("/clientQuestions")
 	public Iterable<ClientQuestion> getAllQuestions() {
 		return clientQuestionBankService.findAllQuestion();
 	}
-	
+
 	@PostMapping("/clientQuestionUpload")
 	public ResponseEntity<?> uploadClientExcelFile(@RequestParam("file") MultipartFile file) {
-       if (ExcelHelper.checkExcelFormat(file)) {
+		if (ExcelHelper.checkExcelFormat(file)) {
 			clientQuestionBankService.saveAll(file);
-		return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 
 	}
+
 }
