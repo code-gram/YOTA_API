@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yash.yotaapi.domain.ClientQuestion;
+import com.yash.yotaapi.exception.QuestionException;
 import com.yash.yotaapi.repository.ClientQuestionRepository;
 import com.yash.yotaapi.service.ClientQuestionBankService;
 import com.yash.yotaapi.util.ExcelHelper;
@@ -43,7 +44,11 @@ public class ClientQuestionBankServiceImpl implements ClientQuestionBankService 
 
 	@Override
 	public ClientQuestion saveOrUpdate(ClientQuestion question) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return createClientQuestionRepository.save(question);
+
+		} catch (Exception ex) {
+			throw new QuestionException("Question : " + question.getClientQuestion() + " already exixts");
+		}
 	}
 }
