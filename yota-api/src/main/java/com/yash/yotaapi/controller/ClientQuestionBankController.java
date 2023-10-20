@@ -48,12 +48,12 @@ public class ClientQuestionBankController {
 	}
 
 	@GetMapping("/clientQuestions")
-	public Iterable<ClientQuestion> getAllQuestions() {
+	public Iterable<ClientQuestion> getClientQuestions() {
 		return clientQuestionBankService.findAllQuestion();
 	}
 
 	@PostMapping("/clientQuestionUpload")
-	public ResponseEntity<?> uploadClientExcelFile(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<?> uploadClientQuestionExcelFile(@RequestParam("file") MultipartFile file) {
 		if (ExcelHelper.checkExcelFormat(file)) {
 			clientQuestionBankService.saveAll(file);
 			return new ResponseEntity<>(HttpStatus.OK);
