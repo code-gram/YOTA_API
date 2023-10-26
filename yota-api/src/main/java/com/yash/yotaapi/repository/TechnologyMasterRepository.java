@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.TechnologyMaster;
 
 /**
  * ParentTechnologyRepository will perform all the CRUD Operations on ParentTechnology. 
@@ -16,7 +16,7 @@ import com.yash.yotaapi.domain.ParentTechnology;
  * @author pankaj.ssharma
  *
  */
-public interface ParentTechnologyRepository extends JpaRepository<ParentTechnology, Long>{
+public interface TechnologyMasterRepository extends JpaRepository<TechnologyMaster, Long>{
 
 	/**
 	 * deleteByName method will delete the ParentTechnology by name
@@ -30,19 +30,19 @@ public interface ParentTechnologyRepository extends JpaRepository<ParentTechnolo
 	 * @param name of the ParentTechnology to be searched
 	 * @return ParentTechnology object if found otherwise null
 	 */
-	ParentTechnology getByName(String name);
+	TechnologyMaster getByName(String name);
 
 	/**
 	 * getByNameContaining method will be used to search ParentTechnology based on the keyword provided
 	 * @param keyword to be searched in ParentTechnology
 	 * @return List of ParentTechnologies if found otherwise null
 	 */
-	List<ParentTechnology> getByNameContaining(String keyword);
+	List<TechnologyMaster> getByNameContaining(String keyword);
 	/**
 	 * findAll method here is customized according to status of that Technology 
 	 * @return List of ParentTechnologies if status is false it will return in form of List But if it true then it won't return that Technology
 	 */
 	@Query(value = "SELECT * FROM Parent_Technology e WHERE e.status=false ",nativeQuery = true) 
-	List<ParentTechnology> findAll();
+	List<TechnologyMaster> findAll();
 
 }

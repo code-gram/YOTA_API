@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.domain.CompentencyMaster;
-import com.yash.yotaapi.domain.TrainingTypeMaster;
+import com.yash.yotaapi.domain.TrainingMaster;
 import com.yash.yotaapi.domain.UnitMaster;
 import com.yash.yotaapi.exception.NoDataFoundException;
 import com.yash.yotaapi.repository.CompentencyMasterRepository;
-import com.yash.yotaapi.repository.TrainingTypeMasterRepository;
+import com.yash.yotaapi.repository.TrainingMasterRepository;
 import com.yash.yotaapi.repository.UnitMasterRepository;
 import com.yash.yotaapi.service.MasterService;
 
@@ -24,7 +24,7 @@ public class MasterServiceImpl implements MasterService{
 	CompentencyMasterRepository compentencyMasterRepository;
 	
 	@Autowired
-	TrainingTypeMasterRepository trainingTypeMasterRepository;
+	TrainingMasterRepository trainingTypeMasterRepository;
 	
 	@Override
 	public List<UnitMaster> getUnitDetails() {
@@ -43,8 +43,8 @@ public class MasterServiceImpl implements MasterService{
 	}
 
 	@Override
-	public List<TrainingTypeMaster> getTrainingTypeDetails() {
-		List<TrainingTypeMaster> trainingTypeMasters= trainingTypeMasterRepository.findAll();
+	public List<TrainingMaster> getTrainingTypeDetails() {
+		List<TrainingMaster> trainingTypeMasters= trainingTypeMasterRepository.findAll();
 		if(trainingTypeMasters.isEmpty())
 			throw new NoDataFoundException("Training Type Data not found!");
 		return trainingTypeMasters;

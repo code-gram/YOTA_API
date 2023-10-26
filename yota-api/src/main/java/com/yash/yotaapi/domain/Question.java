@@ -130,9 +130,9 @@ public class Question {
 		this.updated_At = new Date();
 	}
 	
-	private Long parentTechnology_id;
+	private Long technologyId;
 	
 	@Transient
-  public List<ParentTechnology> parentTechnology;
+  public List<TechnologyMaster> technologyMasters;
 
 }

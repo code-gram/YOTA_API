@@ -1,9 +1,6 @@
 package com.yash.yotaapi.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.domain.Question;
-import com.yash.yotaapi.service.ParentTechnologyService;
+import com.yash.yotaapi.service.TechnologyMasterService;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
-import ch.qos.logback.core.status.Status;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -56,7 +52,7 @@ public class QuestionController {
 	private FieldErrorValidationUtillity mapValidationErrorService;
 	
 	@Autowired
-	private ParentTechnologyService parentTechnologyService;
+	private TechnologyMasterService technologyMasterService;
 
 	/**
 	 * This method will create new Question and save the question in DB.
@@ -67,8 +63,8 @@ public class QuestionController {
 	 */
 	
 	@GetMapping("/gettechList")
-	public List<ParentTechnology> loadForm() {		
-		List<ParentTechnology> lst = parentTechnologyService.getAllTechs();
+	public List<TechnologyMaster> loadForm() {
+		List<TechnologyMaster> lst = technologyMasterService.getAllTechs();
 		return lst;
 	}
 
