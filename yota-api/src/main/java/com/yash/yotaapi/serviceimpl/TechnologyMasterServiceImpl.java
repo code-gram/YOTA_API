@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
-import com.yash.yotaapi.repository.ParentTechnologyRepository;
-import com.yash.yotaapi.service.ParentTechnologyService;
+import com.yash.yotaapi.repository.TechnologyMasterRepository;
+import com.yash.yotaapi.service.TechnologyMasterService;
 
 
 /**This is service layer class for Parent Technology to write business logic
@@ -21,22 +21,22 @@ import com.yash.yotaapi.service.ParentTechnologyService;
  *
  */
 @Service
-public class ParentTechnologyServiceImpl implements ParentTechnologyService{
+public class TechnologyMasterServiceImpl implements TechnologyMasterService {
 	
 	/**
 	 * ParentTechnologyRepository is used to interact service layer with repository layer.
 	 */
 	@Autowired
-	private ParentTechnologyRepository parentTechnologyRepository;
+	private TechnologyMasterRepository technologyMasterRepository;
 
 	/**
 	 * This method is for save ParentTechnology to DB through repository layer
 	 */
 	@Override
-	public ParentTechnology save(ParentTechnology technology) {
+	public TechnologyMaster save(TechnologyMaster technology) {
 		try {
 			technology.setName(technology.getName().toUpperCase());
-			return parentTechnologyRepository.save(technology);
+			return technologyMasterRepository.save(technology);
 		} catch (DataIntegrityViolationException e) {
 			throw new ParentTechnologyException("Technology with Name  "+technology.getName().toUpperCase()+" already exists!!");
 		}
@@ -46,8 +46,8 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 * This method is for get all ParentTechnologies from DB through repository layer
 	 */
 	@Override
-	public List<ParentTechnology> getAllTechs() {
-		return parentTechnologyRepository.findAll();
+	public List<TechnologyMaster> getAllTechs() {
+		return technologyMasterRepository.findAll();
 	}
 
 	/**
@@ -57,11 +57,11 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	@Transactional
 	public void removeTech(long id) {
 		try {
-			parentTechnologyRepository.findById(id).get();
+			technologyMasterRepository.findById(id).get();
 		} catch (NoSuchElementException e) {
 			throw new ParentTechnologyException("Technology with ID :"+id+" does not exist");
 		}
-		parentTechnologyRepository.deleteById(id);
+		technologyMasterRepository.deleteById(id);
 		
 	}
 	
@@ -70,15 +70,15 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 */
 	@Override
 	@Transactional
-	public ParentTechnology updateTech(ParentTechnology technology) {
-		ParentTechnology existParentTechnology=parentTechnologyRepository.getByName(technology.getName());
+	public TechnologyMaster updateTech(TechnologyMaster technology) {
+		TechnologyMaster existParentTechnology= technologyMasterRepository.getByName(technology.getName());
 		if (existParentTechnology==null) {
-			return parentTechnologyRepository.save(technology);
+			return technologyMasterRepository.save(technology);
 		} else {
 			existParentTechnology.setName(technology.getName());
 			existParentTechnology.setShortDescription(technology.getShortDescription());
 			existParentTechnology.setStatus(technology.isStatus());
-			parentTechnologyRepository.save(existParentTechnology);
+			technologyMasterRepository.save(existParentTechnology);
 		}
 		return technology;
 	}
@@ -87,8 +87,8 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 * This method is for get ParentTechnology from DB through repository layer on basis of name only.
 	 */
 	@Override
-	public ParentTechnology getTech(String name) {
-		ParentTechnology technology=parentTechnologyRepository.getByName(name.toUpperCase());
+	public TechnologyMaster getTech(String name) {
+		TechnologyMaster technology= technologyMasterRepository.getByName(name.toUpperCase());
 		if (technology==null) {
 			throw new ParentTechnologyNotFoundException("Technology with name : "+name+" does not exist");
 		}
@@ -99,12 +99,12 @@ public class ParentTechnologyServiceImpl implements ParentTechnologyService{
 	 * This method is for get ParentTechnology from DB through repository layer on basis of keyword only.
 	 */
 	@Override
-	public List<ParentTechnology> searchTech(String keyword) {
-		List<ParentTechnology> list=parentTechnologyRepository.getByNameContaining(keyword.toUpperCase());
+	public List<TechnologyMaster> searchTech(String keyword) {
+		List<TechnologyMaster> list= technologyMasterRepository.getByNameContaining(keyword.toUpperCase());
 		if (list.isEmpty()) {
 			throw new ParentTechnologyNotFoundException("Technology containing keyword  : "+keyword+" does not exist");
 		}
-		return parentTechnologyRepository.getByNameContaining(keyword.toUpperCase());
+		return technologyMasterRepository.getByNameContaining(keyword.toUpperCase());
 	}
 
 }

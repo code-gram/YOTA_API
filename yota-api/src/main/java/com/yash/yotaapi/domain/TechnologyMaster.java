@@ -38,7 +38,7 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-public class ParentTechnology {
+public class TechnologyMaster {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

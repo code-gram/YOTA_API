@@ -2,27 +2,27 @@ package com.yash.yotaapi.service;
 
 import java.util.List;
 
-import com.yash.yotaapi.domain.ParentTechnology;
+import com.yash.yotaapi.domain.TechnologyMaster;
 
 /**
  * ParentTechnologyService will be performing business logic related to ParentTechnology
  * @author pankaj.ssharma
  *
  */
-public interface ParentTechnologyService {
+public interface TechnologyMasterService {
 
 	/**
 	 * save method will save the ParentTechnology. If same technology is already available then it should throw relevant exception.
 	 * @param technology to be saved
 	 * @return Saved ParentTechnology, it should hold the id of the new ParentTechnology saved in DB
 	 */
-	ParentTechnology save(ParentTechnology technology);
+	TechnologyMaster save(TechnologyMaster technology);
 
 	/**
 	 * getAllTechs method will fetch all ParentTechnologies from DB
 	 * @return List of ParentTechnology
 	 */
-	List<ParentTechnology> getAllTechs();
+	List<TechnologyMaster> getAllTechs();
 
 	/**
 	 * removeTech method will remove the technology that is mentioned
@@ -36,20 +36,20 @@ public interface ParentTechnologyService {
 	 * @param technology to be updated
 	 * @return Updated ParentTechnology
 	 */
-	ParentTechnology updateTech(ParentTechnology technology);
+	TechnologyMaster updateTech(TechnologyMaster technology);
 
 	/**
 	 * this getTech method will get the technology detail from 
 	 * DB based on its name only
 	 * @return ParentTechnolgy
 	 */
-	ParentTechnology getTech(String name);
+	TechnologyMaster getTech(String name);
 	
 	/**
 	 * This searchTech enables us to search free text get the list of technologies
 	 * @param keyword in upper case
 	 * @return if there are any ParentTechnology by that keyword
 	 */
-	List<ParentTechnology> searchTech(String keyword);
+	List<TechnologyMaster> searchTech(String keyword);
 
 }
