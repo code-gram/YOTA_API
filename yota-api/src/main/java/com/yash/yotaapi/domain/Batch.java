@@ -1,6 +1,5 @@
 package com.yash.yotaapi.domain;
 
-
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,15 +48,10 @@ public class Batch {
 	private long id;
 
 	/* batchIdentifier should not be empty and it not be null */
-	/*
-	 * @NotEmpty(message = "Batch Identifier is manadatory")
-	 * 
-	 * @Column(unique = true, nullable = false, updatable = false)
-	 * 
-	 * @Size(min = 3, max = 12, message =
-	 * "Batch identifer name should be inbetween 3 to 12 character only") private
-	 * String batchIdentifier;
-	 */
+	//@NotEmpty(message = "Batch Identifier is manadatory")
+	//@Column(unique = true, nullable = false, updatable = false)
+	@Size(min = 3, max = 25, message = "Batch identifer name should be inbetween 3 to 25 character only")
+	private String batchIdentifier;
 
 	/* batchName should not be empty or blank */
 	@NotEmpty(message = "Batch name is manadatory")
@@ -138,9 +132,5 @@ public class Batch {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
-
-	
-	
-	
 
 }

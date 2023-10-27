@@ -17,6 +17,7 @@ import com.yash.yotaapi.exception.BatchNotFoundException;
 import com.yash.yotaapi.exception.DateInValidException;
 import com.yash.yotaapi.repository.BatchRepository;
 import com.yash.yotaapi.service.BatchService;
+import com.yash.yotaapi.util.UniqueNameGenerator;
 
 
 @Service
@@ -26,28 +27,23 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
-	
-	
-
-	
 
 	/* This method is used to store value into database */
 	@Override
 	public Batch createBatch(Batch batch) {
-
-
 		batch.setBatchName(batch.getBatchName().toUpperCase());
-		// batch.setBatchIdentifier(batch.getBatchIdentifier().toUpperCase());
+		String input = batch.getBatchName().toUpperCase();
+		String[] parts = input.split("-");
+		if (parts.length > 1) {
+			String wordAfterHyphen = parts[1];
+			batch.setBatchIdentifier(UniqueNameGenerator.generateUniqueName("Pankaj Sharma", wordAfterHyphen));
+		}
 		try {
-
 			return batchRepository.save(batch);
-
-
 		} catch (DataIntegrityViolationException e) {
 			throw new BatchNotFoundException(
 					"Batch with Name " + batch.getBatchName().toUpperCase() + " is already exists!!");
 		}
-
 	}
 
 	/* This menthod us used to display all batch details from database. */

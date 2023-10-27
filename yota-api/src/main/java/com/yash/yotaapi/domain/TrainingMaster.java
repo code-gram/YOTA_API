@@ -18,6 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "Training_Type_Master")
 @Setter
 @Getter
 @ToString
