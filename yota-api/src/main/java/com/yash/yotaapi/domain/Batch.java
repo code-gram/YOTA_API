@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -115,6 +116,9 @@ public class Batch {
 
 	/* set boolean flag for soft delete */
 	private boolean status = Boolean.FALSE;
+	
+	@Transient
+	private String userName;
 
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
