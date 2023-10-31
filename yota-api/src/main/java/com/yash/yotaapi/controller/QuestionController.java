@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.domain.Question;
+import com.yash.yotaapi.service.TechnologyMasterService;
 import com.yash.yotaapi.service.QuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
@@ -49,7 +50,7 @@ public class QuestionController {
 	private FieldErrorValidationUtillity mapValidationErrorService;
 	
 	@Autowired
-	private MasterServiceImpl.TechnologyMasterService technologyMasterService;
+	private TechnologyMasterService technologyMasterService;
 
 	/**
 	 * This method will create new Question and save the question in DB.
@@ -134,7 +135,7 @@ public class QuestionController {
 	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
 		
 		if(ExcelHelper.checkExcelFormat(file)) {
-			this.questionService.saveExcel(file);
+			questionService.saveExcel(file);
 			return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");

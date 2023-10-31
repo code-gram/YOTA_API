@@ -40,53 +40,41 @@ public class Question {
 	private Long id;
 
 	/**
-	 * Question type of the Question should not be empty
+	 * Question should not be empty
 	 */
-
-	@NotBlank(message = "Question type is required")
-	private String questionType;
-
+	@NotBlank(message = "Question is required")
+	private String question;
+	
 	/**
 	 * Question level of the Question should not be empty
 	 */
 	@NotBlank(message = "Question level is required")
 	private String questionLevel;
-
-	/**
-	 * Question should not be empty
-	 */
-	@NotBlank(message = "Question is required")
-	private String question;
-
-	/**
-	 * Answer type should not be empty
-	 */
-	@NotBlank(message = "Answer type is required")
-	private String answerType;
+	
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option A is required")
-	private String a;
+	private String option_A;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option B is required")
-	private String b;
+	private String option_B;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option C is required")
-	private String c;
+	private String option_C;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option D is required")
-	private String d;
+	private String option_D;
 
 	/**
 	 * Answer of the Question should not be empty
@@ -129,7 +117,7 @@ public class Question {
 		this.updated_At = new Date();
 	}
 	
-	private Long parentTechnology_id;
+	private Long technologyId;
 	
 	@Transient
   public List<TechnologyMaster> technologyMasters;

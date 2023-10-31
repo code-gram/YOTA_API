@@ -26,7 +26,7 @@ public class MasterServiceImpl implements MasterService{
 	
 	@Autowired
 	TrainingMasterRepository trainingMasterRepository;
-	
+
 	@Override
 	public List<UnitMaster> getUnitDetails() {
 		List<UnitMaster> unitMasters= unitMasterRepository.findAll();

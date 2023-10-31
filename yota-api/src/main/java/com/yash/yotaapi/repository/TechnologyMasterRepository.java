@@ -42,7 +42,7 @@ public interface TechnologyMasterRepository extends JpaRepository<TechnologyMast
 	 * findAll method here is customized according to status of that Technology 
 	 * @return List of ParentTechnologies if status is false it will return in form of List But if it true then it won't return that Technology
 	 */
-	@Query(value = "select * from technology_master e where e.status=false ",nativeQuery = true)
+	@Query(value = "select * from technology_master where status=false ",nativeQuery = true)
 	List<TechnologyMaster> findAll();
 
 }

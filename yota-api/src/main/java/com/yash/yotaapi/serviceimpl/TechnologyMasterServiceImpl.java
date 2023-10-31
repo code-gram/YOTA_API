@@ -13,6 +13,7 @@ import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import com.yash.yotaapi.repository.TechnologyMasterRepository;
+import com.yash.yotaapi.service.TechnologyMasterService;
 
 
 /**This is service layer class for Parent Technology to write business logic
@@ -20,8 +21,9 @@ import com.yash.yotaapi.repository.TechnologyMasterRepository;
  *
  */
 @Service
-public class TechnologyMasterServiceImpl implements MasterServiceImpl.TechnologyMasterService {
-	
+
+public class TechnologyMasterServiceImpl implements TechnologyMasterService {
+
 	/**
 	 * ParentTechnologyRepository is used to interact service layer with repository layer.
 	 */
