@@ -61,16 +61,16 @@ public class ExcelHelper {
 						ques.setQuestionLevel(cell.getStringCellValue());
 						break;
 					case 3:
-						ques.setA(cell.getStringCellValue());
+						ques.setOption_A(cell.getStringCellValue());
 						break;
 					case 4:
-						ques.setB(cell.getStringCellValue());
+						ques.setOption_B(cell.getStringCellValue());
 						break;
 					case 5:
-						ques.setC(cell.getStringCellValue());
+						ques.setOption_C(cell.getStringCellValue());
 						break;
 					case 6:
-						ques.setD(cell.getStringCellValue());
+						ques.setOption_D(cell.getStringCellValue());
 						break;
 					case 7:
 						ques.setCorrectAnswer(cell.getStringCellValue());

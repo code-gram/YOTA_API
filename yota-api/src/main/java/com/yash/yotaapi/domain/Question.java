@@ -57,25 +57,25 @@ public class Question {
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option A is required")
-	private String a;
+	private String option_A;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option B is required")
-	private String b;
+	private String option_B;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option C is required")
-	private String c;
+	private String option_C;
 
 	/**
 	 * Option should not be empty
 	 */
 	@NotBlank(message = "Option D is required")
-	private String d;
+	private String option_D;
 
 	/**
 	 * Answer of the Question should not be empty

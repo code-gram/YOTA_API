@@ -104,10 +104,10 @@ public class QuestionServiceImpl implements QuestionService {
 		} else {
 			existQuestion.setId(question.getId());
 			existQuestion.setQuestionLevel(question.getQuestionLevel());
-			existQuestion.setA(question.getA());
-			existQuestion.setB(question.getB());
-			existQuestion.setC(question.getC());
-			existQuestion.setD(question.getD());
+			existQuestion.setOption_A(question.getOption_A());
+			existQuestion.setOption_B(question.getOption_B());
+			existQuestion.setOption_C(question.getOption_C());
+			existQuestion.setOption_D(question.getOption_D());
 			existQuestion.setQuestion(question.getQuestion());
 			existQuestion.setCorrectAnswer(question.getCorrectAnswer());
 			/*
