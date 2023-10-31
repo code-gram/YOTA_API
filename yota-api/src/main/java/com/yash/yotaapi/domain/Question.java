@@ -41,29 +41,17 @@ public class Question {
 	private Long id;
 
 	/**
-	 * Question type of the Question should not be empty
+	 * Question should not be empty
 	 */
-
-	@NotBlank(message = "Question type is required")
-	private String questionType;
-
+	@NotBlank(message = "Question is required")
+	private String question;
+	
 	/**
 	 * Question level of the Question should not be empty
 	 */
 	@NotBlank(message = "Question level is required")
 	private String questionLevel;
-
-	/**
-	 * Question should not be empty
-	 */
-	@NotBlank(message = "Question is required")
-	private String question;
-
-	/**
-	 * Answer type should not be empty
-	 */
-	@NotBlank(message = "Answer type is required")
-	private String answerType;
+	
 
 	/**
 	 * Option should not be empty

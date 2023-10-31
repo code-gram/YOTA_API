@@ -137,7 +137,7 @@ public class QuestionController {
 	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
 		
 		if(ExcelHelper.checkExcelFormat(file)) {
-			this.questionService.saveExcel(file);
+			questionService.saveExcel(file);
 			return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");

@@ -103,7 +103,6 @@ public class QuestionServiceImpl implements QuestionService {
 			return questionRepository.save(question);
 		} else {
 			existQuestion.setId(question.getId());
-			existQuestion.setQuestionType(question.getQuestionType());
 			existQuestion.setQuestionLevel(question.getQuestionLevel());
 			existQuestion.setA(question.getA());
 			existQuestion.setB(question.getB());
