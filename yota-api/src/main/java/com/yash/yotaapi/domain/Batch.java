@@ -1,6 +1,5 @@
 package com.yash.yotaapi.domain;
 
-
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -49,15 +49,10 @@ public class Batch {
 	private long id;
 
 	/* batchIdentifier should not be empty and it not be null */
-	/*
-	 * @NotEmpty(message = "Batch Identifier is manadatory")
-	 * 
-	 * @Column(unique = true, nullable = false, updatable = false)
-	 * 
-	 * @Size(min = 3, max = 12, message =
-	 * "Batch identifer name should be inbetween 3 to 12 character only") private
-	 * String batchIdentifier;
-	 */
+	//@NotEmpty(message = "Batch Identifier is manadatory")
+	//@Column(unique = true, nullable = false, updatable = false)
+	@Size(min = 3, max = 25, message = "Batch identifer name should be inbetween 3 to 25 character only")
+	private String batchIdentifier;
 
 	/* batchName should not be empty or blank */
 	@NotEmpty(message = "Batch name is manadatory")
@@ -121,6 +116,9 @@ public class Batch {
 
 	/* set boolean flag for soft delete */
 	private boolean status = Boolean.FALSE;
+	
+	@Transient
+	private String userName;
 
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
@@ -138,9 +136,5 @@ public class Batch {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
-
-	
-	
-	
 
 }
