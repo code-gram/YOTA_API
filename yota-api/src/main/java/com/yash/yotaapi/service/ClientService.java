@@ -8,4 +8,10 @@ public interface ClientService {
 
 	public Iterable<Client> findAllQuestion();
 
+	public void removeClient(long id);
+
+	public Client updateClientDetails(Client client, long id);
+
+	public Client getClient(long id);
+
 }

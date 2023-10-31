@@ -1,8 +1,8 @@
 package com.yash.yotaapi.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yash.yotaapi.domain.ClientQuestion;
 
@@ -15,4 +15,7 @@ public interface ClientQuestionBankService {
 	public Iterable<ClientQuestion> findAllQuestion();
 
 	public void saveAll(MultipartFile file);
+
+	public List<ClientQuestion> getClientQuestions(long clientId);
+
 }

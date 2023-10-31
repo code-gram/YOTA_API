@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,28 +20,27 @@ import com.yash.yotaapi.domain.ClientQuestion;
 import com.yash.yotaapi.domain.ClientQuestions;
 import com.yash.yotaapi.service.ClientQuestionBankService;
 import com.yash.yotaapi.util.ExcelHelper;
-import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Question Bank Controller", description = "Controller for Client Question Bank")
-@RequestMapping("/yota/api")
+@RequestMapping("/yota/api/clientQuestion/")
 public class ClientQuestionBankController {
 
 	@Autowired
 	ClientQuestionBankService clientQuestionBankService;
-	@Autowired
-	private FieldErrorValidationUtillity mapValidationErrorService;
 
 	@PostMapping("/createQuestion")
 	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody ClientQuestions question, BindingResult result) {
+		
 		List<ClientQuestion> list = new ArrayList<>();
 		ClientQuestion cq = new ClientQuestion();
 		for (int i = 0; i < question.getClientQuestions().size(); i++) {
 			cq = new ClientQuestion();
 			cq.setAnswer((question.getClientQuestions().get(i)).getAnswer());
 			cq.setQuestion((question.getClientQuestions().get(i)).getQuestion());
+			cq.setClientId((question.getClientQuestions().get(i)).getClientId());
 			list.add(cq);
 		}
 		List<ClientQuestion> savedQuestion = clientQuestionBankService.saveall(list);
@@ -49,6 +49,7 @@ public class ClientQuestionBankController {
 
 	@GetMapping("/clientQuestions")
 	public Iterable<ClientQuestion> getClientQuestions() {
+		
 		return clientQuestionBankService.findAllQuestion();
 	}
 
@@ -60,6 +61,13 @@ public class ClientQuestionBankController {
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 
+	}
+
+	@GetMapping("/{clientId}")
+	public ResponseEntity<?> findQuestionById(@PathVariable long clientId) {
+
+		List<ClientQuestion> details = clientQuestionBankService.getClientQuestions(clientId);
+		return ResponseEntity.ok().body(details);
 	}
 
 }
