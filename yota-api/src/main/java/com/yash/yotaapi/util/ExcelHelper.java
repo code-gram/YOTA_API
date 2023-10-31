@@ -27,7 +27,7 @@ public class ExcelHelper {
 
 		try {
 			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-			XSSFSheet sheet = workbook.getSheet("questionData");	
+			XSSFSheet sheet = workbook.getSheetAt(0);	
 			
 
 
@@ -53,30 +53,26 @@ public class ExcelHelper {
 
 					switch (cId) {
 					case 0:
-						ques.setQuestionType(cell.getStringCellValue());
 						break;
 					case 1:
-						ques.setAnswerType(cell.getStringCellValue());
+						ques.setQuestion(cell.getStringCellValue());
 						break;
 					case 2:
 						ques.setQuestionLevel(cell.getStringCellValue());
 						break;
 					case 3:
-						ques.setQuestion(cell.getStringCellValue());
+						ques.setOption_A(cell.getStringCellValue());
 						break;
 					case 4:
-						ques.setA(cell.getStringCellValue());
+						ques.setOption_B(cell.getStringCellValue());
 						break;
 					case 5:
-						ques.setB(cell.getStringCellValue());
+						ques.setOption_C(cell.getStringCellValue());
 						break;
 					case 6:
-						ques.setC(cell.getStringCellValue());
+						ques.setOption_D(cell.getStringCellValue());
 						break;
 					case 7:
-						ques.setD(cell.getStringCellValue());
-						break;
-					case 8:
 						ques.setCorrectAnswer(cell.getStringCellValue());
 						break;
 					default: break;
