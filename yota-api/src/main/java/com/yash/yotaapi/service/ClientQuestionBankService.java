@@ -12,7 +12,7 @@ public interface ClientQuestionBankService {
 
 	List<ClientQuestion> saveall(List<ClientQuestion> question);
 
-	public Iterable<ClientQuestion> findAllQuestion();
+	public Iterable<ClientQuestion> findQuestion();
 
 	public void saveAll(MultipartFile file);
 

@@ -27,7 +27,7 @@ public class ClientQuestionBankServiceImpl implements ClientQuestionBankService 
 	}
 
 	@Override
-	public Iterable<ClientQuestion> findAllQuestion() {
+	public Iterable<ClientQuestion> findQuestion() {
 
 		return createClientQuestionRepository.findAll();
 	}

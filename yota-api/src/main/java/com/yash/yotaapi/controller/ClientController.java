@@ -43,13 +43,13 @@ public class ClientController {
 		return clientQuestionBankService.findAllQuestion();
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("client/{id}")
 	public ResponseEntity<?> removeClient(@PathVariable(value = "id") long id) {
 		clientQuestionBankService.removeClient(id);
 		return new ResponseEntity<String>("Client with ID :" + id + " deleted.", HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("client/{id}")
 	public ResponseEntity<?> updateClient(@Validated @RequestBody Client client, @PathVariable long id,
 			BindingResult result) {
 
@@ -61,7 +61,7 @@ public class ClientController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Client> findDetailByBatchIdentifier(@PathVariable long id) {
+	public ResponseEntity<Client> getClientDetailsById(@PathVariable long id) {
 
 		Client details = clientQuestionBankService.getClient(id);
 		return new ResponseEntity<Client>(details, HttpStatus.OK);

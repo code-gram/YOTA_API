@@ -50,7 +50,7 @@ public class ClientQuestionBankController {
 	@GetMapping("/clientQuestions")
 	public Iterable<ClientQuestion> getClientQuestions() {
 		
-		return clientQuestionBankService.findAllQuestion();
+		return clientQuestionBankService.findQuestion();
 	}
 
 	@PostMapping("/clientQuestionUpload")
