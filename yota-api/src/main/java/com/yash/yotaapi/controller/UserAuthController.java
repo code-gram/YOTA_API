@@ -42,7 +42,11 @@ public class UserAuthController {
         }
         UserDetails userDetails = yotaUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String token = jwtService.generateToken(userDetails);
-        AuthenticationResponse response = AuthenticationResponse.builder().authToken("Bearer "+token).build();
+        String userRole = userAuthService.findUserRoleByUserName(authenticationRequest.getUsername());
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .authToken("Bearer "+token)
+                .userRole(userRole)
+                .build();
         return response;
     }
 }

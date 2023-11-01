@@ -29,7 +29,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public void registerUser(YotaUser yotaUser) {
         yotaUser.setPassword(encryptionUtilService.getEncryptedString(yotaUser.getPassword()));
-        Optional<UserRole> role = userRoleRepository.findById(3l); //Added default batch id.
+        Optional<UserRole> role = userRoleRepository.findById(2l); //Added default RoleId as Trainer now
         if (role.isPresent()) {
             yotaUser.setRole(role.get());
         }
@@ -38,5 +38,15 @@ public class UserAuthServiceImpl implements UserAuthService {
             yotaUser.setBatch(batch.get());
         }
         yotaUserRepository.save(yotaUser);
+    }
+
+    @Override
+    public String findUserRoleByUserName(String username) {
+        String userRole = null;
+        Optional<YotaUser> user = Optional.of(yotaUserRepository.findByUsername(username));
+        if (user.isPresent()) {
+            userRole = user.get().getRole() != null ? user.get().getRole().getDescription() : "NotAuthorized";
+        }
+        return userRole;
     }
 }
