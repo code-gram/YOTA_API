@@ -21,12 +21,10 @@ public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(initialValue = 1, name = "clientid")
-	private long clientId  ;
-	
+	private long clientId;
+
 	private String clientName;
 	private String technology;
 	private String shortDescription;
-	
-	
-	
+
 }
