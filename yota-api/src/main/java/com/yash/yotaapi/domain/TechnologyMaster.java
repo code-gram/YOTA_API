@@ -42,7 +42,7 @@ public class TechnologyMaster {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(initialValue = 1,name = "id")
+	@SequenceGenerator(initialValue = 1, name = "id")
 	private Long id;
 
 	/**
