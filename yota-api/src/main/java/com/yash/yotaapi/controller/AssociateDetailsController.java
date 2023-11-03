@@ -99,17 +99,6 @@ public class AssociateDetailsController {
 	 * @param associate
 	 * @param result
 	 */
-
-	/*@PostMapping("/")
-	public ResponseEntity<?> updateAssociate(@RequestBody AssociateDetails associate,BindingResult result)
-	{
-		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
-		if(errorMap!=null) {
-			return errorMap;
-		}
-		return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associate), HttpStatus.OK);
-	}*/
-
 	@PutMapping("/{id}")
 	@ApiResponse(responseCode = "200", description = "successfully updated")
 	public ResponseEntity<?> updateAssociate(@Valid @RequestBody AssociateDetails associateDetails, BindingResult result,

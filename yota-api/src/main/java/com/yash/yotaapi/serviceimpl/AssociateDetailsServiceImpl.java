@@ -105,40 +105,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 	/**
 	 * This method saves and updates the changes made in associate.
 	 */
-	/*@Override
-	@Transactional
-	public AssociateDetails updateAssociate(AssociateDetails associate) {
-
-		AssociateDetails availableAssociate = associateDetailsRepository.findById(associate.getId()).get();
-		if(availableAssociate==null) {
-			return associateDetailsRepository.save(associate);
-		}else {
-			availableAssociate.setFirstName(associate.getFirstName());
-			availableAssociate.setMiddleName(associate.getMiddleName());
-			availableAssociate.setLastName(associate.getLastName());
-			availableAssociate.setEmailId(associate.getEmailId());
-			availableAssociate.setContactNo(associate.getContactNo());
-			availableAssociate.setPassword(associate.getPassword());
-			associateDetailsRepository.save(availableAssociate);
-
-		//AssociateDetails availableAssociate = associateDetailsRepository.getById(associate.getId());
-		if (availableAssociate.getEmailId() != null) {
-			associate.setEmailId(availableAssociate.getEmailId());
-		}
-		if (availableAssociate.getPassword() != null) {
-			associate.setPassword(availableAssociate.getPassword());
-		}
-		if (availableAssociate.getCreatedAt() != null) {
-			associate.setCreatedAt(availableAssociate.getCreatedAt());
-		}
-		associate.setUpdatedAt(new Date());
-
-		associateDetailsRepository.save(associate);
-		return associate;
-		}
-	}*/
-
-	//@Override
+	@Override
 	public AssociateDetails updateAssociate(AssociateDetails associate, long id) {
 
 		AssociateDetails associateDetails = associateDetailsRepository.findById(id).get();
