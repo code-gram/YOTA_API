@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.yash.yotaapi.domain.TechnologyMaster;
+import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -103,7 +105,7 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 	/**
 	 * This method saves and updates the changes made in associate.
 	 */
-	@Override
+	/*@Override
 	@Transactional
 	public AssociateDetails updateAssociate(AssociateDetails associate) {
 
@@ -114,9 +116,9 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 			availableAssociate.setFirstName(associate.getFirstName());
 			availableAssociate.setMiddleName(associate.getMiddleName());
 			availableAssociate.setLastName(associate.getLastName());
-//			availableAssociate.setEmailId(associate.getEmailId());
+			availableAssociate.setEmailId(associate.getEmailId());
 			availableAssociate.setContactNo(associate.getContactNo());
-			//availableAssociate.setPassword(associate.getPassword());
+			availableAssociate.setPassword(associate.getPassword());
 			associateDetailsRepository.save(availableAssociate);
 
 		//AssociateDetails availableAssociate = associateDetailsRepository.getById(associate.getId());
@@ -133,6 +135,22 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 
 		associateDetailsRepository.save(associate);
 		return associate;
+		}
+	}*/
+
+	//@Override
+	public AssociateDetails updateAssociate(AssociateDetails associate, long id) {
+
+		AssociateDetails associateDetails = associateDetailsRepository.findById(id).get();
+		if (associateDetails == null) {
+			throw new AssociateDetailsNotFoundException(
+					"AssociateDetails id: " + id + " is not present in AssociateDetails ");
+		} else {
+			associateDetails.setEmailId(associate.getEmailId());
+			associateDetails.setPassword(associate.getPassword());
+
+			AssociateDetails updatedAssociate = associateDetailsRepository.save(associateDetails);
+			return updatedAssociate;
 		}
 	}
 
