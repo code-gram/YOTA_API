@@ -4,16 +4,10 @@ import java.util.Date;
 
 public class UniqueNameGenerator {
 
-	public static String generateUniqueName(String fullName, String competency) {
+	public static String generateUniqueName(String technology, String month, String year) {
 		// Get the first letter of the full name
-		String[] nameParts = fullName.split(" ");
-		StringBuilder nameInitials = new StringBuilder();
-		for (String part : nameParts) {
-			if (!part.isEmpty()) {
-				nameInitials.append(part.charAt(0));
-			}
-		}
-		// Combine the components to create a unique name
-		return nameInitials.toString().toUpperCase() + "-" + competency + "-" + new Date().getTime();
+		technology = (String) technology.subSequence(0,3);
+		month = (String) month.subSequence(0,3);
+		return technology.toUpperCase() + "-" + month.toUpperCase() + "-" + year + "-001";
 		}
 }

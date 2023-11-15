@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.yash.yotaapi.serviceimpl.MasterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +40,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
 @Tag(name = "Question Controller", description = "Controller for Question")
-
 @RequestMapping("/yota/api/questions")
 @RestController
-
 public class QuestionController {
-
 	@Autowired
 	private QuestionService questionService;
 
