@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.yash.yotaapi.serviceimpl.MasterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 /**
  * A controller basically controls the flow of the data. It controls the data
  * flow into model object and updates the view whenever data changes.
- *
+ * 
  * @author priya.m
  *
  */
@@ -41,74 +42,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Question Controller", description = "Controller for Question")
 @RequestMapping("/yota/api/questions")
 @RestController
-//@Log
 public class QuestionController {
-
 	@Autowired
 	private QuestionService questionService;
 
 	@Autowired
 	private FieldErrorValidationUtillity mapValidationErrorService;
-
+	
 	@Autowired
 	private TechnologyMasterService technologyMasterService;
 
 	/**
 	 * This method will create new Question and save the question in DB.
-	 *
-	 * @param
-	 * @param
+	 * 
+	 * @param question
+	 * @param result
 	 * @return saved question
 	 */
-
-
-	/*@PostMapping("/")
-	public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result) {
-		ResponseEntity<?> errorMap =  mapValidationErrorService.validationError(result);
-		if (errorMap != null) {
-			return errorMap;
-		}
-		return new ResponseEntity<TechnologyMaster>(technologyMasterService.save(technology), HttpStatus.OK);
-	}
-
-	/**
-	 * getAll method is used to fetch all existing parent technology from DB
-	 *
-	 * @return List of ParentTechnology
-	 */
-
-	@GetMapping("/")
-	public ResponseEntity<List<TechnologyMaster>> getTechnologies() {
-		return new ResponseEntity<List<TechnologyMaster>>(technologyMasterService.getAllTechs(), HttpStatus.OK);
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-//list coming from frontend
-
-	//you have to comment this to stop technologies coming from frontend.
-
-/*	@GetMapping("/gettechList")
+	
+	@GetMapping("/gettechList")
 	public List<TechnologyMaster> loadForm() {
 		List<TechnologyMaster> lst = technologyMasterService.getAllTechs();
 		return lst;
-	} */
-
-
+	}
 
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result) {
-		System.out.println("question"+question.toString());
-		System.out.println(question.getQuestion());
 		 String question1 = question.getQuestion().replaceAll("<[^>]+>", "");
 		//String question1 = question.getQuestion();
 		question.setQuestion(question1);
@@ -120,14 +79,13 @@ public class QuestionController {
 		}
 
 		Question savedQuestion = questionService.saveOrUpdate(question);
-
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
 
 	/**
-	 *
+	 * 
 	 * This method is used to get Question by using question Id.
-	 *
+	 * 
 	 * @param questionId
 	 * @return questions
 	 */
@@ -139,7 +97,7 @@ public class QuestionController {
 
 	/**
 	 * This method is used to get all questions from DB.
-	 *
+	 * 
 	 * @return all questions
 	 */
 	@GetMapping("/all")
@@ -149,9 +107,9 @@ public class QuestionController {
 
 
 	/**
-	 *
+	 * 
 	 * This mentod is used to delete question by using question Id.
-	 *
+	 * 
 
 	 * @param questionId
 	 * @return return message question is deleted
@@ -164,8 +122,8 @@ public class QuestionController {
 
 	/**
 	 * This mentod is used to update question by using question Id.
-	 *
-	 * @param
+	 * 
+	 * @param questionId
 	 * @return updated question
 	 */
 
@@ -180,17 +138,13 @@ public class QuestionController {
 
 	@PostMapping("/questionUpload")
 	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
-
+		
 		if(ExcelHelper.checkExcelFormat(file)) {
-			this.questionService.saveExcel(file);
+			questionService.saveExcel(file);
 			return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
-
-
-
-
 	@PostMapping("/questionCode")
 	public ResponseEntity<Question> saveCode(@RequestBody String question) {
 		Question qs = new Question();

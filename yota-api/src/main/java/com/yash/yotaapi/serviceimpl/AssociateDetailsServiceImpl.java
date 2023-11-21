@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.yash.yotaapi.domain.TechnologyMaster;
+import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -104,35 +106,18 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 	 * This method saves and updates the changes made in associate.
 	 */
 	@Override
-	@Transactional
-	public AssociateDetails updateAssociate(AssociateDetails associate) {
+	public AssociateDetails updateAssociate(AssociateDetails associate, long id) {
 
-		AssociateDetails availableAssociate = associateDetailsRepository.findById(associate.getId()).get();
-		if(availableAssociate==null) {
-			return associateDetailsRepository.save(associate);
-		}else {
-			availableAssociate.setFirstName(associate.getFirstName());
-			availableAssociate.setMiddleName(associate.getMiddleName());
-			availableAssociate.setLastName(associate.getLastName());
-//			availableAssociate.setEmailId(associate.getEmailId());
-			availableAssociate.setContactNo(associate.getContactNo());
-			//availableAssociate.setPassword(associate.getPassword());
-			associateDetailsRepository.save(availableAssociate);
+		AssociateDetails associateDetails = associateDetailsRepository.findById(id).get();
+		if (associateDetails == null) {
+			throw new AssociateDetailsNotFoundException(
+					"AssociateDetails id: " + id + " is not present in AssociateDetails ");
+		} else {
+			associateDetails.setEmailId(associate.getEmailId());
+			associateDetails.setPassword(associate.getPassword());
 
-		//AssociateDetails availableAssociate = associateDetailsRepository.getById(associate.getId());
-		if (availableAssociate.getEmailId() != null) {
-			associate.setEmailId(availableAssociate.getEmailId());
-		}
-		if (availableAssociate.getPassword() != null) {
-			associate.setPassword(availableAssociate.getPassword());
-		}
-		if (availableAssociate.getCreatedAt() != null) {
-			associate.setCreatedAt(availableAssociate.getCreatedAt());
-		}
-		associate.setUpdatedAt(new Date());
-
-		associateDetailsRepository.save(associate);
-		return associate;
+			AssociateDetails updatedAssociate = associateDetailsRepository.save(associateDetails);
+			return updatedAssociate;
 		}
 	}
 

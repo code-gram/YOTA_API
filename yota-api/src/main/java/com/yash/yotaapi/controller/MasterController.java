@@ -19,10 +19,8 @@ import com.yash.yotaapi.service.MasterService;
 @RestController
 @RequestMapping("/yota/api")
 public class MasterController {
-	
 	@Autowired
 	MasterService masterService;
-
 	@GetMapping("/unit")
 	public ResponseEntity<List<UnitMaster>> getUnits() {
 		return new ResponseEntity<>(masterService.getUnitDetails(), HttpStatus.OK);

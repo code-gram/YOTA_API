@@ -23,6 +23,7 @@ import com.yash.yotaapi.service.TechnologyMasterService;
  *
  */
 @Service
+
 public class TechnologyMasterServiceImpl implements TechnologyMasterService {
 
 	/**

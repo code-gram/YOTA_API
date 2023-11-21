@@ -35,8 +35,7 @@ public class BatchServiceImpl implements BatchService {
 		String input = batch.getBatchName().toUpperCase();
 		String[] parts = input.split("-");
 		if (parts.length > 1) {
-			String wordAfterHyphen = parts[1];
-			batch.setBatchIdentifier(UniqueNameGenerator.generateUniqueName(batch.getUserName(), wordAfterHyphen));
+			batch.setBatchIdentifier(UniqueNameGenerator.generateUniqueName(parts[1], parts[3],parts[4]));
 		}
 		try {
 			return batchRepository.save(batch);

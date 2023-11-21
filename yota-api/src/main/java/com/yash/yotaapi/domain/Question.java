@@ -27,7 +27,6 @@ import lombok.Setter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Question {
 
 	@Id

@@ -29,7 +29,7 @@ public interface AssociateDetailsService {
 	 * Service is to update the associate details.
 	 * @param associate
 	 */
-	AssociateDetails updateAssociate(AssociateDetails associate);
+	AssociateDetails updateAssociate(AssociateDetails associate, long id);
 	
 	/**
 	 * This service is to delete the associate.
