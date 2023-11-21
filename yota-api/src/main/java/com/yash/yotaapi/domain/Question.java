@@ -3,13 +3,7 @@ package com.yash.yotaapi.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,6 +38,9 @@ public class Question {
 	 * Question should not be empty
 	 */
 	@NotBlank(message = "Question is required")
+
+	//my change
+	@Column(columnDefinition = "TEXT")
 	private String question;
 	
 	/**
@@ -101,6 +98,9 @@ public class Question {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date updated_At;
 
+	public static void setTechnology(Object technology) {
+	}
+
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
 	 * database.
@@ -119,8 +119,17 @@ public class Question {
 	}
 	
 	private Long technologyId;
-	
-	@Transient
-  public List<TechnologyMaster> technologyMasters;
+
+	public Object getTechnology() {
+        return null;
+    }
+
+	//@Transient
+ // public List<TechnologyMaster> technologyMasters;
+
+
+//	public String getQuestion() {
+//		return question;
+//	}
 
 }

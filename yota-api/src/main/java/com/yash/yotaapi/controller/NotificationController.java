@@ -49,7 +49,7 @@ public class NotificationController {
 	@GetMapping("/{email}")
 	public ResponseEntity<?> getAllNotificationByEmail(@PathVariable("email") String email)
 	{
-		System.out.println("path variable controller.....");
+		//System.out.println("path variable controller.....");
 		List<Notification> fetchNotificationByEmail = notificationService.fetchNotificationByEmail(email);
 		return ResponseEntity.ok().body(fetchNotificationByEmail);
 	}
@@ -60,7 +60,7 @@ public class NotificationController {
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllNotification()
 	{
-		System.out.println("path variable controller.....");
+		//System.out.println("path variable controller.....");
 		List<Notification> fetchNotificationByEmail = notificationService.getAllNotification();
 		return ResponseEntity.ok().body(fetchNotificationByEmail);
 	}

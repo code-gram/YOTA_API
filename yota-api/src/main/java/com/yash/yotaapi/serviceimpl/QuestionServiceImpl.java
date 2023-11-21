@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import com.yash.yotaapi.domain.Client;
+import com.yash.yotaapi.exception.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +43,7 @@ public class QuestionServiceImpl implements QuestionService {
 			 * 
 			 * }
 			 */
-			question.setQuestion(question.getQuestion());
+		//	question.setQuestion(question.getQuestion());
 			return questionRepository.save(question);
 
 		}catch(Exception ex) {
@@ -50,6 +53,9 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 
 	}
+
+
+
 
 	/**
 	 * This method is for find question by id  from DB through repository layer

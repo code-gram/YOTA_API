@@ -32,17 +32,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 /**
  * A controller basically controls the flow of the data. It controls the data
  * flow into model object and updates the view whenever data changes.
- * 
+ *
  * @author priya.m
  *
  */
 
 @CrossOrigin("*")
 @Tag(name = "Question Controller", description = "Controller for Question")
-
 @RequestMapping("/yota/api/questions")
 @RestController
-
+//@Log
 public class QuestionController {
 
 	@Autowired
@@ -50,39 +49,85 @@ public class QuestionController {
 
 	@Autowired
 	private FieldErrorValidationUtillity mapValidationErrorService;
-	
+
 	@Autowired
 	private TechnologyMasterService technologyMasterService;
 
 	/**
 	 * This method will create new Question and save the question in DB.
-	 * 
-	 * @param question
-	 * @param result
+	 *
+	 * @param
+	 * @param
 	 * @return saved question
 	 */
-	
-	@GetMapping("/gettechList")
+
+
+	/*@PostMapping("/")
+	public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result) {
+		ResponseEntity<?> errorMap =  mapValidationErrorService.validationError(result);
+		if (errorMap != null) {
+			return errorMap;
+		}
+		return new ResponseEntity<TechnologyMaster>(technologyMasterService.save(technology), HttpStatus.OK);
+	}
+
+	/**
+	 * getAll method is used to fetch all existing parent technology from DB
+	 *
+	 * @return List of ParentTechnology
+	 */
+
+	@GetMapping("/")
+	public ResponseEntity<List<TechnologyMaster>> getTechnologies() {
+		return new ResponseEntity<List<TechnologyMaster>>(technologyMasterService.getAllTechs(), HttpStatus.OK);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+//list coming from frontend
+
+	//you have to comment this to stop technologies coming from frontend.
+
+/*	@GetMapping("/gettechList")
 	public List<TechnologyMaster> loadForm() {
 		List<TechnologyMaster> lst = technologyMasterService.getAllTechs();
 		return lst;
-	}
+	} */
+
+
 
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result) {
+		System.out.println("question"+question.toString());
+		System.out.println(question.getQuestion());
+		 String question1 = question.getQuestion().replaceAll("<[^>]+>", "");
+		//String question1 = question.getQuestion();
+		question.setQuestion(question1);
+
+
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if (errmap != null) {
 			return errmap;
 		}
 
 		Question savedQuestion = questionService.saveOrUpdate(question);
+
 		return new ResponseEntity<Question>(savedQuestion, HttpStatus.CREATED);
 	}
 
 	/**
-	 * 
+	 *
 	 * This method is used to get Question by using question Id.
-	 * 
+	 *
 	 * @param questionId
 	 * @return questions
 	 */
@@ -94,7 +139,7 @@ public class QuestionController {
 
 	/**
 	 * This method is used to get all questions from DB.
-	 * 
+	 *
 	 * @return all questions
 	 */
 	@GetMapping("/all")
@@ -104,9 +149,9 @@ public class QuestionController {
 
 
 	/**
-	 * 
+	 *
 	 * This mentod is used to delete question by using question Id.
-	 * 
+	 *
 
 	 * @param questionId
 	 * @return return message question is deleted
@@ -119,8 +164,8 @@ public class QuestionController {
 
 	/**
 	 * This mentod is used to update question by using question Id.
-	 * 
-	 * @param questionId
+	 *
+	 * @param
 	 * @return updated question
 	 */
 
@@ -135,11 +180,26 @@ public class QuestionController {
 
 	@PostMapping("/questionUpload")
 	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
-		
+
 		if(ExcelHelper.checkExcelFormat(file)) {
-			questionService.saveExcel(file);
+			this.questionService.saveExcel(file);
 			return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
+
+
+
+
+	@PostMapping("/questionCode")
+	public ResponseEntity<Question> saveCode(@RequestBody String question) {
+		Question qs = new Question();
+
+		//    jdk.internal.org.jline.utils.Log.info(question);
+		qs.setQuestion(question);
+		qs = questionService.saveOrUpdate(qs);
+		return ResponseEntity.ok(qs);
+	}
+
+
 }

@@ -80,7 +80,7 @@ public class TechnologyMasterController {
 	/**
 	 * getTech method is used to get ParentTechnology from DB on basis name.
 	 *
-	 * @param name
+	 * @paramname
 	 * @return ParentTechnology
 	 */
 
