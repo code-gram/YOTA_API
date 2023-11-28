@@ -11,9 +11,9 @@ public interface BatchService {
 
 	public Batch createBatch(Batch batch);
 
-	public Batch getBatch(long id);
+	public Batch getBatch(long batchId);
 
-	public Batch updateBatchDetails(Batch batch,long id);
+	public Batch updateBatchDetails(Batch batch,long batchId);
 
 	public void removeBatchDetails(long batchId);
 
@@ -22,5 +22,8 @@ public interface BatchService {
 	public List<Batch> searchBatch(String keyword);
 
 	public List<Batch> getByStartDateAndEndDate(Date startDate, Date endDate);
+
+	//new change
+	public Batch getBatchByBatchName(String batchName );
 
 }

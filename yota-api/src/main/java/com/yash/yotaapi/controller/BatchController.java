@@ -59,13 +59,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 	@PostMapping("/")
 	public ResponseEntity<?> createBatch(@Validated @RequestBody Batch batch, BindingResult result) {
-
+		//new change 63
+		Batch saveBatch=null;
 		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
-
+		//new change 65-72
 		if (errorMessage != null)
 			return errorMessage;
 
-		batchService.createBatch(batch);
+		//batchService.createBatch(batch);
+		Batch batchObj = batchService.getBatchByBatchName(batch.getBatchName());
+		if(batchObj == null){
+			saveBatch = batchService.createBatch(batch);
+		}
 		return new ResponseEntity<Batch>(batch, HttpStatus.CREATED);
 	}
 
@@ -140,5 +145,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 		List<Batch> search = batchService.getByStartDateAndEndDate(startDate, endDate);
 		return new ResponseEntity<List<Batch>>(search, HttpStatus.OK);
 	}
+
+	//new change
+
 
 }

@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.yash.yotaapi.domain.AssociateDetails;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * AssociateDetailsRepository will perform all the CRUD Operations on AssociateDetails. 
@@ -14,6 +16,9 @@ import com.yash.yotaapi.domain.AssociateDetails;
  */
 public interface AssociateDetailsRepository extends JpaRepository<AssociateDetails, Long>{
 
+
+
+	//List<AssociateDetails> getByEmailIdContaining(String keyword);
 	
 	/**
 	 * getByEmailIdContaining will give the list of associates using given keyword containing in Mail Id.
@@ -27,5 +32,12 @@ public interface AssociateDetailsRepository extends JpaRepository<AssociateDetai
 	 * @param id
 	 */
 	Optional<AssociateDetails> findById(String id);
-	
+
+	//new change
+	@Query(value ="select * from associate_details ad where ad.batchId=:batchId", nativeQuery = true)
+	public List<AssociateDetails> getAssociateByBatchId(@Param("batchId")long batchId);
+
+	//new change
+
+
 }

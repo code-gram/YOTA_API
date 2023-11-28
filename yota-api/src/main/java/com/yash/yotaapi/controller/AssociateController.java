@@ -92,7 +92,7 @@ public class AssociateController {
 
 	/**
 	 * This controller method handles the update request for details of an associate.
-	 * @param associate
+	 * @paramassociate
 	 * @param result
 	 */
 	@PutMapping("/{id}")
@@ -129,6 +129,13 @@ public class AssociateController {
 	public ResponseEntity<Boolean> updatePassword(@RequestBody HashMap<String, String> updatePassword)
 	{
 		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword),HttpStatus.OK);
+		}
+
+		//new change
+
+		@GetMapping("/getAllAssociateData/{id}")
+		public List<AssociateDetails> getAssociateDataByBatchId(@PathVariable(value= "id") long batchId){
+		return associateDetailsService.getAssociateDataByBatchId(batchId);
 		}
 
 }

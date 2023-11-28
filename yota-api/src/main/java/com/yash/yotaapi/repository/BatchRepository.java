@@ -46,5 +46,10 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 //	@Query(value = "UPDATE batch_management b SET b.Status = true WHERE b.id = batchId" , nativeQuery = true)
 //	@Modifying
 //	public void softDelete(long batchId);
+
+	//new change
+
+	@Query("select batch_id from Batch where batchName=?")
+	Batch findBatchByBatchName(String batchName);
 }
 

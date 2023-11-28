@@ -139,4 +139,12 @@ public class AssociateDetailsServiceImpl implements AssociateDetailsService {
 		} finally {
 		}
 	}
+//new change
+	@Override
+	public List<AssociateDetails> getAssociateDataByBatchId(long batchId) {
+		List<AssociateDetails> associateByBatchId = associateDetailsRepository.getAssociateByBatchId(batchId);
+		return associateByBatchId;
+	}
+	//new change
+
 }

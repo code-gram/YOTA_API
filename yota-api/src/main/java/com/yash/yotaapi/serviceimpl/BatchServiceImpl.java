@@ -64,13 +64,13 @@ public class BatchServiceImpl implements BatchService {
 	 * database.
 	 */
 	@Override
-	public Batch getBatch(long id) {
+	public Batch getBatch(long batchId) {
 
-		Batch detail = batchRepository.findById(id).get();
+		Batch detail = batchRepository.findById(batchId).get();
 
 		if (detail == null) {
 
-			throw new BatchIdException("Batch with id : " + id + " does not exist");
+			throw new BatchIdException("Batch with id : " + batchId + " does not exist");
 
 		}
 
@@ -84,12 +84,12 @@ public class BatchServiceImpl implements BatchService {
 	 */
 	@Override
 	// @Transactional
-	public Batch updateBatchDetails(Batch batch, long id) {
+	public Batch updateBatchDetails(Batch batch, long batchId) {
 
-		Batch batchDetails = batchRepository.findById(id).get();
+		Batch batchDetails = batchRepository.findById(batchId).get();
 
 		if (batchDetails == null) {
-			throw new BatchNotFoundException("Batch id: " + id + " is not present in Batch");
+			throw new BatchNotFoundException("Batch id: " + batchId + " is not present in Batch");
 		}
 
 		else {
@@ -149,6 +149,12 @@ public class BatchServiceImpl implements BatchService {
 					+ "Batch containing endDate  : " + endDate + " does not exist");
 		}
 		return batchRepository.findByDateBetween(startDate, endDate);
+	}
+
+	//new chnage
+	@Override
+	public Batch getBatchByBatchName(String batchName ) {
+		return batchRepository.findBatchByBatchName(batchName);
 	}
 
 }

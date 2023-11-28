@@ -55,4 +55,7 @@ public interface AssociateDetailsService {
 	 * @param updatePassword
 	 */
 	Boolean updatePassword(HashMap<String, String> updatePassword);
+
+	//new change
+	public List<AssociateDetails> getAssociateDataByBatchId(long batchId);
 }
