@@ -40,7 +40,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
 @Tag(name = "Question Controller", description = "Controller for Question")
-@RequestMapping("/yota/api/questions")
+@RequestMapping("/questions")
 @RestController
 public class QuestionController {
 	@Autowired
@@ -60,7 +60,7 @@ public class QuestionController {
 	 * @return saved question
 	 */
 	
-	@GetMapping("/gettechList")
+	@GetMapping("/")
 	public List<TechnologyMaster> loadForm() {
 		List<TechnologyMaster> lst = technologyMasterService.getAllTechs();
 		return lst;
@@ -89,9 +89,9 @@ public class QuestionController {
 	 * @param questionId
 	 * @return questions
 	 */
-	@GetMapping("/{questionId}")
-	public ResponseEntity<?> getQuestionById(@PathVariable Long questionId) {
-		Question question = questionService.findQuestionById(questionId);
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getQuestionById(@PathVariable Long id) {
+		Question question = questionService.findQuestionById(id);
 		return new ResponseEntity<Question>(question, HttpStatus.OK);
 	}
 
@@ -114,9 +114,9 @@ public class QuestionController {
 	 * @param questionId
 	 * @return return message question is deleted
 	 */
-	@DeleteMapping("/{questionId}")
-	public ResponseEntity<?> deleteQuestionById(@PathVariable Long questionId) {
-		questionService.deleteQuestionById(questionId);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteQuestionById(@PathVariable Long id) {
+		questionService.deleteQuestionById(id);
 		return new ResponseEntity<String>("question is deleted successfully!", HttpStatus.OK);
 	}
 
@@ -136,7 +136,7 @@ public class QuestionController {
 		return new ResponseEntity<Question>(questionService.updateQuestion(question), HttpStatus.OK);
 	}
 
-	@PostMapping("/questionUpload")
+	@PostMapping("/upload-questions")
 	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
 		
 		if(ExcelHelper.checkExcelFormat(file)) {
@@ -145,7 +145,7 @@ public class QuestionController {
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
-	@PostMapping("/questionCode")
+	@PostMapping("/question-code")
 	public ResponseEntity<Question> saveCode(@RequestBody String question) {
 		Question qs = new Question();
 

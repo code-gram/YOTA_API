@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Register", description = "Controller for Client Management")
-@RequestMapping("/yota/api/")
+@RequestMapping("/client")
 public class ClientController {
 
 	@Autowired
@@ -31,25 +31,25 @@ public class ClientController {
 	@Autowired
 	FieldErrorValidationUtillity fileErrorValidationUtillity;
 
-	@PostMapping("/client")
+	@PostMapping("/")
 	public ResponseEntity<Client> createBatch(@Validated @RequestBody Client createClient) {
 
 		clientQuestionBankService.createClient(createClient);
 		return new ResponseEntity<Client>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/clients")
+	@GetMapping("/")
 	public Iterable<Client> getAllQuestions() {
 		return clientQuestionBankService.findAllQuestion();
 	}
 
-	@DeleteMapping("client/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> removeClient(@PathVariable(value = "id") long id) {
 		clientQuestionBankService.removeClient(id);
 		return new ResponseEntity<String>("Client with ID :" + id + " deleted.", HttpStatus.OK);
 	}
 
-	@PutMapping("client/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateClient(@Validated @RequestBody Client client, @PathVariable long id,
 			BindingResult result) {
 

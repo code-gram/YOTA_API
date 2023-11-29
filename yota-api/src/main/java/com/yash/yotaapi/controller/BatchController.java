@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name="Batch Controller", description="Controller for batch")
 
-@RequestMapping("/yota/api/batches")
+@RequestMapping("/batches")
  public class BatchController {
 
 
@@ -112,12 +112,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 	/* deleteBatch api delete batch accourding to batchId enter by user. */
 
-	@DeleteMapping("/{batchId}")
-	public ResponseEntity<?> removeBatch(@PathVariable long batchId) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> removeBatch(@PathVariable long id) {
 
-		batchService.removeBatchDetails(batchId);
+		batchService.removeBatchDetails(id);
 
-		return new ResponseEntity<String>("Batch with id: " + batchId + " is delete sucessfully", HttpStatus.OK);
+		return new ResponseEntity<String>("Batch with id: " + id + " is delete sucessfully", HttpStatus.OK);
 	}
 
 	/*

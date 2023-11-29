@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @Tag(name="Associate Controller", description="Controller for Associate")
 @RestController
-@RequestMapping("/yota/api/associates")
+@RequestMapping("/associates")
 public class AssociateController {
 	@Autowired
 	private AssociateDetailsService associateDetailsService;
@@ -58,7 +58,7 @@ public class AssociateController {
 	 * associates.
 	 */
 
-	@GetMapping("/all")
+	@GetMapping("/")
 	public ResponseEntity<List<AssociateDetails>> getAll() {
 		return new ResponseEntity<List<AssociateDetails>>(associateDetailsService.getAllAssociates(), HttpStatus.OK);
 	}
@@ -70,7 +70,7 @@ public class AssociateController {
 	 * @param id
 	 */
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteAssociate(@PathVariable long id) {
 		associateDetailsService.deleteAssociate(id);
 		return new ResponseEntity<String>("Associate with id: " + id + " deleted successfully.", HttpStatus.OK);

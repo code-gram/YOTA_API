@@ -25,13 +25,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Question Bank Controller", description = "Controller for Client Question Bank")
-@RequestMapping("/yota/api/clientQuestion/")
+@RequestMapping("/clientQuestions")
 public class ClientQuestionBankController {
 
 	@Autowired
 	ClientQuestionBankService clientQuestionBankService;
 
-	@PostMapping("/createQuestion")
+	@PostMapping("/")
 	public ResponseEntity<?> createClientQuestion(@Valid @RequestBody ClientQuestions question, BindingResult result) {
 		
 		List<ClientQuestion> list = new ArrayList<>();
@@ -47,13 +47,13 @@ public class ClientQuestionBankController {
 		return new ResponseEntity<>(savedQuestion, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/clientQuestions")
+	@GetMapping("/")
 	public Iterable<ClientQuestion> getClientQuestions() {
 		
 		return clientQuestionBankService.findQuestion();
 	}
 
-	@PostMapping("/clientQuestionUpload")
+	@PostMapping("/uploadClientQuestions")
 	public ResponseEntity<?> uploadClientQuestionExcelFile(@RequestParam("file") MultipartFile file) {
 		if (ExcelHelper.checkExcelFormat(file)) {
 			clientQuestionBankService.saveAll(file);

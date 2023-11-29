@@ -17,7 +17,7 @@ import com.yash.yotaapi.service.MasterService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/yota/api")
+@RequestMapping("/masters")
 public class MasterController {
 	@Autowired
 	MasterService masterService;

@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "Technology Controller", description = "Controller for Technology")
 
 @RestController
-@RequestMapping("/yota/api/technologies")
+@RequestMapping("/technologies")
 public class TechnologyMasterController {
 
 	/**

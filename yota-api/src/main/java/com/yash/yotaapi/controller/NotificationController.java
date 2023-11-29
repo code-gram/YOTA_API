@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name="Notification Controller",description = "Controller of Notification")
 
-@RequestMapping("/yota/api/notifications")
+@RequestMapping("/notifications")
 @RestController
 public class NotificationController {
 
@@ -38,7 +38,7 @@ public class NotificationController {
 	private NotificationService notificationService;
 	
 	/** this method is used to save notification */
-	@PostMapping("")
+	@PostMapping("/")
 	public ResponseEntity<Notification> addNotification(@RequestBody Notification notification) {
 		return ResponseEntity.status(HttpStatus.OK).body(notificationService.saveNotification(notification));
 	}
@@ -57,7 +57,7 @@ public class NotificationController {
 	/**
 	 * this method will fetch all the notifications of users
 	 */
-	@GetMapping("/getAll")
+	@GetMapping("/")
 	public ResponseEntity<?> getAllNotification()
 	{
 		//System.out.println("path variable controller.....");
@@ -66,7 +66,7 @@ public class NotificationController {
 	}
 	
 	/** this method will update the notification status to read */
-	@GetMapping("/update/{email}")
+	@PutMapping("/{email}")
 	public void removeNotificationById(@PathVariable("email") String email){
 		String out = "";
 		System.out.println("email status...running");
