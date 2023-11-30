@@ -32,7 +32,7 @@ public class SecurityConfig {
         httpSecurity
                 .cors().and()
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.regexMatchers("/yota/user/register","/yota/user/authenticate")
+                .authorizeHttpRequests(auth -> auth.regexMatchers("/users/register","/users/authenticate")
                         .permitAll().anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
