@@ -84,7 +84,7 @@ public class AssociateController {
 	 */
 
 
-	@GetMapping("/search/{keyword}")
+	@GetMapping("/{keyword}/search")
 	public ResponseEntity<List<AssociateDetails>> searchAssociate(@PathVariable String keyword) {
 		List<AssociateDetails> associates = associateDetailsService.searchAssociate(keyword);
 		return new ResponseEntity<List<AssociateDetails>>(associates, HttpStatus.OK);
