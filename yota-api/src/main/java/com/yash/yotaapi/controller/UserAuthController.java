@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
-@RequestMapping("/yota/user")
+@RequestMapping("/users")
 @RestController
 public class UserAuthController {
     @Autowired
