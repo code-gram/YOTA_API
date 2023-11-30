@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Question Bank Controller", description = "Controller for Client Question Bank")
-@RequestMapping("/clientQuestions")
+@RequestMapping("/client-questions")
 public class ClientQuestionBankController {
 
 	@Autowired
@@ -53,7 +53,7 @@ public class ClientQuestionBankController {
 		return clientQuestionBankService.findQuestion();
 	}
 
-	@PostMapping("/uploadClientQuestions")
+	@PostMapping("/upload-client-questions")
 	public ResponseEntity<?> uploadClientQuestionExcelFile(@RequestParam("file") MultipartFile file) {
 		if (ExcelHelper.checkExcelFormat(file)) {
 			clientQuestionBankService.saveAll(file);

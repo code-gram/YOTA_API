@@ -133,7 +133,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	}
 
 	// this Api display batch details according to start date and end date by uset. 
-	@GetMapping("/search/{startDate}/{endDate}")
+	@GetMapping("/search/{start-date}/{end-date}")
 	public ResponseEntity<List<Batch>> getByStartDateAndEndDate(
 			@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
 			@PathVariable("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {

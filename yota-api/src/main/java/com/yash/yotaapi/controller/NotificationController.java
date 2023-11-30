@@ -68,16 +68,12 @@ public class NotificationController {
 	/** this method will update the notification status to read */
 	@PutMapping("/{email}")
 	public void removeNotificationById(@PathVariable("email") String email){
-		String out = "";
-		System.out.println("email status...running");
+
 		try {
 			notificationService.updateNotificationStatus(email);
-			out = "notification status updated....";
 		}catch(Exception exception) {
 			exception.printStackTrace();
-			out="unable to update";
 		}
-		System.out.println(out);
 	}
 	
 	

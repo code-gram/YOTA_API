@@ -125,7 +125,7 @@ public class AssociateController {
 	 * @return
 	 */
 
-	@PostMapping("/updatePassword")
+	@PostMapping("/update-password")
 	public ResponseEntity<Boolean> updatePassword(@RequestBody HashMap<String, String> updatePassword)
 	{
 		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword),HttpStatus.OK);

@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Client Register", description = "Controller for Client Management")
-@RequestMapping("/client")
+@RequestMapping("/clients")
 public class ClientController {
 
 	@Autowired

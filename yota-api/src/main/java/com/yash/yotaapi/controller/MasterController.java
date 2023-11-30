@@ -31,7 +31,7 @@ public class MasterController {
 		return new ResponseEntity<>(masterService.getCompetencyDetails(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/trainingtype")
+	@GetMapping("/training-type")
 	public ResponseEntity<List<TrainingMaster>> getTrainingTypes() {
 		return new ResponseEntity<>(masterService.getTrainingTypeDetails(), HttpStatus.OK);
 	}
