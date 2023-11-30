@@ -86,7 +86,7 @@ public class TechnologyMasterController {
 	 * @return List of ParentTechnology
 	 */
 
-	@GetMapping("/search/{keyword}")
+	@GetMapping("/{keyword}/search")
 	public ResponseEntity<List<TechnologyMaster>> searchTechnology(@PathVariable("keyword") String keyword) {
 		List<TechnologyMaster> technologies = technologyMasterService.searchTech(keyword);
 		return new ResponseEntity<List<TechnologyMaster>>(technologies, HttpStatus.OK);
