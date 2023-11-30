@@ -124,7 +124,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	 * searchBatch api is display batch details accourding to keyword enter by user.
 	 */
 
-	@GetMapping("/search/{keyword}")
+	@GetMapping("/{keyword}/search")
 	public ResponseEntity<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
 
 		List<Batch> searchBatch = batchService.searchBatch(keyword);
@@ -133,10 +133,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	}
 
 	// this Api display batch details according to start date and end date by uset. 
-	@GetMapping("/search/{start-date}/{end-date}")
+	@GetMapping("/{start-date}/{end-date}/search")
 	public ResponseEntity<List<Batch>> getByStartDateAndEndDate(
-			@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-			@PathVariable("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+			@PathVariable("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+			@PathVariable("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
 		List<Batch> search = batchService.getByStartDateAndEndDate(startDate, endDate);
 		return new ResponseEntity<List<Batch>>(search, HttpStatus.OK);
 	}
