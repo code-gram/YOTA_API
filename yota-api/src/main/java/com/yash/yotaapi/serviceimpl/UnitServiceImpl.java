@@ -1,26 +1,27 @@
 package com.yash.yotaapi.serviceimpl;
 
-import com.yash.yotaapi.domain.UnitMaster;
+import com.yash.yotaapi.domain.Unit;
 import com.yash.yotaapi.exception.UnitAlreadyExistsException;
 import com.yash.yotaapi.exception.UnitNotFoundException;
-import com.yash.yotaapi.repository.UnitMasterRepository;
-import com.yash.yotaapi.service.UnitMasterService;
+import com.yash.yotaapi.repository.UnitRepository;
+import com.yash.yotaapi.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of the {@link UnitMasterService} interface.
+ * Implementation of the {@link UnitService} interface.
  * This class provides business logic related to the management of units in the system.
  *
  * @author pravin.navarkar
  */
 @Service
-public class UnitMasterServiceImpl implements UnitMasterService {
+public class UnitServiceImpl implements UnitService {
     @Autowired
-    private UnitMasterRepository unitMasterRepository;
+    private UnitRepository unitMasterRepository;
 
     /**
      * Adds a new unit to the unit master table.
@@ -34,8 +35,9 @@ public class UnitMasterServiceImpl implements UnitMasterService {
      * @throws UnitAlreadyExistsException If the unit with the same ID already exists in the table.
      */
     @Override
-    public UnitMaster addUnit(UnitMaster unit) {
-        UnitMaster existingUnit = unitMasterRepository.findById(unit.getId()).orElse(null);
+    @Transactional
+    public Unit addUnit(Unit unit) {
+        Unit existingUnit = unitMasterRepository.findByName(unit.getName());
         if (existingUnit == null) {
             return unitMasterRepository.save(unit);
         } else {
@@ -49,7 +51,7 @@ public class UnitMasterServiceImpl implements UnitMasterService {
      * @return A list containing all units from the unit master table.
      */
     @Override
-    public List<UnitMaster> getAllUnit() {
+    public List<Unit> getAllUnit() {
         return unitMasterRepository.findAll();
     }
 
@@ -64,7 +66,7 @@ public class UnitMasterServiceImpl implements UnitMasterService {
      */
     @Override
     public void deleteUnitById(long unitId) {
-        Optional<UnitMaster> unitMasterOptional = unitMasterRepository.findById(unitId);
+        Optional<Unit> unitMasterOptional = unitMasterRepository.findById(unitId);
         if (unitMasterOptional.isPresent()) {
             unitMasterRepository.deleteById(unitId);
         } else {
@@ -83,8 +85,8 @@ public class UnitMasterServiceImpl implements UnitMasterService {
      * @throws UnitNotFoundException If a unit with the specified ID is not found in the table.
      */
     @Override
-    public UnitMaster getUnitById(long unitId) {
-        Optional<UnitMaster> unitMasterOptional = unitMasterRepository.findById(unitId);
+    public Unit getUnitById(long unitId) {
+        Optional<Unit> unitMasterOptional = unitMasterRepository.findById(unitId);
         if (unitMasterOptional.isPresent()) {
             return unitMasterOptional.get();
         } else {
@@ -104,10 +106,10 @@ public class UnitMasterServiceImpl implements UnitMasterService {
      * @throws UnitNotFoundException If a unit with the specified ID is not found in the table.
      */
     @Override
-    public UnitMaster updateUnit(long id, UnitMaster unitMaster) {
-        Optional<UnitMaster> unitMasterDetails = unitMasterRepository.findById(id);
+    public Unit updateUnit(long id, Unit unitMaster) {
+        Optional<Unit> unitMasterDetails = unitMasterRepository.findById(id);
         if (unitMasterDetails.isPresent()) {
-            UnitMaster existingUnitMaster = unitMasterDetails.get();
+            Unit existingUnitMaster = unitMasterDetails.get();
             existingUnitMaster.setName(unitMaster.getName());
             return unitMasterRepository.save(existingUnitMaster);
         } else {

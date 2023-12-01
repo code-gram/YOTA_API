@@ -1,16 +1,15 @@
 package com.yash.yotaapi.service;
 
-import com.yash.yotaapi.domain.UnitMaster;
+import com.yash.yotaapi.domain.Unit;
 
 import java.util.List;
 
 /**
- * Service interface for managing units in the system.
- * Defines methods for adding, retrieving, updating, and deleting unit information.
+ * Service interface will perform business logic, method declaration for unit.
  *
  * @author pravin.navarkar
  */
-public interface UnitMasterService {
+public interface UnitService {
     /**
      * Adds a new unit to the system.
      * This method is responsible for adding a new unit with the provided details to the system.
@@ -18,14 +17,14 @@ public interface UnitMasterService {
      * @param unitMaster The unit details to be added.
      * @return The added unit.
      */
-    UnitMaster addUnit(UnitMaster unitMaster);
+    Unit addUnit(Unit unitMaster);
 
     /**
      * This method retrieves a list of all units from the table.
      *
      * @return A List containing all units in the system
      */
-    List<UnitMaster> getAllUnit();
+    List<Unit> getAllUnit();
 
     /**
      * This method is responsible for deleting a unit with the specified ID from the system.
@@ -40,7 +39,7 @@ public interface UnitMasterService {
      * @param id The ID of the unit to be retrieved.
      * @return The details of the unit with the specified ID.
      */
-    UnitMaster getUnitById(long id);
+    Unit getUnitById(long id);
 
     /**
      * This method attempts to find a unit with the given ID in the system.
@@ -49,5 +48,5 @@ public interface UnitMasterService {
      * @param unitMaster The updated details for the unit.
      * @return The updated unit.
      */
-    UnitMaster updateUnit(long id, UnitMaster unitMaster);
+    Unit updateUnit(long id, Unit unitMaster);
 }

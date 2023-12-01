@@ -1,12 +1,13 @@
 package com.yash.yotaapi.controller;
 
-import com.yash.yotaapi.domain.UnitMaster;
-import com.yash.yotaapi.service.UnitMasterService;
+import com.yash.yotaapi.domain.Unit;
+import com.yash.yotaapi.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -17,15 +18,15 @@ import java.util.List;
  * @author pravin.navarkar
  */
 @RestController
-@RequestMapping("/yota/api/unitmaster")
-public class UnitMasterController {
+@RequestMapping("/yota-api/unitmasters")
+public class UnitController {
 
     /**
-     * Autowired field for interacting with the {@link UnitMasterService}.
+     * Autowired field for interacting with the {@link UnitService}.
      * This field is automatically injected by Spring, providing access to unit management operations.
      */
     @Autowired
-    private UnitMasterService unitService;
+    private UnitService unitService;
 
     /**
      * Endpoint to add a new unit to the system.
@@ -37,9 +38,9 @@ public class UnitMasterController {
      * @param unit The unit details to be added (provided in the request body).
      * @return A ResponseEntity with the added unit and an HTTP status code.
      */
-    @PostMapping("/addUnit")
-    public ResponseEntity<UnitMaster> addUnit(@RequestBody UnitMaster unit) {
-        return new ResponseEntity<UnitMaster>(unitService.addUnit(unit), HttpStatus.OK);
+    @PostMapping("/")
+    public ResponseEntity<Unit> addUnit(@Valid @RequestBody  Unit unit) {
+        return new ResponseEntity<Unit>(unitService.addUnit(unit), HttpStatus.OK);
     }
 
     /**
@@ -48,9 +49,9 @@ public class UnitMasterController {
      *
      * @return A ResponseEntity with a list of all units and an HTTP status code.
      */
-    @GetMapping("/getAllUnit")
-    public ResponseEntity<List<UnitMaster>> getAllUnit() {
-        return new ResponseEntity<List<UnitMaster>>(unitService.getAllUnit(), HttpStatus.OK);
+    @GetMapping("/")
+    public ResponseEntity<List<Unit>> getAllUnit() {
+        return new ResponseEntity<List<Unit>>(unitService.getAllUnit(), HttpStatus.OK);
     }
 
     /**
@@ -63,9 +64,9 @@ public class UnitMasterController {
      * @param id The ID of the unit to be retrieved (provided as a path variable).
      * @return A ResponseEntity with the details of the requested unit and an HTTP status code.
      */
-    @GetMapping("/getUnitById/{id}")
-    public ResponseEntity<UnitMaster> getUnit(@PathVariable(value = "id") long id) {
-        return new ResponseEntity<UnitMaster>(unitService.getUnitById(id), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Unit> getUnit(@PathVariable(value = "id") long id) {
+        return new ResponseEntity<Unit>(unitService.getUnitById(id), HttpStatus.OK);
     }
 
     /**
@@ -78,7 +79,7 @@ public class UnitMasterController {
      * @param id The ID of the unit to be deleted (provided as a path variable).
      * @return A ResponseEntity with a deletion message and an HTTP status code.
      */
-    @DeleteMapping("/deleteUnitById/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> removeUnit(@PathVariable(value = "id") long id) {
         unitService.deleteUnitById(id);
         return new ResponseEntity<String>("Unit with ID :" + id + " deleted.", HttpStatus.OK);
@@ -96,9 +97,9 @@ public class UnitMasterController {
      * @param updatedUnitMaster The updated details for the unit (provided in the request body).
      * @return A ResponseEntity with the updated unit details and an HTTP status code.
      */
-    @PutMapping("/updateUnitById/{id}")
-    public ResponseEntity<UnitMaster> updateUnit(@PathVariable long id, @RequestBody UnitMaster updatedUnitMaster) {
-        UnitMaster updatedUnit = unitService.updateUnit(id, updatedUnitMaster);
+    @PutMapping("/{id}")
+    public ResponseEntity<Unit> updateUnit(@PathVariable long id, @RequestBody Unit updatedUnitMaster) {
+        Unit updatedUnit = unitService.updateUnit(id, updatedUnitMaster);
         return new ResponseEntity<>(updatedUnit, HttpStatus.OK);
     }
 }
