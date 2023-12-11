@@ -68,6 +68,11 @@ public class QuestionController {
 
 	@PostMapping("/")
 	public ResponseEntity<?> createNewQuestion(@Valid @RequestBody Question question, BindingResult result) {
+		 String question1 = question.getQuestion().replaceAll("<[^>]+>", "");
+		//String question1 = question.getQuestion();
+		question.setQuestion(question1);
+
+
 		ResponseEntity<?> errmap = mapValidationErrorService.validationError(result);
 		if (errmap != null) {
 			return errmap;
@@ -140,4 +145,15 @@ public class QuestionController {
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
 	}
+	@PostMapping("/questionCode")
+	public ResponseEntity<Question> saveCode(@RequestBody String question) {
+		Question qs = new Question();
+
+		//    jdk.internal.org.jline.utils.Log.info(question);
+		qs.setQuestion(question);
+		qs = questionService.saveOrUpdate(qs);
+		return ResponseEntity.ok(qs);
+	}
+
+
 }
