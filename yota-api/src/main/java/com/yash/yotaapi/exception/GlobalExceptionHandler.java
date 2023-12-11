@@ -1,7 +1,9 @@
 package com.yash.yotaapi.exception;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -116,6 +118,45 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(ClientNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> ClientNotFoundException(ClientNotFoundException e, WebRequest request) {
 
+		ExceptionResponse error = new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Custom exception handler method to handle {@link MethodArgumentNotValidException}.
+	 *
+	 * This method is triggered when validation on a method argument fails. It generates a custom
+	 * {@link ResponseEntity} with an {@link ExceptionResponse} containing a predefined error message
+	 * indicating that the field name cannot be empty or null.
+	 *
+	 * @param ex The {@link MethodArgumentNotValidException} instance representing the validation failure.
+	 * @param headers The headers for the response.
+	 * @param status The HTTP status for the response.
+	 * @param request The incoming web request.
+	 * @return A {@link ResponseEntity} with an {@link ExceptionResponse} containing the error details.
+	 *
+	 * @author pravin.navarkar
+	 */
+	@Override
+	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ExceptionResponse error = new ExceptionResponse("Field name can not be empty or null");
+		return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Custom exception handler method to handle {@link TrainingAlreadyExistsException}.
+	 *
+	 * This method catches exceptions to type {@link TrainingAlreadyExistsException} and generates a custom
+	 * {@link ResponseEntity} with an {@link ExceptionResponse} containing the error message.
+	 *
+	 * @param e The {@link TrainingAlreadyExistsException} instance to handle.
+	 * @param request The incoming web request.
+	 * @return A {@link ResponseEntity} with an {@link ExceptionResponse} containing the error details.
+	 *
+	 * @author pravin.navarkar
+	 */
+	@ExceptionHandler(TrainingAlreadyExistsException.class)
+	public ResponseEntity<ExceptionResponse> handleTrainingAlreadyExistsException(TrainingAlreadyExistsException e, WebRequest request) {
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
