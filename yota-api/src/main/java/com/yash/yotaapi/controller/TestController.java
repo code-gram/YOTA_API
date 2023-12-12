@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.model.request.TestRequest;
 import com.yash.yotaapi.service.TestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -28,7 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin("*")
 @Tag(name = "Test Controller", description = "Controller for Test")
-@RequestMapping("/yota/api/test")
+@RequestMapping("/tests")
 @RestController
 public class TestController 
 {
@@ -39,9 +41,9 @@ public class TestController
 	 * getTestList method will control the request to get all test from DB
 	 * @return
 	 */
-	@GetMapping("/getTestList")
-	public Iterable<Test> getTestList() {
-		Iterable<Test> list = testService.findAllTest();
+	@GetMapping("/")
+	public Iterable<Test> showTestList() {
+		Iterable<Test> list = testService.showAllTest();
 		return list;
 	}
 
@@ -50,9 +52,10 @@ public class TestController
 	 * @param test
 	 * @return test object
 	 */
-	@PostMapping("/add")
-	public ResponseEntity<?> createNewTest(@Valid @RequestBody Test test) 
+	@PostMapping("/")
+	public ResponseEntity<?> createNewTest(@Valid @RequestBody TestRequest test) 
 	{
+	    
 		Test savedTest = testService.saveOrUpdate(test);
 		return new ResponseEntity<Test>(savedTest, HttpStatus.CREATED);
 	}
@@ -63,8 +66,8 @@ public class TestController
 	 * @return test object
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getTestById(@PathVariable long id) {
-		Optional<Test> test = testService.findTestById(id);
+	public ResponseEntity<?> showTestById(@PathVariable long id) {
+		Optional<Test> test = testService.showTestDetailById(id);
 		if (test.isPresent()) {
 			return new ResponseEntity<>(test.get(), HttpStatus.OK);
 		} else {
@@ -92,4 +95,5 @@ public class TestController
 	public ResponseEntity<?> updateTest(@Valid @RequestBody Test test) {
 		return new ResponseEntity<Test>(testService.updateTest(test), HttpStatus.OK);
 	}
+ 
 }

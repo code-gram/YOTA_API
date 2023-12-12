@@ -1,10 +1,14 @@
 package com.yash.yotaapi.service;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.TestException;
 import com.yash.yotaapi.exception.TestNotFoundException;
+import com.yash.yotaapi.model.request.TestRequest;
 
    /**
     * TestService will perform the business logic related to test
@@ -20,7 +24,7 @@ import com.yash.yotaapi.exception.TestNotFoundException;
 	 * @throws TestException will be thrown in case of test will not be saved or updated
 	 */
     	
-	public Test saveOrUpdate(Test test) throws TestException;
+	public Test saveOrUpdate(@Valid TestRequest test) throws TestException;
 
     /**
      * findByName method will fetch test based on its id from DB
@@ -28,14 +32,14 @@ import com.yash.yotaapi.exception.TestNotFoundException;
 	 * @return test according to test id
      * @throws TestNotFoundException
      */
-	public Optional<Test> findTestById(long id) throws TestNotFoundException;
+	public Optional<Test> showTestDetailById(long id) throws TestNotFoundException; 
 	
 	/**
 	 * findAllTest method will fetch all Test from DB
 	 * @return List of Test
 	 */
 	
-	public Iterable<Test> findAllTest();
+	public Iterable<Test> showAllTest();  
 	
 	/**
 	 * deleteTestByName method will delete the test that is mentioned
@@ -53,6 +57,6 @@ import com.yash.yotaapi.exception.TestNotFoundException;
 	 * @throws TestException
 	 */
 	
-	public Test updateTest(Test test) throws TestException;
+	public Test updateTest(Test test) throws TestException; 
 
 }

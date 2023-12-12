@@ -1,17 +1,23 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.TestException;
 import com.yash.yotaapi.exception.TestNotFoundException;
+import com.yash.yotaapi.model.request.TestRequest;
+import com.yash.yotaapi.repository.TechnologyMasterRepository;
 import com.yash.yotaapi.repository.TestRepository;
+import com.yash.yotaapi.service.TechnologyMasterService;
 import com.yash.yotaapi.service.TestService;
 
 /**
- * This is service layer class for Test to write business logic
  * 
  * @author dimpal.gaur
  * 
@@ -21,42 +27,37 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TestRepository testRepository;
-
-	/**
-	 * This method is for save Test to DB through repository layer
-	 */
+	
+	@Autowired
+    private TechnologyMasterService technologyMasterService;
+	
 	@Override
-	public Test saveOrUpdate(Test test) throws TestException {
+	public Test saveOrUpdate(TestRequest testRequest) throws TestException {
+		Test test = new Test();
+		test.setId(testRequest.getId());
+		test.setTitle(testRequest.getTitle());
+		test.setDescription(testRequest.getDescription());
+		test.setInstruction(testRequest.getInstruction());
+		test.setTechnologyMaster(technologyMasterService.getTech(testRequest.getTechnologyId()));
 		return testRepository.save(test);
 	}
 
-	/**
-	 * This method is for find test by id from DB through repository layer
-	 */
+
 	@Override
-	public Optional<Test> findTestById(long id) throws TestNotFoundException {
+	public Optional<Test> showTestDetailById(long id) throws TestNotFoundException {
 		return testRepository.findById(id);
 	}
 
-	/**
-	 * This method is for get list of all test from DB through repository layer
-	 */
 	@Override
-	public Iterable<Test> findAllTest() {
+	public Iterable<Test> showAllTest() {
 		return testRepository.findAll();
 	}
 
-	/**
-	 * This method is for delete test from DB through repository layer
-	 */
 	@Override
 	public void deleteTestById(long id) throws TestNotFoundException{
 		testRepository.deleteById(id);
 	}
 
-	/**
-	 * This method is update from DB through repository layer
-	 */
 	@Override
 	public Test updateTest(Test test) {
 		return testRepository.save(test);

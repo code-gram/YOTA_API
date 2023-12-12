@@ -1,19 +1,20 @@
 package com.yash.yotaapi.domain;
 
 import java.util.Date;
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,36 +37,42 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Test {
 
+	/**
+	 * id column is work as a Primary key for test tabel
+	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	/**
-	 * name should not be empty
+	 * technologyId work as a foreign key for test table
 	 */
-	@NotBlank(message = "name is required")
-	private String technologyName;
+	@NotNull
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "technologyId", referencedColumnName = "id")
+	private TechnologyMaster technologyMaster;
 	
 	/**
 	 * title should not be empty
 	 */
 	@NotBlank(message = "title is required")
-	private String testTitle;
+	@Column(unique = true)
+	private String title;
 	
 
 	/**
 	 * Description should not be empty
 	 */
-	@Column(columnDefinition="TEXT")                             //@Column(length = 2000)  
+	@Column(columnDefinition="TEXT")                             
 	@NotBlank(message = "Description is required")
-	private String testDescription;
+	private String description;
 
 	/**
 	 * Instruction should not be empty
 	 */
 	@Column(columnDefinition="TEXT")   
 	@NotBlank(message = "Test Instruction is required")
-	private String testInstruction;
+	private String instruction; 
 
 	/**
 	 * createDate of the Test, It will be automatically generated at the
@@ -104,9 +111,8 @@ public class Test {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date startDate;
 
-	/*
-	 * @OneToMany
-	 * @JoinColumn(name="id") private Question question;
-	 */
 }
