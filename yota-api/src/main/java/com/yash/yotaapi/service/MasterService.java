@@ -2,7 +2,7 @@ package com.yash.yotaapi.service;
 
 import java.util.List;
 
-import com.yash.yotaapi.domain.CompentencyMaster;
+import com.yash.yotaapi.domain.Competency;
 import com.yash.yotaapi.domain.TrainingMaster;
 import com.yash.yotaapi.domain.UnitMaster;
 
@@ -13,5 +13,5 @@ public interface MasterService {
 
 	public List<TrainingMaster> getTrainingTypeDetails();
 
-	public List<CompentencyMaster> getCompetencyDetails();
+	public List<Competency> getCompetencyDetails();
 }

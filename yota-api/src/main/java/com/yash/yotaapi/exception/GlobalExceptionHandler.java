@@ -119,4 +119,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+	/**
+	 * This method handles Competency Exception exception for CompetencyController.
+	 * 
+	 * @param associateException
+	 * @param request
+	 */
+    @ExceptionHandler(CompetencyAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleCompetencyAlreadyExistsException(CompetencyAlreadyExistsException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(CompetencyNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleCompetencyNotFoundException(CompetencyNotFoundException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    
 }	

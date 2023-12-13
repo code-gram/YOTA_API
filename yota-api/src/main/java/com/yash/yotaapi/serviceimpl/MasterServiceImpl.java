@@ -6,11 +6,11 @@ import com.yash.yotaapi.domain.TechnologyMaster;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yash.yotaapi.domain.CompentencyMaster;
+import com.yash.yotaapi.domain.Competency;
 import com.yash.yotaapi.domain.TrainingMaster;
 import com.yash.yotaapi.domain.UnitMaster;
 import com.yash.yotaapi.exception.NoDataFoundException;
-import com.yash.yotaapi.repository.CompentencyMasterRepository;
+import com.yash.yotaapi.repository.CompetencyRepository;
 import com.yash.yotaapi.repository.TrainingMasterRepository;
 import com.yash.yotaapi.repository.UnitMasterRepository;
 import com.yash.yotaapi.service.MasterService;
@@ -22,7 +22,7 @@ public class MasterServiceImpl implements MasterService{
 	UnitMasterRepository unitMasterRepository;
 	
 	@Autowired
-	CompentencyMasterRepository compentencyMasterRepository;
+	CompetencyRepository compentencyMasterRepository;
 	
 	@Autowired
 	TrainingMasterRepository trainingMasterRepository;
@@ -36,8 +36,8 @@ public class MasterServiceImpl implements MasterService{
 	}
 
 	@Override
-	public List<CompentencyMaster> getCompetencyDetails(){
-		List<CompentencyMaster> compentencyMasters= compentencyMasterRepository.findAll();
+	public List<Competency> getCompetencyDetails(){
+		List<Competency> compentencyMasters= compentencyMasterRepository.findAll();
 		if(compentencyMasters.isEmpty())
 			throw new NoDataFoundException("Competency Data Not Found!");
 		return compentencyMasters;

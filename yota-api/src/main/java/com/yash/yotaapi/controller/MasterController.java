@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yash.yotaapi.domain.CompentencyMaster;
+import com.yash.yotaapi.domain.Competency;
 import com.yash.yotaapi.domain.TrainingMaster;
 import com.yash.yotaapi.domain.UnitMaster;
 import com.yash.yotaapi.service.MasterService;
@@ -27,7 +27,7 @@ public class MasterController {
 	}
 	
 	@GetMapping("/competency")
-	public ResponseEntity<List<CompentencyMaster>> getCompetencies() {
+	public ResponseEntity<List<Competency>> getCompetencies() {
 		return new ResponseEntity<>(masterService.getCompetencyDetails(), HttpStatus.OK);
 	}
 	
