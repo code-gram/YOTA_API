@@ -31,7 +31,7 @@ public class YotaUser {
     private UserRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "batch_id", referencedColumnName = "id")
-    private Batch batch;
+    @JoinColumn(name = "Trainig_id", referencedColumnName = "id")
+    private Training Training;
 
 }

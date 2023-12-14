@@ -21,6 +21,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@Table(name = "training_master")
 public class TrainingMaster {
 
 	@Id

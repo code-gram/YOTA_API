@@ -2,9 +2,9 @@ package com.yash.yotaapi.controller;
 
 import java.util.List;
 
+
 import javax.validation.Valid;
 
-import com.yash.yotaapi.serviceimpl.MasterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

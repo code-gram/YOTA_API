@@ -2,12 +2,13 @@ package com.yash.yotaapi.serviceimpl;
 
 import java.util.NoSuchElementException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.domain.Client;
-import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.ClientNotFoundException;
+import com.yash.yotaapi.exception.TrainingIdException;
 import com.yash.yotaapi.repository.ClientRespository;
 import com.yash.yotaapi.service.ClientService;
 
@@ -60,7 +61,7 @@ public class ClientServiceImpl implements ClientService {
 
 		if (detail == null) {
 
-			throw new BatchIdException("Client with id : " + id + " does not exist");
+			throw new TrainingIdException("Client with id : " + id + " does not exist");
 
 		}
 

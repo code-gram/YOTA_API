@@ -85,15 +85,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(BatchNotFoundException.class)
-	public ResponseEntity<ExceptionResponse> BatchNotFoundException(BatchNotFoundException e, WebRequest request) {
+	@ExceptionHandler(TrainingNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> TrainingNotFoundException(TrainingNotFoundException e,
+			WebRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(BatchIdException.class)
-	public ResponseEntity<ExceptionResponse> handelBatchException(BatchIdException e, WebRequest request) {
+	@ExceptionHandler(TrainingIdException.class)
+	public ResponseEntity<ExceptionResponse> handelBatchException(TrainingIdException e, WebRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
@@ -106,17 +107,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(NoDataFoundException.class)
 	public ResponseEntity<ExceptionResponse> noDataFoundException(NoDataFoundException e, WebRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
 	@ExceptionHandler(ClientNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> ClientNotFoundException(ClientNotFoundException e, WebRequest request) {
 
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
 	}
-}	
+}

@@ -1,6 +1,7 @@
 package com.yash.yotaapi.serviceimpl;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yash.yotaapi.domain.ClientQuestion;
-import com.yash.yotaapi.exception.BatchIdException;
 import com.yash.yotaapi.exception.QuestionException;
+import com.yash.yotaapi.exception.TrainingIdException;
 import com.yash.yotaapi.repository.ClientQuestionRepository;
 import com.yash.yotaapi.service.ClientQuestionBankService;
 import com.yash.yotaapi.util.ExcelHelper;
@@ -60,7 +61,7 @@ public class ClientQuestionBankServiceImpl implements ClientQuestionBankService 
 		
 		List<ClientQuestion> detail = createClientQuestionRepository.findByClientId(clientId + "");
 		if (detail == null) {
-			throw new BatchIdException("ClientQuestion  with id : " + clientId + " does not exist");
+			throw new TrainingIdException("ClientQuestion  with id : " + clientId + " does not exist");
 		}
 		return detail;
 	}
