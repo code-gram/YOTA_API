@@ -41,12 +41,12 @@ public class Competency {
 	/**
 	 * It represents name of competency.
 	 */
-	@NotEmpty
+	@NotEmpty(message ="Competency Name is mandatory")
 	private String name;
 
 	/**
 	 * It represents name of competency manager.
 	 */
-	@NotEmpty
+	@NotEmpty(message ="Competency Manager is mandatory")
 	private String competencyManager;
 }
