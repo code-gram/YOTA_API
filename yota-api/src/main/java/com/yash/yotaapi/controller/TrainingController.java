@@ -1,7 +1,9 @@
 package com.yash.yotaapi.controller;
  
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -40,13 +42,20 @@ public class TrainingController {
      *
      * @param training The training object to be created.
      * @param result   Binding result for validation.
+     * @param principal Authenticated user's details.
      * @return The created training object.
      */
     @PostMapping("/")
-    public ResponseEntity<?> createTraining(@Validated @RequestBody Training training, BindingResult result) {
+    public ResponseEntity<?> createTraining(@Validated @RequestBody Training training, BindingResult result,
+            Principal principal) {
+        // Access authenticated user's details (username)
+        String username = principal.getName();
+        // Add your logic here
+ 
         ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
-        if (errorMessage != null) return errorMessage;
-        
+        if (errorMessage != null)
+            return errorMessage;
+ 
         trainingService.createTraining(training);
         return new ResponseEntity<Training>(training, HttpStatus.CREATED);
     }
@@ -76,18 +85,24 @@ public class TrainingController {
     /**
      * Update training details.
      *
-     * @param training   The updated training details.
+     * @param training The updated training details.
      * @param trainingId The ID of the training to update.
-     * @param result     Binding result for validation.
+     * @param result Binding result for validation.
+     * @param principal Authenticated user's details.
      * @return The updated training object.
      */
     @PutMapping("/{trainingId}")
     public ResponseEntity<?> updateDetails(@Validated @RequestBody Training training,
-                                           @PathVariable long trainingId, BindingResult result) {
+            @PathVariable long trainingId, BindingResult result, Principal principal) {
+        // Access authenticated user's details (username)
+        String username = principal.getName();
+        // Add your logic here
+ 
         ResponseEntity<?> errorMap = fieldErrorValidationUtility.validationError(result);
         if (errorMap != null) {
             return errorMap;
         }
+ 
         return new ResponseEntity<Training>(trainingService.updateTrainingDetails(training, trainingId), HttpStatus.OK);
     }
  
@@ -119,7 +134,7 @@ public class TrainingController {
      * Get trainings within a specified start and end date range.
      *
      * @param startDate The start date of the range.
-     * @param endDate   The end date of the range.
+     * @param endDate The end date of the range.
      * @return List of trainings within the specified date range.
      */
     @GetMapping("/search/{startDate}/{endDate}")
