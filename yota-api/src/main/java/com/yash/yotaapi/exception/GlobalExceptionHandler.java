@@ -84,4 +84,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ExceptionResponse error = new ExceptionResponse(e.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(TestNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleTestNotFoundException(TestNotFoundException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
+	
+	@ExceptionHandler(TestAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleTestAlreadyExistsException(TestAlreadyExistsException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
 }

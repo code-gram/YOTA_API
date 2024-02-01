@@ -122,7 +122,11 @@ public class Question {
 	public Object getTechnology() {
         return null;
     }
-
+	
+	@ManyToOne
+    @JoinColumn(name="test_id", nullable=false)
+	private Test test;
+	
 	//@Transient
  // public List<TechnologyMaster> technologyMasters;
 
