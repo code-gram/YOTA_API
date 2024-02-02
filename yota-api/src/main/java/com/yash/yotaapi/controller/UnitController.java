@@ -79,7 +79,10 @@ public class UnitController {
      */
     @GetMapping("/")
     public ResponseEntity<List<Unit>> getUnits() {
-        return new ResponseEntity<List<Unit>>(unitService.getAllUnits(), HttpStatus.OK);
+    	List<Unit> units = unitService.getAllUnits();
+        return new ResponseEntity<List<Unit>>(units, HttpStatus.OK);
+    
+//      redux  return new ResponseEntity<List<Unit>>(unitService.getAllUnits(), HttpStatus.OK);
     }
  
     /**
