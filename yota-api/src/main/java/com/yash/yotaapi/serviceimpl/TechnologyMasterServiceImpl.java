@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.yash.yotaapi.domain.Client;
+
 import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
