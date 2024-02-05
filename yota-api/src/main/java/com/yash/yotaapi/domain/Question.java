@@ -38,16 +38,14 @@ public class Question {
 	 */
 	@NotBlank(message = "Question is required")
 
-	//my change
+	// my change
 	@Column(columnDefinition = "TEXT")
 	private String question;
-	
+
 	/**
 	 * Question level of the Question should not be empty
 	 */
-	@NotBlank(message = "Question level is required")
 	private String questionLevel;
-	
 
 	/**
 	 * Option should not be empty
@@ -116,16 +114,19 @@ public class Question {
 	public void onUpdate() {
 		this.updated_At = new Date();
 	}
-	
+
 	private Long technologyId;
 
 	public Object getTechnology() {
-        return null;
-    }
+		return null;
+	}
 
-	//@Transient
- // public List<TechnologyMaster> technologyMasters;
+	@ManyToOne
+	@JoinColumn(name = "test_id", nullable = false)
+	private Test test;
 
+	// @Transient
+	// public List<TechnologyMaster> technologyMasters;
 
 //	public String getQuestion() {
 //		return question;
