@@ -110,7 +110,7 @@ public class TechnologyMasterController {
      *
      * @param technology
      * @param result
-     * @return Updated ParentTechnology
+     * @return Updated Parent Technology
      */
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "successfully updated")
