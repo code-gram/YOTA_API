@@ -26,38 +26,35 @@ import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
-* Controller for test.
-* Manages CRUD operations for test entities.
-*
-* @author gaurav.patil
-*/
+ * Controller for test. Manages CRUD operations for test entities.
+ *
+ * @author gaurav.patil
+ */
 @CrossOrigin("*")
 @RestController
 @Tag(name = "Test Controller", description = "Controller for test")
 @RequestMapping("/tests")
 public class TestController {
-	
+
 	@Autowired
 	TestService testService;
 
 	/* ValidationErroeMessageService is used to validate field error. */
 	@Autowired
 	FieldErrorValidationUtillity fileErrorValidationUtillity;
-	
-	
-	
+
 	/**
 	 * Endpoint to add a new test to the system. This method handles HTTP POST
-	 * requests at the "/" endpoint. It accepts a JSON representation of the
-	 * test in the request body, adds the test to the system, and
-	 * returns a ResponseEntity containing the added test and an HTTP status
-	 * code.
-	 
-     * Before adding new test it checks if a test with the given name already exists in the test_masters table.
-     * If the test does not exists, it is added to the table.If the test already exists,
-     * a {@link TestAlreadyExistsException} is thrown.
-	 * @param test The test details to be added (provided in the request
-	 *                   body).
+	 * requests at the "/" endpoint. It accepts a JSON representation of the test in
+	 * the request body, adds the test to the system, and returns a ResponseEntity
+	 * containing the added test and an HTTP status code.
+	 * 
+	 * Before adding new test it checks if a test with the given name already exists
+	 * in the test_masters table. If the test does not exists, it is added to the
+	 * table.If the test already exists, a {@link TestAlreadyExistsException} is
+	 * thrown.
+	 * 
+	 * @param test The test details to be added (provided in the request body).
 	 * @return A ResponseEntity with the added test and an HTTP status code.
 	 */
 	@PostMapping("/")
@@ -77,69 +74,72 @@ public class TestController {
 		}
 
 	}
-	
-	
-	 /**
-     * Endpoint to retrieve a list of all test in the system.
-     * This method handles HTTP GET requests at the "/" endpoint.
-     *
-     * @return A ResponseEntity with a list of all test and an HTTP status code.
-     */
+
+	/**
+	 * Endpoint to retrieve a list of all test in the system. This method handles
+	 * HTTP GET requests at the "/" endpoint.
+	 *
+	 * @return A ResponseEntity with a list of all test and an HTTP status code.
+	 */
 	@GetMapping("/")
 	public ResponseEntity<List<Test>> getAllTest() {
 		return new ResponseEntity<List<Test>>(testService.getAllTest(), HttpStatus.OK);
 	}
 
 	/**
-     * Endpoint to retrieve the details of a test based on its ID.
-     *
-     * This method handles HTTP GET requests at the "/{id}" endpoint.
-     * It takes the test ID as a path variable, retrieves the details of the corresponding test,
-     * and returns a ResponseEntity containing the test details and an HTTP status code.
-     *
-     * @param id The ID of the test to be retrieved (provided as a path variable).
-     * @return A ResponseEntity with the details of the requested test and an HTTP status code.
-     */
+	 * Endpoint to retrieve the details of a test based on its ID.
+	 *
+	 * This method handles HTTP GET requests at the "/{id}" endpoint. It takes the
+	 * test ID as a path variable, retrieves the details of the corresponding test,
+	 * and returns a ResponseEntity containing the test details and an HTTP status
+	 * code.
+	 *
+	 * @param id The ID of the test to be retrieved (provided as a path variable).
+	 * @return A ResponseEntity with the details of the requested test and an HTTP
+	 *         status code.
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Test> getTestById(@PathVariable(value = "id") long id) {
 		return new ResponseEntity<Test>(testService.getTestById(id), HttpStatus.OK);
 	}
-	
+
 	/**
-     * Endpoint to delete a test from the system based on its ID.
-     *
-     * This method handles HTTP DELETE requests at the "/deleteTesttById/{id}" endpoint.
-     * It takes the test ID as a path variable, deletes the corresponding test from the system,
-     * and returns a ResponseEntity with a message and an HTTP status code.
-     *
-     * @param id The ID of the test to be deleted (provided as a path variable).
-     * @return A ResponseEntity with a deletion message and an HTTP status code.
-     */
+	 * Endpoint to delete a test from the system based on its ID.
+	 *
+	 * This method handles HTTP DELETE requests at the "/deleteTesttById/{id}"
+	 * endpoint. It takes the test ID as a path variable, deletes the corresponding
+	 * test from the system, and returns a ResponseEntity with a message and an HTTP
+	 * status code.
+	 *
+	 * @param id The ID of the test to be deleted (provided as a path variable).
+	 * @return A ResponseEntity with a deletion message and an HTTP status code.
+	 */
 	@DeleteMapping("/deleteTestById/{id}")
 	public ResponseEntity<?> deleteTest(@PathVariable(value = "id") long id) {
 		testService.deleteTestById(id);
 		return new ResponseEntity<String>("Test of ID :" + id + " deleted...", HttpStatus.OK);
 	}
-	
-	 /**
-     * Endpoint to update the details of a test in the system based on its ID.
-     *
-     * This method handles HTTP PUT requests at the "/updateT/{id}" endpoint.
-     * It takes the test ID as a path variable and the updated test details in the request body.
-     * The method updates the test with the specified ID and returns a ResponseEntity
-     * containing the updated test details and an HTTP status code.
-     *
-     * @param id The ID of the test to be updated (provided as a path variable).
-     * @param updatedCompetency The updated details for the test (provided in the request body).
-     * @return A ResponseEntity with the updated test details and an HTTP status code.
-     */
+
+	/**
+	 * Endpoint to update the details of a test in the system based on its ID.
+	 *
+	 * This method handles HTTP PUT requests at the "/updateT/{id}" endpoint. It
+	 * takes the test ID as a path variable and the updated test details in the
+	 * request body. The method updates the test with the specified ID and returns a
+	 * ResponseEntity containing the updated test details and an HTTP status code.
+	 *
+	 * @param id                The ID of the test to be updated (provided as a path
+	 *                          variable).
+	 * @param updatedCompetency The updated details for the test (provided in the
+	 *                          request body).
+	 * @return A ResponseEntity with the updated test details and an HTTP status
+	 *         code.
+	 */
 	@PutMapping("/updateTest/{id}")
 	public ResponseEntity<?> updateTest(@PathVariable long id, @Valid @RequestBody Test test) {
 		Test updatedTest = testService.updateTest(id, test);
 		return new ResponseEntity<>(updatedTest, HttpStatus.OK);
 
 	}
-	
-	
 
 }
