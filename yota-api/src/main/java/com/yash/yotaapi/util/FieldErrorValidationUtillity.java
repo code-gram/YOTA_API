@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-
 /**
- * This FieldErrorValidationUtillity Component will help to map the Field Error in errorMap. 
- * This can be used with any model error mapping. 
+ * This FieldErrorValidationUtillity Component will help to map the Field Error
+ * in errorMap. This can be used with any model error mapping.
+ * 
  * @author pratik.kurbet
-
+ * 
  */
 @Component
 public class FieldErrorValidationUtillity {
@@ -23,20 +23,16 @@ public class FieldErrorValidationUtillity {
 	 * @param result
 	 * @return It returns the field name with its validation error
 	 */
-	public ResponseEntity<?> validationError(BindingResult result)
-	{
-		if (result.hasErrors())
-		{
-			//System.out.println(result.hasErrors());
-			Map<String, String> errorMap=new HashMap<>();
-			
-			for (FieldError error:result.getFieldErrors()) {
-				errorMap.put( error.getField(), error.getDefaultMessage());
+	public ResponseEntity<Map<String, String>> validationError(BindingResult result) {
+		if (result.hasErrors()) {
+			// System.out.println(result.hasErrors());
+			Map<String, String> errorMap = new HashMap<>();
+			for (FieldError error : result.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
 			}
-			return new ResponseEntity<Map<String, String>>(errorMap,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
 		}
 		return null;
 	}
-	
-	
+
 }
