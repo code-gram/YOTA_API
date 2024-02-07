@@ -96,4 +96,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse error = new ExceptionResponse(e.getMessage());
         return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
     }
+	@ExceptionHandler(UnitNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleUnitNotFoundException(UnitNotFoundException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
+	
+	@ExceptionHandler(UnitAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleUnitAlreadyExistsException(UnitAlreadyExistsException e, WebRequest request) {
+        ExceptionResponse error = new ExceptionResponse(e.getMessage());
+        return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
+    }
 }
