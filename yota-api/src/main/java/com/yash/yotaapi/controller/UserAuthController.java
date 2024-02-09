@@ -56,7 +56,7 @@ class UserAuthController {
         // Validate user details here
         yotaUser.setPassword(passwordEncoder.encode(yotaUser.getPassword())); // Encode password
         yotaUser.setRole(new UserRole());
-        yotaUser.getRole().setId(2);
+        yotaUser.getRole().setId(4);
         yotaUserRepository.save(yotaUser); 
         return "New User Registered Successfully";
         
