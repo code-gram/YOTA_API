@@ -42,7 +42,7 @@ public class TrainingController {
 	@Autowired
 	private FieldErrorValidationUtillity fieldErrorValidationUtility;
 	@Autowired
-	private CompareDateValidator compareDateValidator;
+	DateValidationUtility dateValidationUtility;
 
 	/**
 	 * Create a new training.
@@ -57,18 +57,25 @@ public class TrainingController {
 	 */
 
 	@PostMapping("/")
+	public ResponseEntity<?> createTraining(@Validated @RequestBody Training training, BindingResult result,
+			Principal principal) {
+			String username = principal.getName();
+			System.out.println(training.getTrainingName());
+			
+			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
+			
+			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());
+			
+			
+			if (errorMessage != null)
+				return errorMessage;
+			else {
+				trainingService.createTraining(training);
 
-	public ResponseEntity<Training> createTraining(@Validated @RequestBody Training training, BindingResult result,
-		Principal principal) {
-		String username = principal.getName();
-		System.out.println(training.getTrainingName());
-		ResponseEntity<Map<String, String>> errorMessage = fieldErrorValidationUtility.validationError(result);
+				return new ResponseEntity<Training>(training, HttpStatus.CREATED);
+			}
 
-		trainingService.createTraining(training);
-
-		return new ResponseEntity<Training>(training, HttpStatus.CREATED);
-
-	}
+		}
 
 	/**
 	 * Get all trainings.

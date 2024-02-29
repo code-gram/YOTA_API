@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.TestAlreadyExistsException;
 import com.yash.yotaapi.service.TestService;
+import com.yash.yotaapi.util.DateValidationUtility;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,6 +44,9 @@ public class TestController {
 	@Autowired
 	FieldErrorValidationUtillity fileErrorValidationUtillity;
 
+	@Autowired
+	DateValidationUtility dateValidationUtility;
+
 	/**
 	 * Endpoint to add a new test to the system. This method handles HTTP POST
 	 * requests at the "/" endpoint. It accepts a JSON representation of the test in
@@ -60,6 +64,8 @@ public class TestController {
 	@PostMapping("/")
 	public ResponseEntity<?> addTest(@Valid @RequestBody Test test, BindingResult result) {
 		ResponseEntity<?> errorMessage = fileErrorValidationUtillity.validationError(result);
+		
+		dateValidationUtility.validateDateRange(test.getStartDate(), test.getEndDate());
 
 		if (errorMessage != null)
 			return errorMessage;
@@ -72,7 +78,7 @@ public class TestController {
 				throw new TestAlreadyExistsException("Test Already Exists...");
 			}
 		}
-
+		
 	}
 
 	/**
