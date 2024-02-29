@@ -2,6 +2,7 @@ package com.yash.yotaapi.controller;
 
 import com.yash.yotaapi.domain.UserRole;
 import com.yash.yotaapi.domain.YotaUser;
+import com.yash.yotaapi.exception.InvalidCredentialsException;
 import com.yash.yotaapi.model.request.AuthenticationRequest;
 import com.yash.yotaapi.model.response.AuthenticationResponse;
 import com.yash.yotaapi.repository.YotaUserRepository; 
@@ -71,7 +72,7 @@ class UserAuthController {
             );
         } catch (BadCredentialsException e) {
             throw 
-            	new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Bad Credentials");
+            new InvalidCredentialsException( "Email Id Or Password Is Not Correct");
         }
         UserDetails userDetails = yotaUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String token = jwtService.generateToken(userDetails);

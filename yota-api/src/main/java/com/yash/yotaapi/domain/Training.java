@@ -51,6 +51,7 @@ public class Training {
  
     /** Description of the training. */
     @NotBlank(message = "Training description is mandatory")
+   
     private String trainingDescription;
  
     /** Start date of the training. */
