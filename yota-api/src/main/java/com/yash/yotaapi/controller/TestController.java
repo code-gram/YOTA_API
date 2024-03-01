@@ -1,6 +1,8 @@
 package com.yash.yotaapi.controller;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yash.yotaapi.domain.AssociateDetailsTest;
 import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.TestAlreadyExistsException;
 import com.yash.yotaapi.service.TestService;
@@ -73,6 +76,13 @@ public class TestController {
 			}
 		}
 
+	}
+	
+	@GetMapping("{id}/assignedTests")
+	public Set<AssociateDetailsTest> getAssignedTestDetails(@PathVariable Long id, Principal principal){
+		String username = principal.getName();
+		Set<AssociateDetailsTest> testSet =testService.getAssignedTests(id);
+		return testSet;
 	}
 
 	/**

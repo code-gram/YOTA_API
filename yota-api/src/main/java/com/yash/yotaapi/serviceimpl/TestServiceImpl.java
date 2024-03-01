@@ -2,15 +2,20 @@ package com.yash.yotaapi.serviceimpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yash.yotaapi.domain.AssociateDetails;
+import com.yash.yotaapi.domain.AssociateDetailsTest;
 import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.TestAlreadyExistsException;
 import com.yash.yotaapi.exception.TestNotFoundException;
+import com.yash.yotaapi.repository.AssociateDetailsRepository;
 import com.yash.yotaapi.repository.TestRepository;
 import com.yash.yotaapi.service.TestService;
 
@@ -19,6 +24,9 @@ public class TestServiceImpl implements TestService {
 	
 	@Autowired
 	private TestRepository testRepo;
+	
+	@Autowired
+	private AssociateDetailsRepository associateDetailsRepository;
 
 	@Override
 	@Transactional
@@ -78,5 +86,19 @@ public class TestServiceImpl implements TestService {
 
 		return test != null;
 	}
+
+	@Override
+	public Set<AssociateDetailsTest> getAssignedTests(Long id) {
+		
+		Optional<AssociateDetails> associateDetails=associateDetailsRepository.findById(id);
+		if(!associateDetails.isPresent()){
+			throw new EntityNotFoundException("Associate details entry not found for given Id"+id);
+		}
+		AssociateDetails associateDetails1=associateDetails.get();
+
+		return  associateDetails1.getAssociateDetailsTests();
+	}
+	
+	
 
 }

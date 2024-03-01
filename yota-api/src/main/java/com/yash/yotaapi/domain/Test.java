@@ -54,9 +54,9 @@ public class Test {
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@JoinColumn(name = "test_id")
-	private Set<AssociateDetails> associates = new HashSet<>();
+	@OneToMany(mappedBy = "associateDetails")
+	@JsonIgnore
+	private Set<AssociateDetailsTest> associateDetailsTests;
 
 	@PrePersist
 	public void onCreate() {

@@ -1,8 +1,12 @@
 package com.yash.yotaapi.service;
 
 import java.util.List;
+import java.util.Set;
 
+import com.yash.yotaapi.domain.AssociateDetailsTest;
 import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.exception.TestAlreadyExistsException;
+import com.yash.yotaapi.exception.TestNotFoundException;
 
 /**
 * TestService is a service layer providing business logic for Test entities.
@@ -79,4 +83,7 @@ public interface TestService {
 	 * @return True if the Test Name exists.
 	 */
 	Boolean getTestByName(String testName);
+	
+	
+	public Set<AssociateDetailsTest> getAssignedTests(Long id);
 }

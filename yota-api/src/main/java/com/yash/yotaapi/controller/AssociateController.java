@@ -4,21 +4,30 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
-
-import com.yash.yotaapi.domain.AssociateDetails;
-import com.yash.yotaapi.service.AssociateDetailsService;
-import com.yash.yotaapi.util.FieldErrorValidationUtillity;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.yash.yotaapi.domain.AssociateDetails;
+import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.service.AssociateDetailsService;
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -112,63 +121,63 @@ public class AssociateController {
 		return new ResponseEntity<List<AssociateDetails>>(associates, HttpStatus.OK);
 	}
 
-	 /**
-     * This controller method handles the update request for details of an
-     * associate.
-     *
-     * @param associate
-     * @param result
-     * @param id
-     * @param principal // Add Principal parameter to access authenticated user
-     */
+	/**
+	 * This controller method handles the update request for details of an
+	 * associate.
+	 *
+	 * @param associate
+	 * @param result
+	 * @param id
+	 * @param principal // Add Principal parameter to access authenticated user
+	 */
 	@PutMapping("/{id}")
-    @ApiResponse(responseCode = "200", description = "successfully updated")
-    public ResponseEntity<?> updateAssociate(@Valid @RequestBody AssociateDetails associateDetails, BindingResult result,
-            @PathVariable long id, Principal principal) {
-        ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
-        if (errorMap != null) {
-            return errorMap;
-        }
- 
-        // Access authenticated user's details (username)
-        String username = principal.getName();
-        // Add your logic here
- 
-        return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associateDetails, id),
-                HttpStatus.OK);
-    }
+	@ApiResponse(responseCode = "200", description = "successfully updated")
+	public ResponseEntity<?> updateAssociate(@Valid @RequestBody AssociateDetails associateDetails,
+			BindingResult result, @PathVariable long id, Principal principal) {
+		ResponseEntity<?> errorMap = fieldErrorValidationService.validationError(result);
+		if (errorMap != null) {
+			return errorMap;
+		}
 
-	 /**
-     * This controller method handles the get request to get single associate.
-     *
-     * @param id
-     * @param principal // Add Principal parameter to access authenticated user
-     * @return
-     */
+		// Access authenticated user's details (username)
+		String username = principal.getName();
+		// Add your logic here
+
+		return new ResponseEntity<AssociateDetails>(associateDetailsService.updateAssociate(associateDetails, id),
+				HttpStatus.OK);
+	}
+
+	/**
+	 * This controller method handles the get request to get single associate.
+	 *
+	 * @param id
+	 * @param principal // Add Principal parameter to access authenticated user
+	 * @return
+	 */
 
 	@GetMapping("/{id}")
-    public ResponseEntity<Optional<AssociateDetails>> getAssociate(@PathVariable long id, Principal principal) {
-        // Access authenticated user's details (username)
-        String username = principal.getName();
-        // Add your logic here
- 
-        return new ResponseEntity<Optional<AssociateDetails>>(associateDetailsService.getAssociate(id), HttpStatus.OK);
-    }
+	public ResponseEntity<Optional<AssociateDetails>> getAssociate(@PathVariable long id, Principal principal) {
+		// Access authenticated user's details (username)
+		String username = principal.getName();
+		// Add your logic here
 
-	 /**
-     * This controller method handles the update request for password only.
-     *
-     * @param updatePassword
-     * @param principal // Add Principal parameter to access authenticated user
-     * @return
-     */
-    @PostMapping("/update-password")
-    public ResponseEntity<Boolean> updatePassword(@RequestBody HashMap<String, String> updatePassword,
-            Principal principal) {
-        // Access authenticated user's details (username)
-        String username = principal.getName();
-        // Add your logic here
- 
-        return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword), HttpStatus.OK);
-    }
+		return new ResponseEntity<Optional<AssociateDetails>>(associateDetailsService.getAssociate(id), HttpStatus.OK);
+	}
+
+	/**
+	 * This controller method handles the update request for password only.
+	 *
+	 * @param updatePassword
+	 * @param principal      // Add Principal parameter to access authenticated user
+	 * @return
+	 */
+	@PostMapping("/update-password")
+	public ResponseEntity<Boolean> updatePassword(@RequestBody HashMap<String, String> updatePassword,
+			Principal principal) {
+		// Access authenticated user's details (username)
+		String username = principal.getName();
+		// Add your logic here
+
+		return new ResponseEntity<Boolean>(associateDetailsService.updatePassword(updatePassword), HttpStatus.OK);
+	}
 }
