@@ -107,4 +107,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse error = new ExceptionResponse(e.getMessage());
         return new ResponseEntity<ExceptionResponse>(error, HttpStatus.BAD_REQUEST);
     }
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException e, WebRequest request) {
+		ExceptionResponse error = new ExceptionResponse(e.getMessage());
+		return new ResponseEntity<ExceptionResponse>(error, HttpStatus.UNAUTHORIZED);
+	}
 }
