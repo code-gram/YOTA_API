@@ -1,6 +1,8 @@
 package com.yash.yotaapi.controller;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -140,6 +142,13 @@ public class TestController {
 		Test updatedTest = testService.updateTest(id, test);
 		return new ResponseEntity<>(updatedTest, HttpStatus.OK);
 
+	}
+
+	@GetMapping("{id}/assignedTests")
+	public ResponseEntity<Set<Test>> getAssignedTestDetails(@PathVariable Long id, Principal principal){
+		//String username = principal.getName();
+		Set<Test> testSet =testService.getAssignedTests(id);
+		return ResponseEntity.ok().body(testSet);
 	}
 
 }

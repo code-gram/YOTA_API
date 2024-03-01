@@ -1,16 +1,9 @@
 package com.yash.yotaapi.domain;
 
 import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -44,7 +37,6 @@ import lombok.ToString;
  *
  */
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -137,5 +129,16 @@ public class AssociateDetails {
 	public void onUpdate() {
 		this.updatedAt = new Date();
 	}
+
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinTable(
+			name="associate_tests",
+			joinColumns = {
+					@JoinColumn(name="assoicate_id")
+			},
+			inverseJoinColumns = {
+					@JoinColumn(name="test_id")
+			})
+	private Set<Test> tests;
 }
 

@@ -1,6 +1,7 @@
 package com.yash.yotaapi.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.yash.yotaapi.domain.Test;
 
@@ -79,4 +80,6 @@ public interface TestService {
 	 * @return True if the Test Name exists.
 	 */
 	Boolean getTestByName(String testName);
+
+	public Set<Test> getAssignedTests(Long id);
 }

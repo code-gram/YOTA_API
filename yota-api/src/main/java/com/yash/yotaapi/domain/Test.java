@@ -54,10 +54,6 @@ public class Test {
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@JoinColumn(name = "test_id")
-	private Set<AssociateDetails> associates = new HashSet<>();
-
 	@PrePersist
 	public void onCreate() {
 		this.createdAt = new Date();
