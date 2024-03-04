@@ -78,10 +78,10 @@ public class TestController {
 
 	}
 	
-	@GetMapping("{id}/assignedTests")
-	public Set<AssociateDetailsTest> getAssignedTestDetails(@PathVariable Long id, Principal principal){
+	@GetMapping("/assignedTests")
+	public Set<AssociateDetailsTest> getAssignedTestDetails(Principal principal){
 		String username = principal.getName();
-		Set<AssociateDetailsTest> testSet =testService.getAssignedTests(id);
+		Set<AssociateDetailsTest> testSet =testService.getAssignedTests(username);
 		return testSet;
 	}
 

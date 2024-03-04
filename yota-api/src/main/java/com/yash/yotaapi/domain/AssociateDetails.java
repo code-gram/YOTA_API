@@ -32,9 +32,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 /**
  * This Associate details model will work as a actual object of associates.
+ * 
  * @author nitin.chougale
  *
  */
@@ -46,34 +46,33 @@ import lombok.ToString;
 @Getter
 @ToString
 public class AssociateDetails {
-	
+
 	/**
 	 * ID is a primary key and it is generated automatically.
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	
+
 	@OneToMany(mappedBy = "associateDetails")
 	@JsonIgnore
 	private Set<AssociateDetailsTest> associateDetailsTests;
-		
+
 	/**
 	 * First_Name of associate.
 	 */
 	private String firstName;
-		
+
 	/**
 	 * Middle_Name of associate.
 	 */
 	private String middleName;
-	
+
 	/**
 	 * last_Name of associate.
 	 */
 	private String lastName;
-	
+
 	/**
 	 * Email_Id is necessary field and it should be unique for every associate.
 	 */
@@ -81,14 +80,14 @@ public class AssociateDetails {
 	@Email
 	@NotNull(message = "Email_Id field is mandatory")
 	private String emailId;
-	
+
 	/**
 	 * Password should be min 8 & max 12 digits, and it should not be empty.
 	 */
 	@NotBlank(message = "Password is mandatory")
 	@Size(min = 8, max = 12, message = "Password should be minimum of 8 and maximum of 12 digits.")
 	private String password;
-	
+
 	/**
 	 * Status field shows the status of associate, and its default value is active.
 	 */
@@ -96,13 +95,12 @@ public class AssociateDetails {
 	@Column(name = "Status", nullable = false)
 	private Status status = Status.Active;
 
-	
 	/**
 	 * Contact no should be exactly 10 digits.
 	 */
-	@Size(min = 10,max = 10, message = "Contact_No should be exactly 10 characters.")
+	@Size(min = 10, max = 10, message = "Contact_No should be exactly 10 characters.")
 	private String contactNo;
-	
+
 	/**
 	 * createDate of the AssociateDetails, It will be automatically generated at the
 	 * time of record creation. You don't need to add the created date manually from
@@ -120,7 +118,7 @@ public class AssociateDetails {
 	@DateTimeFormat(iso = ISO.DATE)
 	@JsonFormat(pattern = "yyyy/mm/dd")
 	private Date updatedAt;
-	
+
 	/**
 	 * This method will be called before the entity is inserted (persisted) into the
 	 * database.
@@ -138,4 +136,3 @@ public class AssociateDetails {
 		this.updatedAt = new Date();
 	}
 }
-

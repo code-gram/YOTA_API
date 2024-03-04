@@ -85,5 +85,5 @@ public interface TestService {
 	Boolean getTestByName(String testName);
 	
 	
-	public Set<AssociateDetailsTest> getAssignedTests(Long id);
+	public Set<AssociateDetailsTest> getAssignedTests(String username);
 }

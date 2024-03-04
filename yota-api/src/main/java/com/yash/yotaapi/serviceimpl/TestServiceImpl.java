@@ -88,11 +88,13 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public Set<AssociateDetailsTest> getAssignedTests(Long id) {
+	public Set<AssociateDetailsTest> getAssignedTests(String username) {
 		
-		Optional<AssociateDetails> associateDetails=associateDetailsRepository.findById(id);
+		System.out.print(username+"---------------------->");
+		
+		Optional<AssociateDetails> associateDetails=associateDetailsRepository.findByEmailId(username);
 		if(!associateDetails.isPresent()){
-			throw new EntityNotFoundException("Associate details entry not found for given Id"+id);
+			throw new EntityNotFoundException("Associate details entry not found for given username"+username);
 		}
 		AssociateDetails associateDetails1=associateDetails.get();
 
