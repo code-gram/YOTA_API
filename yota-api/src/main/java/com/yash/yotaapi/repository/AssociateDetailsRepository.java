@@ -27,5 +27,11 @@ public interface AssociateDetailsRepository extends JpaRepository<AssociateDetai
 	 * @param id
 	 */
 	Optional<AssociateDetails> findById(String id);
+
+	/**
+	 *  * We can fetch associate using findByEmailID method.  * @param emailId  
+	 */
+	//paritosh.lambat
+	Optional<AssociateDetails> findByEmailId(String emailId);
 	
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yash.yotaapi.domain.AssociateDetailsTest;
 import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.TestAlreadyExistsException;
 import com.yash.yotaapi.service.TestService;
@@ -149,6 +150,8 @@ public class TestController {
 		return new ResponseEntity<>(updatedTest, HttpStatus.OK);
 
 	}
+	
+	
 
 	@GetMapping("{id}/assignedTests")
 	public ResponseEntity<Set<Test>> getAssignedTestDetails(@PathVariable Long id, Principal principal){
@@ -156,5 +159,20 @@ public class TestController {
 		Set<Test> testSet =testService.getAssignedTests(id);
 		return ResponseEntity.ok().body(testSet);
 	}
+	
+	/**
+	 * Endpoint to retrieve a list of Test assigned  for loged in  associate This method handles
+	 * HTTP GET requests at the "/" endpoint.
+	 *
+	 * @return A set of AssociateDetest for assigned tests tests  and an HTTP status code.
+	 */
+	
+	@GetMapping("/assignedTests")
+	public Set<AssociateDetailsTest> getAssignedTestDetails(Principal principal){
+		String username = principal.getName();
+		Set<AssociateDetailsTest> testSet =testService.getAssignedTests(username);
+		return testSet;
+	}
+
 
 }

@@ -3,7 +3,10 @@ package com.yash.yotaapi.service;
 import java.util.List;
 import java.util.Set;
 
+import com.yash.yotaapi.domain.AssociateDetailsTest;
 import com.yash.yotaapi.domain.Test;
+import com.yash.yotaapi.exception.TestAlreadyExistsException;
+import com.yash.yotaapi.exception.TestNotFoundException;
 
 /**
 * TestService is a service layer providing business logic for Test entities.
@@ -80,6 +83,18 @@ public interface TestService {
 	 * @return True if the Test Name exists.
 	 */
 	Boolean getTestByName(String testName);
-
+	
+	
+	
 	public Set<Test> getAssignedTests(Long id);
+	//paritosh.lambat
+	/**
+	 * gives assigned test details to the user for that perticular associate whoever login associate
+	 * he will get his assigned testsstatus for ex pending aor completed
+	 * 
+	 * 
+	 * @param username is nothing but email id
+	 * @return Associate details for tests with tests status given by associate
+	 */
+	public Set<AssociateDetailsTest> getAssignedTests(String username);
 }

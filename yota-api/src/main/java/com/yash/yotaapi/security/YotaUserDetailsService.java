@@ -24,7 +24,6 @@ public class YotaUserDetailsService implements UserDetailsService {
 		if (yotaUser == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
- 
 		GrantedAuthority authority = new SimpleGrantedAuthority(yotaUser.getRole().getDescription());
 		return org.springframework.security.core.userdetails.User.withUsername(yotaUser.getUsername())
 				.password(yotaUser.getPassword()).authorities(Collections.singletonList(authority))

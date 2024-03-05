@@ -3,28 +3,34 @@ package com.yash.yotaapi.domain;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import com.yash.yotaapi.util.Status;
 
-import org.apache.catalina.startup.Tomcat.ExistingStandardWrapper;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Columns;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yash.yotaapi.util.Status;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -140,5 +146,15 @@ public class AssociateDetails {
 					@JoinColumn(name="test_id")
 			})
 	private Set<Test> tests;
+	
+	//paritosh.lambat
+	/**
+	 * this reference to  extra mapping entity i.e. AssociateDetailsTest  
+	 * which creates many to many mapping between  Test and AssociateDetails Entity
+	 */
+	@OneToMany(mappedBy = "associateDetails")
+	@JsonIgnore
+	private Set<AssociateDetailsTest> associateDetailsTests;
+
 }
 

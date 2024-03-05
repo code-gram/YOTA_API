@@ -2,6 +2,7 @@ package com.yash.yotaapi.controller;
 
 import com.yash.yotaapi.domain.UserRole;
 import com.yash.yotaapi.domain.YotaUser;
+import com.yash.yotaapi.exception.InvalidCredentialsException;
 import com.yash.yotaapi.exception.UserNotFoundException;
 import com.yash.yotaapi.model.request.AuthenticationRequest;
 import com.yash.yotaapi.model.response.AuthenticationResponse;
@@ -64,6 +65,7 @@ public class UserAuthController {
             );
         } catch (BadCredentialsException e) {
             throw new UserNotFoundException(HttpStatus.UNAUTHORIZED, "Invalid username and password!!");
+       
         }
         UserDetails userDetails = yotaUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String token = jwtService.generateToken(userDetails);
