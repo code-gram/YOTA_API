@@ -53,7 +53,12 @@ public class Test {
 	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
-
+	
+	
+	/**
+	 * this reference to  extra mapping entity i.e. AssociateDetailsTest  
+	 * which creates many to many mapping between  Test and AssociateDetails Entity
+	 */
 	@OneToMany(mappedBy = "associateDetails")
 	@JsonIgnore
 	private Set<AssociateDetailsTest> associateDetailsTests;

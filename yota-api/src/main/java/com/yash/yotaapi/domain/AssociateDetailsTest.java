@@ -22,14 +22,24 @@ public class AssociateDetailsTest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/**
+	 * this column to store associateDetails id to create mapping between associateDetails and AssociateDetailsTest table
+	 */
 	@ManyToOne
 	@JoinColumn(name = "associate_details_id")
 	private AssociateDetails associateDetails;
 	
+	/**
+	 * this column to store test id to create mapping between Test and AssociateDetailsTest table
+	 */
 	@ManyToOne
 	@JoinColumn(name = "test_id")
 	private Test test;
 	
+	/**
+	 * to store status of test which assigned to associate for completion 
+	 * so status shows pending or completed like that
+	 */
 	@Column(name = "test_status")
 	private String testStatus;
 

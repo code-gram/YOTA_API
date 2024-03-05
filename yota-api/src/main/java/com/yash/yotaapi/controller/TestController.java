@@ -77,7 +77,12 @@ public class TestController {
 		}
 
 	}
-	
+	/**
+	 * Endpoint to retrieve a list of Test assigned  for loged in  associate This method handles
+	 * HTTP GET requests at the "/" endpoint.
+	 *
+	 * @return A set of AssociateDetest for assigned tests tests  and an HTTP status code.
+	 */
 	@GetMapping("/assignedTests")
 	public Set<AssociateDetailsTest> getAssignedTestDetails(Principal principal){
 		String username = principal.getName();

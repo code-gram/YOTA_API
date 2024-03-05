@@ -54,6 +54,10 @@ public class AssociateDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	/**
+	 * this reference to  extra mapping entity i.e. AssociateDetailsTest  
+	 * which creates many to many mapping between  Test and AssociateDetails Entity
+	 */
 	@OneToMany(mappedBy = "associateDetails")
 	@JsonIgnore
 	private Set<AssociateDetailsTest> associateDetailsTests;

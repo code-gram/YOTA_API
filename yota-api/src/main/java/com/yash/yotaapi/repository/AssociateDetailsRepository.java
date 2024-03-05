@@ -29,6 +29,9 @@ public interface AssociateDetailsRepository extends JpaRepository<AssociateDetai
 	 */
 	Optional<AssociateDetails> findById(String id);
 
+	/**
+	 *  * We can fetch associate using findByEmailID method.  * @param emailId  
+	 */
 	Optional<AssociateDetails> findByEmailId(String emailId);
 
 }

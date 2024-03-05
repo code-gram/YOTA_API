@@ -85,5 +85,14 @@ public interface TestService {
 	Boolean getTestByName(String testName);
 	
 	
+	
+	/**
+	 * gives assigned test details to the user for that perticular associate whoever login associate
+	 * he will get his assigned testsstatus for ex pending aor completed
+	 * 
+	 * 
+	 * @param username is nothing but email id
+	 * @return Associate details for tests with tests status given by associate
+	 */
 	public Set<AssociateDetailsTest> getAssignedTests(String username);
 }
