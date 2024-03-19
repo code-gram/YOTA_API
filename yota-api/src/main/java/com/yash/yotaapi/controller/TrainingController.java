@@ -29,11 +29,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @CrossOrigin("*")
-
 @RestController
-
 @Tag(name = "Training Controller", description = "Controller for training")
-
 @RequestMapping("/trainings")
 
 public class TrainingController {
@@ -47,8 +44,8 @@ public class TrainingController {
 	/**
 	 * Create a new training.
 	 *
-	 * @param training  The training object to be created.
-	 * @param result    Binding result for validation.
+	 * @param training The training object to be created.
+	 * @param result Binding result for validation.
 	 * 
 	 * @param principal Authenticated user's details.
 	 * 
@@ -57,21 +54,16 @@ public class TrainingController {
 	 */
 
 	@PostMapping("/")
-	public ResponseEntity<?> createTraining(@Validated @RequestBody Training training, BindingResult result,
+	public ResponseEntity<?> createTraining( @RequestBody Training training, BindingResult result,
 			Principal principal) {
 			String username = principal.getName();
-			System.out.println(training.getTrainingName());
-			
+			System.out.println("======="+training.getTrainingName());
 			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
-			
 			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());
-			
-			
 			if (errorMessage != null)
 				return errorMessage;
 			else {
 				trainingService.createTraining(training);
-
 				return new ResponseEntity<Training>(training, HttpStatus.CREATED);
 			}
 
@@ -122,7 +114,8 @@ public class TrainingController {
 		}
 		return new ResponseEntity<Training>(trainingService.updateTrainingDetails(training, trainingId), HttpStatus.OK);
 	}
-
+	
+	
 	/**
 	 * 
 	 * Remove a training by ID.
@@ -134,9 +127,7 @@ public class TrainingController {
 	@DeleteMapping("/{trainingId}")
 
 	public ResponseEntity<?> removeTraining(@PathVariable long trainingId) {
-
 		trainingService.removeTrainingDetails(trainingId);
-
 		return new ResponseEntity<String>("Training with id: " + trainingId + " is deleted successfully",
 				HttpStatus.OK);
 
@@ -155,11 +146,8 @@ public class TrainingController {
 	 */
 
 	@GetMapping("/search/{keyword}")
-
 	public ResponseEntity<List<Training>> searchTraining(@PathVariable("keyword") String keyword) {
-
 		List<Training> searchTraining = trainingService.searchTraining(keyword);
-
 		return new ResponseEntity<List<Training>>(searchTraining, HttpStatus.OK);
 
 	}
@@ -179,17 +167,31 @@ public class TrainingController {
 	 */
 
 	@GetMapping("/search/{startDate}/{endDate}")
-
 	public ResponseEntity<List<Training>> getByStartDateAndEndDate(
-
 			@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-
 			@PathVariable("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-
 		List<Training> search = trainingService.getByStartDateAndEndDate(startDate, endDate);
-
 		return new ResponseEntity<List<Training>>(search, HttpStatus.OK);
+	}
+	
+	/**
+	* @author pragati.paliwal
+	* @param updated training object contains the actual start and end date *
+	@return A ResponseEntity object containing the updated Training object 
+	 */
+	
+	@PutMapping("/updateActualStartAndEndDate")
 
+	public ResponseEntity<?> updateActualStartAndEndDate( @RequestBody Training training,
+		  Principal principal) {
+		  String username = principal.getName();
+		return new ResponseEntity<Training>(trainingService.updateActualStartAndEndDate(training, training.getId()), HttpStatus.OK);
+	}
+	
+   @PutMapping("updateStatus")
+	public Boolean updateStatusOnTrainingReject(@RequestParam Long trainingId,@RequestParam String action){
+		return trainingService.updateStatusOfTraining(trainingId,action);
+ 	
 	}
 
 }
