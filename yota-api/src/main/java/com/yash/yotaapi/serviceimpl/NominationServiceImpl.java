@@ -1,10 +1,16 @@
 package com.yash.yotaapi.serviceimpl;
 
 import com.yash.yotaapi.domain.Nomination;
+import com.yash.yotaapi.domain.Question;
 import com.yash.yotaapi.repository.NominationRepository;
 import com.yash.yotaapi.service.NominationService;
+import com.yash.yotaapi.util.ExcelHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +36,10 @@ public class NominationServiceImpl implements NominationService {
 	 * @param nomination The nomination object to be created.
 	 * @return The created nomination object.
 	 */
+
 	@Override
-	public Nomination createNomination(Nomination nomination) {
-		return nominationRepository.save(nomination);
+	public void createNomination(List<Nomination> nominations) {
+		nominationRepository.saveAll(nominations);
 	}
 
 	/**
@@ -92,5 +99,18 @@ public class NominationServiceImpl implements NominationService {
 	@Override
 	public List<Nomination> findByEmployeeName(String employeeName) {
 		return nominationRepository.findByEmployeeName(employeeName);
+	}
+	
+	@Override
+	public void saveExcel(MultipartFile file) {
+		try {
+			List<Nomination> nominations = ExcelHelper.convertExcelToListOfNomination(file.getInputStream()); 
+	
+			this.nominationRepository.saveAll(nominations);
+			System.out.println("check1");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

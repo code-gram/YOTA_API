@@ -28,4 +28,4 @@ public class YotaApiApplication
 	public static void main(String[] args) {
 		SpringApplication.run(YotaApiApplication.class, args);
 	}
-}
+}	
