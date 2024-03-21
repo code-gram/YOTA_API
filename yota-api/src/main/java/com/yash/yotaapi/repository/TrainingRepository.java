@@ -20,22 +20,15 @@ import com.yash.yotaapi.domain.Training;
 public interface TrainingRepository extends JpaRepository<Training, Long> {
 
 	/**
-	 * Finds trainings with names containing the given keyword.
+	 * Finds training with names containing the given keyword.
 	 *
 	 * @param keyword The keyword to search for in training names.
-	 * @return List of trainings whose names contain the given keyword.
+	 * @return List of training whose names contain the given keyword.
 	 */
 	List<Training> findByTrainingNameContaining(String keyword);
 
 	/**
-	 * Finds all active trainings.
-	 *
-	 * @return List of all active trainings (where status is false).
-	 */
-//	@Query(value = "SELECT t FROM Training t WHERE t.status = false")
-//	List<Training> findAllActiveTrainings();
 
-	/**
 	 * Finds trainings between the given start and end dates.
 	 *
 	 * @param startDate The start date of the range.

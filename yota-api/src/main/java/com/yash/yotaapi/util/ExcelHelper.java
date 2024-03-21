@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import com.yash.yotaapi.domain.ClientQuestion;
+import com.yash.yotaapi.domain.Nomination;
 import com.yash.yotaapi.domain.Question;
 
 public class ExcelHelper {
@@ -29,8 +31,6 @@ public class ExcelHelper {
 			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 			XSSFSheet sheet = workbook.getSheetAt(0);	
 			
-
-
 			int rowNumber = 0;
 //			Iterator<Row> iterator = sheet.iterator();
 			Iterator<Row> iterator = sheet.iterator();
@@ -142,5 +142,56 @@ public class ExcelHelper {
 		}
 
 		return questions;
+	}
+	
+	public static List<Nomination> convertExcelToListOfNomination(InputStream inputStream) {
+
+		List<Nomination> nominations = new ArrayList<>();
+		System.out.println("check2");
+
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = workbook.getSheetAt(0);	
+			
+			int rowNumber = 0;
+			Iterator<Row> iterator = sheet.iterator();
+
+			while (iterator.hasNext()) {
+				Row row = iterator.next();
+
+				if (rowNumber == 0) {
+					rowNumber++;
+					continue;
+				}
+
+				Iterator<Cell> cells = row.iterator();
+				int cId = 0;
+
+				Nomination nomination = new Nomination();
+
+				while (cells.hasNext()) {
+					Cell cell = cells.next();
+
+					switch (cId) {
+					case 0:
+						nomination.setEmployeeId((long)cell.getNumericCellValue());
+						break;
+					case 1:
+						nomination.setEmployeeName(cell.getStringCellValue());
+						break;
+					case 2:
+						nomination.setEmployeeEmail(cell.getStringCellValue());
+						break;
+					default: break;
+					}
+					cId++;
+				}
+				nominations.add(nomination);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nominations;
 	}
 }

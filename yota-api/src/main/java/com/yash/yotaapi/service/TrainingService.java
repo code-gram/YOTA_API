@@ -31,7 +31,7 @@ public interface TrainingService {
     /**
      * Update details of a training entity.
      *
-     * @param training    The updated training object.
+     * @param training The updated training object.
      * @param trainingId  The ID of the training to update.
      * @return The updated training object.
      */
@@ -66,10 +66,24 @@ public interface TrainingService {
      * @param endDate   The end date of the range.
      * @return List of training entities within the specified date range.
      */
+    
+   
     List<Training> getByStartDateAndEndDate(Date startDate, Date endDate);
+
 
 	void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
 	
 	
 	
+
+    
+    Boolean updateStatusOfTraining(Long trainingId,String action);
+    /**
+     * @author pragati.paliwal
+     * @param fetching startDate
+     * @param fetching endDate
+     * @return changing training status to approve.
+     */
+    public Training updateActualStartAndEndDate(Training training, long trainingId);
+
 }

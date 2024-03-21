@@ -2,10 +2,13 @@ package com.yash.yotaapi.controller;
 
 import com.yash.yotaapi.domain.Nomination;
 import com.yash.yotaapi.service.NominationService;
+import com.yash.yotaapi.util.ExcelHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -14,7 +17,7 @@ import java.util.List;
 /**
  * Nomination Controller
  * 
- * @author raghav.muchhal
+ * @author purv.baraskar
  */
 @RestController
 @RequestMapping("/nominations")
@@ -34,13 +37,16 @@ public class NominationController {
 	 * @return The created nomination object.
 	 */
 	@PostMapping
-	public ResponseEntity<Nomination> createNomination(@Valid @RequestBody Nomination nomination, Principal principal) {
-		// Access authenticated user's details (username)
+	public ResponseEntity<String> createNomination(@Valid @RequestBody List<Nomination> nominations, Principal principal) {
 		String username = principal.getName();
-		// Add your logic here
-
-		Nomination createdNomination = nominationService.createNomination(nomination);
-		return new ResponseEntity<>(createdNomination, HttpStatus.CREATED);
+		try {
+			nominationService.createNomination(nominations);
+			System.out.println("List of nominations:"+ nominations);
+			return new ResponseEntity<>("Nominations added successfully",HttpStatus.CREATED);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	/**
@@ -129,4 +135,14 @@ public class NominationController {
 		}
 		return new ResponseEntity<>(nominations, HttpStatus.OK);
 	}
+	
+	@PostMapping("/bulkNominations")
+	public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file, Principal principal) {
+        
+        if (ExcelHelper.checkExcelFormat(file)) {
+            nominationService.saveExcel(file);
+            return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
+    }
 }

@@ -89,20 +89,43 @@ public class Training {
     @LastModifiedDate
     private Date updatedAt;
  
-    /** Status of the training. */
-    //@NotEmpty
-    private String status;
+
     
     /** Action of the training. */
     //@NotEmpty
     private String action;
-    
-   // @NotEmpty
-    private String trainingStatus;
+   
     
     // @NotEmpty
     private String rejectTrainingMessage;
  
+
+    /** 
+     * @author pragati.paliwal
+     *  @param Status of the training. */
+  
+    private String status;
+ 
+    /** 
+     *  @author pragati.paliwal
+     *  @param Status of the on going trainingStatus. */
+  
+    private String trainingStatus;
+    
+    
+    /**
+     * @author pragati.paliwal
+     * @param Trainer Name for assign training
+     */
+    private String trainerName;
+    
+    /**
+     * * @author pragati.paliwal
+    * @param Number of participants for the training */
+    @NotNull
+    private int noOfParticipants;
+    
+
     /** Transient field for storing user name. */
     @Transient
     private String userName;

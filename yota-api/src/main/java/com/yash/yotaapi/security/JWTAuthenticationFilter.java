@@ -64,6 +64,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 			filterChain.doFilter(request, response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			// Log exception details
 			// Handle exception or throw a generic error response
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Authentication failed");
