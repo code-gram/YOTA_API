@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import com.yash.yotaapi.constants.TrainingStatus;
 import com.yash.yotaapi.domain.*;
 import com.yash.yotaapi.service.*;
@@ -64,13 +63,7 @@ public class TrainingController {
 			training.setStatus(TrainingStatus.REQUESTED.toString());
 		    training.setTrainingStatus(TrainingStatus.PLANNED.toString());
 			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
-			
 			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());	
-
-			//System.out.println("======="+training.getTrainingName());
-			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
-			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());
-
 			if (errorMessage != null)
 				return errorMessage;
 			else {
@@ -198,11 +191,6 @@ public class TrainingController {
 		return new ResponseEntity<Training>(trainingService.updateActualStartAndEndDate(training, training.getId()), HttpStatus.OK);
 	}
 	
-   @PutMapping("updateStatus")
-	public Boolean updateStatusOnTrainingReject(@RequestParam Long trainingId,@RequestParam String action){
-		return trainingService.updateStatusOfTraining(trainingId,action);
- 	
-	}
 
 	/**
 	 * 

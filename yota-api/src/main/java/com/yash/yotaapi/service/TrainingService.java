@@ -71,13 +71,8 @@ public interface TrainingService {
     List<Training> getByStartDateAndEndDate(Date startDate, Date endDate);
 
 
-	void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
+	public void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
 	
-	
-	
-
-    
-    Boolean updateStatusOfTraining(Long trainingId,String action);
     /**
      * @author pragati.paliwal
      * @param fetching startDate

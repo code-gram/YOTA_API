@@ -15,9 +15,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @OpenAPIDefinition(info=@Info(title="YASH ONLINE TEST APPLICATION"))
-public class YotaApiApplication 	
-	
-	  extends SpringBootServletInitializer {    
+public class YotaApiApplication  extends SpringBootServletInitializer {    
 		  @Override   
 		  // Configuring method has to be overridden    
 		  protected SpringApplicationBuilder    
