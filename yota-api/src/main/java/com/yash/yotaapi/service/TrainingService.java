@@ -67,4 +67,9 @@ public interface TrainingService {
      * @return List of training entities within the specified date range.
      */
     List<Training> getByStartDateAndEndDate(Date startDate, Date endDate);
+
+	String updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
+	
+	
+	
 }

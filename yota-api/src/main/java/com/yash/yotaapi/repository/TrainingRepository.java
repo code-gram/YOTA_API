@@ -32,8 +32,8 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 	 *
 	 * @return List of all active trainings (where status is false).
 	 */
-	@Query(value = "SELECT t FROM Training t WHERE t.status = false")
-	List<Training> findAllActiveTrainings();
+//	@Query(value = "SELECT t FROM Training t WHERE t.status = false")
+//	List<Training> findAllActiveTrainings();
 
 	/**
 	 * Finds trainings between the given start and end dates.
