@@ -69,6 +69,13 @@ public interface TrainingService {
     
    
     List<Training> getByStartDateAndEndDate(Date startDate, Date endDate);
+
+
+	void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
+	
+	
+	
+
     
     Boolean updateStatusOfTraining(Long trainingId,String action);
     /**
@@ -78,4 +85,5 @@ public interface TrainingService {
      * @return changing training status to approve.
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
+
 }

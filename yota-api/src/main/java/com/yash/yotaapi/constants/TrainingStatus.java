@@ -1,5 +1,6 @@
 package com.yash.yotaapi.constants;
 
+
 /**
  * 
  * @author pragati.paliwal
@@ -14,3 +15,4 @@ public enum TrainingStatus {
 	APPROVED,
     REJECTED,
 }
+

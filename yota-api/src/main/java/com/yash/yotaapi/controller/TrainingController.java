@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import com.yash.yotaapi.constants.TrainingStatus;
 import com.yash.yotaapi.domain.*;
 import com.yash.yotaapi.service.*;
 import com.yash.yotaapi.util.*;
@@ -57,9 +59,18 @@ public class TrainingController {
 	public ResponseEntity<?> createTraining( @RequestBody Training training, BindingResult result,
 			Principal principal) {
 			String username = principal.getName();
-			System.out.println("======="+training.getTrainingName());
+
+			//System.out.println(training.getTrainingName());
+			training.setStatus(TrainingStatus.REQUESTED.toString());
+		    training.setTrainingStatus(TrainingStatus.PLANNED.toString());
+			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
+			
+			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());	
+
+			//System.out.println("======="+training.getTrainingName());
 			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
 			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());
+
 			if (errorMessage != null)
 				return errorMessage;
 			else {
@@ -102,7 +113,6 @@ public class TrainingController {
 	 */
 
 	@PutMapping("/{trainingId}")
-
 	public ResponseEntity<?> updateDetails(@Validated @RequestBody Training training,
 			@PathVariable long trainingId, BindingResult result, Principal principal) {
 		// Access authenticated user's details (username)
@@ -194,4 +204,27 @@ public class TrainingController {
  	
 	}
 
+	/**
+	 * 
+	 * Update status and traingStatus  on Reject action
+	 *  
+	 * @param trainingID of the Current row
+	 * 
+	 * @param Action  of the Current row
+	 * 
+	 * @param rejectedMessage  
+	 * 
+	 */
+
+	@PutMapping("/updateStatus")
+	public ResponseEntity<?> updateStatusOnTrainingReject(@RequestBody Training training){
+			
+		 trainingService.updateStatusOnTrainingReject(training.getId(),training.getAction(),training.getRejectTrainingMessage());
+		 
+		 
+		return new ResponseEntity<String>(HttpStatus.OK);
+
+		
+
+	}
 }

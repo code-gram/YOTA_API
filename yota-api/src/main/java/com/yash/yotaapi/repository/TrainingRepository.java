@@ -28,6 +28,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 	List<Training> findByTrainingNameContaining(String keyword);
 
 	/**
+
 	 * Finds trainings between the given start and end dates.
 	 *
 	 * @param startDate The start date of the range.

@@ -3,6 +3,7 @@ package com.yash.yotaapi.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yash.yotaapi.constraints.CompareDate;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -25,6 +26,7 @@ import java.util.Set;
 * This class defines the structure and attributes of a Training.
 * @author raghav.muchhal
 */
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -87,6 +89,17 @@ public class Training {
     @LastModifiedDate
     private Date updatedAt;
  
+
+    
+    /** Action of the training. */
+    //@NotEmpty
+    private String action;
+   
+    
+    // @NotEmpty
+    private String rejectTrainingMessage;
+ 
+
     /** 
      * @author pragati.paliwal
      *  @param Status of the training. */
@@ -112,6 +125,7 @@ public class Training {
     @NotNull
     private int noOfParticipants;
     
+
     /** Transient field for storing user name. */
     @Transient
     private String userName;
