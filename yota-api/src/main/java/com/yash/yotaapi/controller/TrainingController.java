@@ -61,7 +61,6 @@ public class TrainingController {
 	@PostMapping("/")
 	public ResponseEntity<?> createTraining(@Validated @RequestBody Training training, BindingResult result,
 			Principal principal) {
-			int count=0;
 			String username = principal.getName();
 			System.out.println(training.getTrainingName());
 			training.setStatus(TrainingStatus.REQUESTED.toString());
@@ -72,9 +71,7 @@ public class TrainingController {
 			if (errorMessage != null)
 				return errorMessage;
 			else {
-				count++;
 				trainingService.createTraining(training);
-				System.out.println("Count::::"+count);
 				return new ResponseEntity<Training>(training, HttpStatus.CREATED);
 			}
 
@@ -194,14 +191,25 @@ public class TrainingController {
 
 	}
 
+	/**
+	 * 
+	 * Update status and traingStatus  on Reject action
+	 *  
+	 * @param trainingID of the Current row
+	 * 
+	 * @param Action  of the Current row
+	 * 
+	 * @param rejectedMessage  
+	 * 
+	 */
 
 	@PutMapping("/updateStatus")
-	public ResponseEntity<String> updateStatusOnTrainingReject(@RequestBody Training training){
+	public ResponseEntity<?> updateStatusOnTrainingReject(@RequestBody Training training){
 			
-		 String message=trainingService.updateStatusOnTrainingReject(training.getId(),training.getAction(),training.getRejectTrainingMessage());
+		 trainingService.updateStatusOnTrainingReject(training.getId(),training.getAction(),training.getRejectTrainingMessage());
 		 
 		 
-		return new ResponseEntity<String>(message,HttpStatus.OK);
+		return new ResponseEntity<String>(HttpStatus.OK);
 
 		
 

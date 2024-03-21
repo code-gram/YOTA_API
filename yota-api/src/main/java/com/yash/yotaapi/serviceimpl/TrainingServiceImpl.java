@@ -185,23 +185,16 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public String updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage) {
+    public void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage) {
     	
 		Training trainingDetails= trainingRepository.findById(trainingId).get();
-		
 		if(action.equals("Reject")) {
 			trainingDetails.setStatus(TrainingStatus.REJECTED.toString());
 			trainingDetails.setTrainingStatus(TrainingStatus.TERMINATED.toString());
 			trainingDetails.setRejectTrainingMessage(rejectMessage);
-			Training training = trainingRepository.save(trainingDetails);
-			if(training!=null) {
-				message= training.getRejectTrainingMessage();
-			}else {
-				message= "Training Rejected Message is not avaialble for this "+trainingId+"";
-			}
+			trainingRepository.save(trainingDetails);
 		}
-		
-		return message;
+			
     	
     }
 

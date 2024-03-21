@@ -68,7 +68,7 @@ public interface TrainingService {
      */
     List<Training> getByStartDateAndEndDate(Date startDate, Date endDate);
 
-	String updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
+	void updateStatusOnTrainingReject(Long trainingId,String action,String rejectMessage);
 	
 	
 	
