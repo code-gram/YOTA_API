@@ -3,6 +3,7 @@ package com.yash.yotaapi.service;
 import com.yash.yotaapi.domain.Nomination;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
  
 /**
 * Service interface for managing Nomination entities.
@@ -18,7 +19,7 @@ public interface NominationService {
      * @param nomination The nomination object to be created.
      * @return The created nomination object.
      */
-    Nomination createNomination(Nomination nomination);
+    void createNomination(List<Nomination> nominations);
  
     /**
      * Retrieve all nominations.
@@ -58,4 +59,6 @@ public interface NominationService {
      * @return List of nominations associated with the given employee name.
      */
     List<Nomination> findByEmployeeName(String employeeName);
+    
+    public void saveExcel(MultipartFile file);
 }
