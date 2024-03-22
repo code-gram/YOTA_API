@@ -1,0 +1,103 @@
+<!--
+    Created on - 13-03-2024
+    Created By - yash.raj
+    Project - YOTA_API
+    IDE used - IntelliJ IDEA
+    Path of this file - yota-api/src/main/resources/templates
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>${subject}</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .card-outer {
+            background-color: #17a2b8;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+
+        .card-info {
+            background-color: #17a2b8;
+            width: 100%;
+        }
+
+        .card-inner {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .card-title-primary {
+            color: #007bff;
+            text-align: center;
+            font-size: xx-large;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-radius: 8px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .font-weight-normal {
+            font-weight: normal;
+        }
+
+        .card-text {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="card-outer">
+        <div class="card-inner">
+            <div class="text-center">
+                <h2 class="card-title card-title-primary">YASH Online Training Application</h2>
+                <p class="card-text">
+                    <b style="font-size: large">${subject}</b>
+                </p>
+                <p class="card-text">${message}</p>
+                <br><br>
+                <p class="card-text font-weight-normal">
+                    In case you have any queries, please contact the Admin
+                </p>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Thanks & Regards,<br>
+                    YOTA Team
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
