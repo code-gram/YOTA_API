@@ -78,4 +78,6 @@ public interface TrainingService {
      * @return changing training status to approve.
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
+    
+    public Training updateTrainingStatus(Training training, long trainingId);
 }

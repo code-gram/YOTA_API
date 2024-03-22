@@ -193,5 +193,17 @@ public class TrainingController {
 		return trainingService.updateStatusOfTraining(trainingId,action);
  	
 	}
+   
+   /**
+    * @author pragati.paliwal
+    * @param update training status
+    * @return
+    */
+   @PutMapping("/updateTrainingStatus")
+	public ResponseEntity<?> updateTrainingStatus( @RequestBody Training training,
+		  Principal principal) {
+		  String username = principal.getName();
+		return new ResponseEntity<Training>(trainingService.updateTrainingStatus(training, training.getId()), HttpStatus.OK);
+	}
 
 }

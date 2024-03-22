@@ -22,7 +22,7 @@ import com.yash.yotaapi.util.UniqueNameGenerator;
  * 
  * 
  * 
- * @author raghav.muchhal
+ * @author pragati.paliwal
  * 
  */
 
@@ -149,5 +149,18 @@ public class TrainingServiceImpl implements TrainingService {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * @author pragati.paliwal
+	 * @param update training status by training id
+	 * 
+	 */
+	@Override
+	public Training updateTrainingStatus(Training training, long trainingId) {
+		Training trainingDetails = trainingRepository.findById(trainingId).orElseThrow(
+				() -> new TrainingNotFoundException("Training trainingId: " + trainingId + " is not present"));
+		trainingDetails.setTrainingStatus(training.getTrainingStatus());
+		return trainingRepository.save(trainingDetails);
 	}
 }
