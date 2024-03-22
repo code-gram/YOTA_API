@@ -2,7 +2,9 @@ package com.yash.yotaapi.service;
  
 import java.util.Date;
 import java.util.List;
+
 import com.yash.yotaapi.domain.Training;
+
  
 /**
 * TrainingService is a service layer providing business logic for Training entities.
@@ -80,5 +82,6 @@ public interface TrainingService {
      * @return changing training status to approve.
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
+    public Training updateTrainingStatus(Training training, long trainingId);
 
 }

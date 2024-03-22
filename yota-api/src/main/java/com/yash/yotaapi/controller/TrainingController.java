@@ -208,11 +208,19 @@ public class TrainingController {
 	public ResponseEntity<?> updateStatusOnTrainingReject(@RequestBody Training training){
 			
 		 trainingService.updateStatusOnTrainingReject(training.getId(),training.getAction(),training.getRejectTrainingMessage());
-		 
-		 
-		return new ResponseEntity<String>(HttpStatus.OK);
-
-		
+ 
+		 return new ResponseEntity<String>(HttpStatus.OK);
 
 	}
+	 /**
+	    * @author pragati.paliwal
+	    * @param update training status
+	    * @return
+	    */
+	   @PutMapping("/updateTrainingStatus")
+		public ResponseEntity<?> updateTrainingStatus( @RequestBody Training training,
+			  Principal principal) {
+			  String username = principal.getName();
+			return new ResponseEntity<Training>(trainingService.updateTrainingStatus(training, training.getId()), HttpStatus.OK);
+		}
 }
