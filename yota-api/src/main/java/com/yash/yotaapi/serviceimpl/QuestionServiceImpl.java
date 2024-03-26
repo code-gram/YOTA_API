@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yash.yotaapi.domain.Question;
+import com.yash.yotaapi.domain.Test;
 import com.yash.yotaapi.exception.QuestionException;
 import com.yash.yotaapi.repository.QuestionRepository;
 import com.yash.yotaapi.service.QuestionService;
@@ -126,27 +127,22 @@ public class QuestionServiceImpl implements QuestionService {
 		return question;
 	}
 	@Override
-
-	public void saveExcel(MultipartFile file) {
-
-		
-
+	public void saveExcel(MultipartFile file, String technologyId, String test) {
+		long techId = Long.parseLong(technologyId);
+		long testId = Long.parseLong(test);
+		Test test1 = new Test();
+		test1.setId(testId);
 		try {
-
 			List<Question> questions = ExcelHelper.convertExcelToListOfQuestion(file.getInputStream());
-
+			for(Question question : questions) {
+				question.setTechnologyId((long)techId);
+				question.setTest(test1);
+			}
 			this.questionRepository.saveAll(questions);
-
-			System.out.println("check1");
-
+			System.out.println(questions);
 		}
-
 		catch (IOException e) {
-
 			e.printStackTrace();
-
 		}
-
 	}
-
 }

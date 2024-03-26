@@ -127,19 +127,24 @@ public class QuestionController {
         return new ResponseEntity<Question>(questionService.updateQuestion(question), HttpStatus.OK);
     }
  
-    @PostMapping("/upload-questions")
-    public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file, Principal principal) {
-        // Access authenticated user's details (username)
-        String username = principal.getName();
-        // Add your logic here
+	@PostMapping("/upload-questions")
+	public ResponseEntity<?> uploadExcelFile(@RequestPart("file") MultipartFile file,
+			@RequestParam("technologyId") String technologyId, @RequestParam("test") String test, Principal principal) {
  
-        if (ExcelHelper.checkExcelFormat(file)) {
-            questionService.saveExcel(file);
-            return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
-    }
+		String username = principal.getName();
  
+		if (test.equals("") || technologyId.equals("")) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select Both Technology and Test Name.");
+		} else {
+			if (ExcelHelper.checkExcelFormat(file)) {
+				System.out.println("check3");
+				questionService.saveExcel(file, technologyId, test);
+				return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
+		}
+	}
+	
     @PostMapping("/question-code")
     public ResponseEntity<Question> saveCode(@RequestBody String question, Principal principal) {
         // Access authenticated user's details (username)

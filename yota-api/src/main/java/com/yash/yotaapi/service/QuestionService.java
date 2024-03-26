@@ -53,5 +53,5 @@ public interface QuestionService {
 	 */
 	public Question updateQuestion(Question question);
 	
-	public void saveExcel(MultipartFile file);
+	public void saveExcel(MultipartFile file, String technologyId, String test);
 }

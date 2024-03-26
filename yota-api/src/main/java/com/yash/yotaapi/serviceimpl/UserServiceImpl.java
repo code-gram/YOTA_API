@@ -21,5 +21,19 @@ public class UserServiceImpl implements UserService{
 	return yotaUserRepository.findByRoleId(roleId);
 		
 	}
+	
+	  /**
+     * Finds the user based on the name of user (not the username, just the name)
+     *
+     * @param name String name, based on which the user will be searched
+     * @return Yota User entity object if user found
+     * @author yash.raj
+     * @see YotaUser Entity class
+     * @see YotaUserRepository Repository class
+     */
+    @Override
+    public YotaUser getUserByName(String name) {
+        return this.yotaUserRepository.getUserByName(name);
+    }
 
 }
