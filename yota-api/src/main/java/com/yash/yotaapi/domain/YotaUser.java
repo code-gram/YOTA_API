@@ -1,11 +1,19 @@
 package com.yash.yotaapi.domain;
 
-import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -14,7 +22,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "YOTA_USER")
-public class YotaUser implements UserDetails {
+public class YotaUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,38 +50,38 @@ public class YotaUser implements UserDetails {
 	 * UserDetails interface methods
 	 */
 
-	@Override
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		return null;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonExpired() {
-
-		return true;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonLocked() {
-
-		return true;
-	}
+//	@Override
+//	@JsonIgnore
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//
+//		return null;
+//	}
+//
+//	@Override
+//	@JsonIgnore
+//	public boolean isAccountNonExpired() {
+//
+//		return true;
+//	}
+//
+//	@Override
+//	@JsonIgnore
+//	public boolean isAccountNonLocked() {
+//
+//		return true;
+//	}
 	
-	@Override
-	@JsonIgnore
-	public boolean isCredentialsNonExpired() {
-
-		return true;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isEnabled() {
-
-		return true;
-	}
+//	@Override
+//	@JsonIgnore
+//	public boolean isCredentialsNonExpired() {
+//
+//		return true;
+//	}
+//
+//	@Override
+//	@JsonIgnore
+//	public boolean isEnabled() {
+//
+//		return true;
+//	}
 }

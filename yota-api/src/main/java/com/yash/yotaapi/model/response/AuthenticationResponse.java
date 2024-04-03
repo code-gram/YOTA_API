@@ -10,6 +10,6 @@ import lombok.Setter;
 @Data
 @Builder
 public class AuthenticationResponse {
-    private String authToken;
+//    private String authToken;
     private String userRole;
 }

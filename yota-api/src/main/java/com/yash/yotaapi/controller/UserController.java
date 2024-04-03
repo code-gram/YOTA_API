@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.yash.yotaapi.domain.YotaUser;
 import com.yash.yotaapi.repository.YotaUserRepository;
-import com.yash.yotaapi.security.YotaUserDetailsService;
+//import com.yash.yotaapi.security.YotaUserDetailsService;
 import com.yash.yotaapi.service.UserService;
 import java.security.Principal;
 

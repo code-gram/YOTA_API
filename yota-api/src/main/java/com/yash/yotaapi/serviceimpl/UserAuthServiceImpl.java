@@ -1,14 +1,17 @@
 package com.yash.yotaapi.serviceimpl;
 
-import com.yash.yotaapi.domain.*;
-import com.yash.yotaapi.repository.*;
-import com.yash.yotaapi.service.UserAuthService;
-import com.yash.yotaapi.util.EncryptionUtilService;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.yash.yotaapi.domain.Training;
+import com.yash.yotaapi.domain.UserRole;
+import com.yash.yotaapi.domain.YotaUser;
+import com.yash.yotaapi.repository.TrainingRepository;
+import com.yash.yotaapi.repository.UserRoleRepository;
+import com.yash.yotaapi.repository.YotaUserRepository;
+import com.yash.yotaapi.service.UserAuthService;
 
 @Service
 public class UserAuthServiceImpl implements UserAuthService {
@@ -22,12 +25,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 	@Autowired
 	private TrainingRepository trainingRepository; // Assuming the repository name is 'TrainingRepository'
 
-	@Autowired
-	private EncryptionUtilService encryptionUtilService;
-
 	@Override
 	public void registerUser(YotaUser yotaUser) {
-		yotaUser.setPassword(encryptionUtilService.getEncryptedString(yotaUser.getPassword()));
+		yotaUser.setPassword((yotaUser.getPassword()));
 
 		Optional<UserRole> role = userRoleRepository.findById(2L); // Default RoleId as Trainer
 

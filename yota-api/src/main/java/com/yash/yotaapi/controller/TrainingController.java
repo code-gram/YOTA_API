@@ -3,18 +3,29 @@ package com.yash.yotaapi.controller;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.yash.yotaapi.constants.TrainingStatus;
-import com.yash.yotaapi.domain.*;
-import com.yash.yotaapi.service.*;
-import com.yash.yotaapi.util.*;
+import com.yash.yotaapi.domain.Training;
+import com.yash.yotaapi.service.TrainingService;
+import com.yash.yotaapi.util.DateValidationUtility;
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -55,11 +66,8 @@ public class TrainingController {
 	 */
 
 	@PostMapping("/")
-	public ResponseEntity<?> createTraining( @RequestBody Training training, BindingResult result,
-			Principal principal) {
-			String username = principal.getName();
-
-			//System.out.println(training.getTrainingName());
+	public ResponseEntity<?> createTraining( @RequestBody Training training, BindingResult result
+			) {
 			training.setStatus(TrainingStatus.REQUESTED.toString());
 		    training.setTrainingStatus(TrainingStatus.PLANNED.toString());
 			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
