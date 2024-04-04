@@ -1,8 +1,10 @@
 package com.yash.yotaapi.service;
 
+import java.security.Principal;
 import java.util.List;
 
 import com.yash.yotaapi.domain.TechnologyMaster;
+import org.springframework.validation.BindingResult;
 
 /**
  * ParentTechnologyService will be performing business logic related to
@@ -16,10 +18,10 @@ public interface TechnologyMasterService {
 	/**
 	 * save method will save the ParentTechnology. If same technology is already
 	 * available then it should throw relevant exception.
-	 * 
+	 *
 	 * @param technology to be saved
 	 * @return Saved ParentTechnology, it should hold the id of the new
-	 *         ParentTechnology saved in DB
+	 * ParentTechnology saved in DB
 	 */
 	TechnologyMaster save(TechnologyMaster technology);
 
