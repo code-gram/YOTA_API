@@ -51,6 +51,16 @@ public class Training {
     @Column(unique = false, nullable = false)
     private String trainingName;
  
+    
+    /**
+     * @author pragati.paliwal
+     * @param Trainer Name for assign training
+     */
+    @NotEmpty(message = "Training assigned to trainer name here")
+    @Column(unique = false, nullable = false)
+    private String assignedTo;
+ 
+    
     /** Description of the training. */
     @NotBlank(message = "Training description is mandatory")
     private String trainingDescription;
@@ -110,7 +120,7 @@ public class Training {
      *  @author pragati.paliwal
      *  @param Status of the on going trainingStatus. */
   
-    private String trainingStatus;
+    private String changeRequestStatus;
     
     
     /**

@@ -61,7 +61,7 @@ public class TrainingController {
 
 			//System.out.println(training.getTrainingName());
 			training.setStatus(TrainingStatus.REQUESTED.toString());
-		    training.setTrainingStatus(TrainingStatus.PLANNED.toString());
+		    training.setChangeRequestStatus(TrainingStatus.PLANNED.toString());
 			ResponseEntity<?> errorMessage = fieldErrorValidationUtility.validationError(result);
 			dateValidationUtility.validateDateRange(training.getStartDate(), training.getEndDate());	
 			if (errorMessage != null)
@@ -223,4 +223,7 @@ public class TrainingController {
 			  String username = principal.getName();
 			return new ResponseEntity<Training>(trainingService.updateTrainingStatus(training, training.getId()), HttpStatus.OK);
 		}
+	   
+	   
+	   
 }
