@@ -1,5 +1,11 @@
 package com.yash.yotaapi.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,12 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -24,64 +24,26 @@ import lombok.Setter;
 @Table(name = "YOTA_USER")
 public class YotaUser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String emailId;
+    private String emailId;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private boolean enabled;
+    private boolean enabled;
 
-	@OneToOne
-	@JoinColumn(name = "role_id", referencedColumnName = "id")
-	private UserRole role;
+    @OneToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private UserRole role;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "training_id", referencedColumnName = "id")
-	private Training training;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "training_id", referencedColumnName = "id")
+    private Training training;
 
-	/*
-	 * UserDetails interface methods
-	 */
-
-//	@Override
-//	@JsonIgnore
-//	public Collection<? extends GrantedAuthority> getAuthorities() {
-//
-//		return null;
-//	}
-//
-//	@Override
-//	@JsonIgnore
-//	public boolean isAccountNonExpired() {
-//
-//		return true;
-//	}
-//
-//	@Override
-//	@JsonIgnore
-//	public boolean isAccountNonLocked() {
-//
-//		return true;
-//	}
-	
-//	@Override
-//	@JsonIgnore
-//	public boolean isCredentialsNonExpired() {
-//
-//		return true;
-//	}
-//
-//	@Override
-//	@JsonIgnore
-//	public boolean isEnabled() {
-//
-//		return true;
-//	}
 }

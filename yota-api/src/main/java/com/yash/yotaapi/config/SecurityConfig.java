@@ -1,0 +1,112 @@
+package com.yash.yotaapi.config;
+
+import com.yash.yotaapi.security.jwt.JwtAuthenticationEntryPoint;
+import com.yash.yotaapi.security.jwt.JwtAuthenticationFilter;
+import com.yash.yotaapi.security.userdetails.CustomUserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+/**
+ * Project Name - YOTA_API
+ * <p>
+ * IDE Used - IntelliJ IDEA
+ *
+ * @author - yashr
+ * @since - 05-04-2024
+ */
+@Configuration
+@EnableWebSecurity
+@EnableWebMvc
+@EnableMethodSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private JwtAuthenticationFilter authenticationFilter;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedHeader("Authorization");
+        corsConfiguration.addAllowedHeader("Content-type");
+        corsConfiguration.addAllowedHeader("Accept");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("OPTIONS");
+        corsConfiguration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return new CorsFilter(source);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity https) throws Exception {
+        https
+                .csrf(AbstractHttpConfigurer :: disable)
+                .authorizeHttpRequests(auth -> {
+                    auth
+                            .antMatchers("/register/**").permitAll()
+                            .antMatchers("/login/**").permitAll()
+                            .anyRequest().authenticated();
+                })
+                .exceptionHandling(e -> e.authenticationEntryPoint(this.authenticationEntryPoint))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        https.addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        https.authenticationProvider(authenticationProvider());
+        https.logout(logout -> {
+            logout.invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID");
+        });
+        return https.build();
+    }
+}
