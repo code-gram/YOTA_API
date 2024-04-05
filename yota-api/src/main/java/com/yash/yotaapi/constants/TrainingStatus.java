@@ -14,5 +14,6 @@ public enum TrainingStatus {
 	REQUESTED,
 	APPROVED,
     REJECTED,
+    CHANGEREQUEST
 }
 
