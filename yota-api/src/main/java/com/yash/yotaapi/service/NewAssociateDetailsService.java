@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.domain.NewAssociateDetail;
 
 /**
@@ -19,6 +20,11 @@ public interface NewAssociateDetailsService {
 	List<NewAssociateDetail> getAllAssociates(long id);
 	
 	public void saveExcel(MultipartFile file,long id);
+	
+	/**
+	 * It gives list of all the registered associates.
+	 */
+	List<NewAssociateDetail> getAllAssociates();
 	
 
 }

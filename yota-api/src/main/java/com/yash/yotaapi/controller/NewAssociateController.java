@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.domain.NewAssociateDetail;
 import com.yash.yotaapi.domain.Training;
 import com.yash.yotaapi.service.NewAssociateDetailsService;
@@ -43,6 +44,22 @@ public class NewAssociateController {
 	@Autowired
 	FieldErrorValidationUtillity fieldErrorValidationService;
 	
+	
+	
+	/**
+	 * This controller method handles the get request to access list of all
+	 * associates.
+	 */
+
+	@GetMapping("/")
+	public ResponseEntity<List<NewAssociateDetail>> getAll(Principal principal) {
+		// Access authenticated user's details (username)
+		String username = principal.getName();
+		// Add your logic here
+
+		return new ResponseEntity<List<NewAssociateDetail>>(newAssociateDetailsService.getAllAssociates(), HttpStatus.OK);
+	}
+	
 	/**
 	 * This controller method handles the get request to access list of all
 	 * associates.
@@ -66,4 +83,5 @@ public class NewAssociateController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
     }
 
+	
 }

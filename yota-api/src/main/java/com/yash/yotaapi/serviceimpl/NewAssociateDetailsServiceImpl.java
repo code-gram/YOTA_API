@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.domain.NewAssociateDetail;
 import com.yash.yotaapi.domain.Training;
 import com.yash.yotaapi.repository.NewAssociateDetailsRepository;
@@ -58,5 +59,14 @@ public class NewAssociateDetailsServiceImpl implements NewAssociateDetailsServic
 		}
 		
 	}
+	/**
+	 * This method returns all associates from db through repository layer.
+	 */
+	@Override
+	public List<NewAssociateDetail> getAllAssociates() {
+		return newAssociateDetailsRepository.findAll();
+	}
+	
+	
 
 }
