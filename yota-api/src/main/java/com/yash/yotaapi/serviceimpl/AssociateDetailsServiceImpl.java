@@ -1,6 +1,5 @@
 package com.yash.yotaapi.serviceimpl;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -8,8 +7,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.yash.yotaapi.domain.TechnologyMaster;
-import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
