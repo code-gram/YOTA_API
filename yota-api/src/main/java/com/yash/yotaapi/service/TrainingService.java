@@ -83,6 +83,6 @@ public interface TrainingService {
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
     public Training updateTrainingStatus(Training training, long trainingId); 
-    public Training updateTraining(Long trainingId,String trainingUpdateReason, Date endDate);
+    public Training updateTraining(Long trainingId,String trainingUpdateReason, Date changeRequestStatusDate);
 
 }
