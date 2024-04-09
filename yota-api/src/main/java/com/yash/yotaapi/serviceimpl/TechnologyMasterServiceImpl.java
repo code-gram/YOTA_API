@@ -1,20 +1,24 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.transaction.Transactional;
 
+import com.yash.yotaapi.util.FieldErrorValidationUtillity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.yash.yotaapi.domain.Client;
 import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.exception.ParentTechnologyException;
 import com.yash.yotaapi.exception.ParentTechnologyNotFoundException;
 import com.yash.yotaapi.repository.TechnologyMasterRepository;
 import com.yash.yotaapi.service.TechnologyMasterService;
+import org.springframework.validation.BindingResult;
 
 /**
  * This is service layer class for Parent Technology to write business logic
@@ -32,6 +36,9 @@ public class TechnologyMasterServiceImpl implements TechnologyMasterService {
 	 */
 	@Autowired
 	private TechnologyMasterRepository technologyMasterRepository;
+
+	@Autowired
+	private FieldErrorValidationUtillity validationService;
 
 	/**
 	 * This method is for save ParentTechnology to DB through repository layer

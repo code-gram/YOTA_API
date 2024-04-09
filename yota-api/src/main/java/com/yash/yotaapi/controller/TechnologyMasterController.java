@@ -10,11 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
- 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
- 
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 /**
 * Parent Technology Controller will facilitates CRUD functionalities
 *
@@ -46,17 +47,22 @@ public class TechnologyMasterController {
      * @return generic type
      */
     @PostMapping("/")
-    public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result,
-            Principal principal) {
+    public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology,
+                                                               BindingResult result,
+                                                               Principal principal) {
         // Access authenticated user's details (username)
         String username = principal.getName();
         // Add your logic here
- 
+
         ResponseEntity<?> errorMap = validationService.validationError(result);
-        if (errorMap != null) {
-            return errorMap;
+        if (errorMap != null) return errorMap;
+
+        final TechnologyMaster technologySave = technologyMasterService.save(technology);
+        if(Objects.isNull(technologySave)){
+            throw new NoSuchElementException("Something went wrong while adding technology!!");
         }
-        return new ResponseEntity<TechnologyMaster>(technologyMasterService.save(technology), HttpStatus.OK);
+
+        return new ResponseEntity<>(technologySave, HttpStatus.OK);
     }
  
     /**
