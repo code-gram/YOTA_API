@@ -189,13 +189,13 @@ public class TrainingServiceImpl implements TrainingService {
 	}
 
 	@Override
-	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date endDate) {
+	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date changeRequestStatusDate) {
 		
 		Training trainingDetails = trainingRepository.findById(trainingId).get();
 		
 			trainingDetails.setChangeRequestStatus(TrainingStatus.CHANGEREQUEST.toString());
 			trainingDetails.setTrainingUpdateReason(trainingUpdateReason);
-			trainingDetails.setEndDate(endDate);		
+			trainingDetails.setChangeRequestStatusDate(changeRequestStatusDate);		
 		
 		return trainingRepository.save(trainingDetails);
 	}

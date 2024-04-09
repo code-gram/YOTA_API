@@ -228,7 +228,7 @@ public class TrainingController {
 		public ResponseEntity<?> updateTrainingReason( @RequestBody Training training,
 			  Principal principal) {
 		   
-		  return new ResponseEntity<Training>(trainingService.updateTraining(training.getId(),training.getTrainingUpdateReason(),training.getEndDate()), HttpStatus.OK);
+		  return new ResponseEntity<Training>(trainingService.updateTraining(training.getId(),training.getTrainingUpdateReason(),training.getChangeRequestStatusDate()), HttpStatus.OK);
 		   	
 		}
 	   
