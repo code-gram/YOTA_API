@@ -119,9 +119,6 @@ public class Training {
      *  @param Status of the training. */
   
     private String status;
-    
-    private String changeRequestStatus;
-    
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date changeRequestEndDate;
