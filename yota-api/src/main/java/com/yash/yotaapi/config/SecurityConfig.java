@@ -92,8 +92,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer :: disable)
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .antMatchers("/register/**").permitAll()
-                            .antMatchers("/login/**").permitAll()
+                            .antMatchers("/users/register/**").permitAll()
+                            .antMatchers("/users/authenticate/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .exceptionHandling(e -> e.authenticationEntryPoint(this.authenticationEntryPoint))
