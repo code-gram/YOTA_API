@@ -112,7 +112,7 @@ public class Training {
     
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date changeRequestStatusDate;
+    private Date changeRequestEndDate;
     
     
     /** 
