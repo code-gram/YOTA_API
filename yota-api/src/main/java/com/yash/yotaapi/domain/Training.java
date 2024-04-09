@@ -1,6 +1,7 @@
 package com.yash.yotaapi.domain;
  
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yash.yotaapi.constraints.CompareDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
  
 /**
@@ -139,6 +141,8 @@ public class Training {
     /** Transient field for storing user name. */
     @Transient
     private String userName;
+    
+    private long associateCount;
  
     /** Pre-persist action to set the created date. */
     @PrePersist
@@ -155,4 +159,8 @@ public class Training {
     /** Set of nominations associated with the training. */
     @ManyToMany(mappedBy = "trainings")
     private Set<Nomination> nominations = new HashSet<>();
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "training")
+    private List<NewAssociateDetail> associateDetails;
 }
