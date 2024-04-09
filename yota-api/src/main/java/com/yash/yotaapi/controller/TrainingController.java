@@ -224,6 +224,13 @@ public class TrainingController {
 			return new ResponseEntity<Training>(trainingService.updateTrainingStatus(training, training.getId()), HttpStatus.OK);
 		}
 	   
+	   @PutMapping("/updatetrainingreason")
+		public ResponseEntity<?> updateTrainingReason( @RequestBody Training training,
+			  Principal principal) {
+		   
+		  return new ResponseEntity<Training>(trainingService.updateTraining(training.getId(),training.getTrainingUpdateReason(),training.getChangeRequestEndDate()), HttpStatus.OK);
+		   	
+		}
 	   
 	   
 }

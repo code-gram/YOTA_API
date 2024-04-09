@@ -64,7 +64,7 @@ public class Training {
  
     
     /** Description of the training. */
-    @NotBlank(message = "Training description is mandatory")
+    //@NotBlank(message = "Training description is mandatory")
     private String trainingDescription;
  
     /** Start date of the training. */
@@ -110,6 +110,8 @@ public class Training {
     
     // @NotEmpty
     private String rejectTrainingMessage;
+    
+    private String trainingUpdateReason;
  
 
     /** 
@@ -117,7 +119,14 @@ public class Training {
      *  @param Status of the training. */
   
     private String status;
- 
+    
+    private String changeRequestStatus;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private Date changeRequestEndDate;
+    
+    
     /** 
      *  @author pragati.paliwal
      *  @param Status of the on going trainingStatus. */

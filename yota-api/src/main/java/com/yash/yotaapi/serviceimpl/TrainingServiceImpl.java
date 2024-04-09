@@ -188,4 +188,16 @@ public class TrainingServiceImpl implements TrainingService {
 		return trainingRepository.save(trainingDetails);
 	}
 
+	@Override
+	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date changeRequestEndDate) {
+		
+		Training trainingDetails = trainingRepository.findById(trainingId).get();
+		
+			trainingDetails.setChangeRequestStatus(TrainingStatus.CHANGEREQUEST.toString());
+			trainingDetails.setTrainingUpdateReason(trainingUpdateReason);
+			trainingDetails.setChangeRequestEndDate(changeRequestEndDate);		
+		
+		return trainingRepository.save(trainingDetails);
+	}
+
 }
