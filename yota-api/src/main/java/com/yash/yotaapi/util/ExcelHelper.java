@@ -1,18 +1,23 @@
 package com.yash.yotaapi.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.yash.yotaapi.domain.AssociateDetails;
 import com.yash.yotaapi.domain.ClientQuestion;
+import com.yash.yotaapi.domain.NewAssociateDetail;
 import com.yash.yotaapi.domain.Nomination;
 import com.yash.yotaapi.domain.Question;
+import com.yash.yotaapi.domain.Training;
 
 public class ExcelHelper {
 
@@ -178,7 +183,7 @@ public class ExcelHelper {
 	
 	public static List<Nomination> convertExcelToListOfNomination(InputStream inputStream) {
 
-		List<Nomination> nominations = new ArrayList<>();
+		List<Nomination> nominatonList = new ArrayList<>();
 		System.out.println("check2");
 
 		try {
@@ -218,12 +223,75 @@ public class ExcelHelper {
 					}
 					cId++;
 				}
-				nominations.add(nomination);
+				nominatonList.add(nomination);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return nominations;
+		return nominatonList;
+	}
+	public static List<NewAssociateDetail> convertExcelToListOfAssociates(InputStream inputStream,Training training) {
+
+		List<NewAssociateDetail> associateList = new ArrayList<>();
+		System.out.println("check2");
+
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = workbook.getSheetAt(0);	
+			
+			int rowNumber = 0;
+			Iterator<Row> iterator = sheet.iterator();
+
+			while (iterator.hasNext()) {
+				Row row = iterator.next();
+
+				if (rowNumber == 0) {
+					rowNumber++;
+					continue;
+				}
+
+				Iterator<Cell> cells = row.iterator();
+				int cId = 0;
+
+				NewAssociateDetail assDetails = new NewAssociateDetail();
+
+				while (cells.hasNext()) {
+					Cell cell = cells.next();
+
+					switch (cId) {
+					case 0:
+						assDetails.setEmployeeId((long)cell.getNumericCellValue());
+						break;
+					case 1:
+						assDetails.setEmployeeName(cell.getStringCellValue());
+						break;
+					case 2:
+						assDetails.setEmployeeEmailId(cell.getStringCellValue());
+						break;
+					case 3:
+						assDetails.setEmployeePassword(cell.getStringCellValue());
+						break;
+					default: break;
+					}
+					cId++;
+				}
+				assDetails.setTraining(training);
+				associateList.add(assDetails);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return associateList;
 	}
 }
