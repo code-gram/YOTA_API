@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.yash.yotaapi.constants.TrainingStatus;
 import com.yash.yotaapi.domain.*;
 import com.yash.yotaapi.service.*;
@@ -224,6 +226,7 @@ public class TrainingController {
 			return new ResponseEntity<Training>(trainingService.updateTrainingStatus(training, training.getId()), HttpStatus.OK);
 		}
 	   
+<<<<<<< Updated upstream
 	   @PutMapping("/updatetrainingreason")
 		public ResponseEntity<?> updateTrainingReason( @RequestBody Training training,
 			  Principal principal) {
@@ -232,5 +235,16 @@ public class TrainingController {
 		   	
 		}
 	   
+=======
+	   @PostMapping("/bulkUploadTrainings")
+		public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file, Principal principal) {
+	        
+	        if (ExcelHelper.checkExcelFormat(file)) {
+	        	trainingService.saveExcel(file);
+	            return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
+	        }
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
+	    }
+>>>>>>> Stashed changes
 	   
 }

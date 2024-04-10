@@ -63,9 +63,15 @@ public class Training {
     private String assignedTo;
  
     
+<<<<<<< Updated upstream
     /** Description of the training. */
     //@NotBlank(message = "Training description is mandatory")
     private String trainingDescription;
+=======
+//    /** Description of the training. */
+//    @NotBlank(message = "Training description is mandatory")
+//    private String trainingDescription;
+>>>>>>> Stashed changes
  
     /** Start date of the training. */
     @NotNull(message = "Start date cannot be Null")
@@ -79,27 +85,27 @@ public class Training {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date endDate;
  
-    /** Actual start date of the training. */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date actualStartDate;
+//    /** Actual start date of the training. */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    private Date actualStartDate;
  
-    /** Actual end date of the training. */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date actualEndDate;
- 
-    /** Date when the training was created. */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @CreatedDate
-    private Date createdAt;
- 
-    /** Date when the training was last updated. */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @LastModifiedDate
-    private Date updatedAt;
+//    /** Actual end date of the training. */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    private Date actualEndDate;
+// 
+//    /** Date when the training was created. */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    @CreatedDate
+//    private Date createdAt;
+// 
+//    /** Date when the training was last updated. */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    @LastModifiedDate
+//    private Date updatedAt;
  
 
     
@@ -150,17 +156,17 @@ public class Training {
     
     private long associateCount;
  
-    /** Pre-persist action to set the created date. */
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = new Date();
-    }
- 
-    /** Pre-update action to set the updated date. */
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = new Date();
-    }
+//    /** Pre-persist action to set the created date. */
+//    @PrePersist
+//    public void onCreate() {
+//        this.createdAt = new Date();
+//    }
+// 
+//    /** Pre-update action to set the updated date. */
+//    @PreUpdate
+//    public void onUpdate() {
+//        this.updatedAt = new Date();
+//    }
  
     /** Set of nominations associated with the training. */
     @ManyToMany(mappedBy = "trainings")
