@@ -9,7 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -47,8 +55,8 @@ public class TechnologyMasterController {
      */
     @PostMapping("/")
     public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology,
-                                                               BindingResult result,
-                                                               Principal principal) {
+                                           BindingResult result,
+                                           Principal principal) {
         // Access authenticated user's details (username)
         String username = principal.getName();
         // Add your logic here
@@ -57,7 +65,7 @@ public class TechnologyMasterController {
         if (errorMap != null) return errorMap;
 
         final TechnologyMaster technologySave = technologyMasterService.save(technology);
-        if(Objects.isNull(technologySave)){
+        if (Objects.isNull(technologySave)) {
             throw new NoSuchElementException("Something went wrong while adding technology!!");
         }
 
@@ -119,8 +127,10 @@ public class TechnologyMasterController {
      */
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "successfully updated")
-    public ResponseEntity<?> updateTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result,
-                                              Principal principal, @PathVariable long id) {
+    public ResponseEntity<?> updateTechnology(@Valid @RequestBody TechnologyMaster technology,
+                                              BindingResult result,
+                                              Principal principal,
+                                              @PathVariable long id) {
         // Access authenticated user's details (username)
         String username = principal.getName();
         // Add your logic here
