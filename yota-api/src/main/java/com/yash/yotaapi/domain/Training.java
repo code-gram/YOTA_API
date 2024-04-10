@@ -1,6 +1,7 @@
 package com.yash.yotaapi.domain;
  
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yash.yotaapi.constraints.CompareDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
  
 /**
@@ -51,8 +53,18 @@ public class Training {
     @Column(unique = false, nullable = false)
     private String trainingName;
  
+    
+    /**
+     * @author pragati.paliwal
+     * @param Trainer Name for assign training
+     */
+    @NotEmpty(message = "Training assigned to trainer name here")
+    @Column(unique = false, nullable = false)
+    private String assignedTo;
+ 
+    
     /** Description of the training. */
-    @NotBlank(message = "Training description is mandatory")
+    //@NotBlank(message = "Training description is mandatory")
     private String trainingDescription;
  
     /** Start date of the training. */
@@ -98,6 +110,8 @@ public class Training {
     
     // @NotEmpty
     private String rejectTrainingMessage;
+    
+    private String trainingUpdateReason;
  
 
     /** 
@@ -105,12 +119,16 @@ public class Training {
      *  @param Status of the training. */
   
     private String status;
- 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private Date changeRequestEndDate;
+    
+    
     /** 
      *  @author pragati.paliwal
      *  @param Status of the on going trainingStatus. */
   
-    private String trainingStatus;
+    private String changeRequestStatus;
     
     
     /**
@@ -129,6 +147,8 @@ public class Training {
     /** Transient field for storing user name. */
     @Transient
     private String userName;
+    
+    private long associateCount;
  
     /** Pre-persist action to set the created date. */
     @PrePersist
@@ -145,4 +165,8 @@ public class Training {
     /** Set of nominations associated with the training. */
     @ManyToMany(mappedBy = "trainings")
     private Set<Nomination> nominations = new HashSet<>();
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "training")
+    private List<NewAssociateDetail> associateDetails;
 }

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * 
  * 
- * @author raghav.muchhal
+ * @author pragati.paliwal
  * 
  */
 
@@ -54,7 +54,7 @@ public class TrainingServiceImpl implements TrainingService {
 		 *         trainingStatus PLANNED.
 		 */
 		training.setStatus(TrainingStatus.REQUESTED.toString());
-		training.setTrainingStatus(TrainingStatus.PLANNED.toString());
+		training.setChangeRequestStatus(TrainingStatus.PLANNED.toString());
 		String[] parts = input.split("-");
 		System.out.println(parts.length);
 		System.out.println(toString());
@@ -109,7 +109,7 @@ public class TrainingServiceImpl implements TrainingService {
 		trainingDetails.setActualEndDate(training.getActualEndDate());
 		trainingDetails.setTrainerName(training.getTrainerName());
 		trainingDetails.setStatus(TrainingStatus.APPROVED.toString());
-		trainingDetails.setTrainingStatus(TrainingStatus.PLANNED.toString());
+		trainingDetails.setChangeRequestStatus(TrainingStatus.PLANNED.toString());
 		Training updatedTraining = trainingRepository.save(trainingDetails);
 
 		if (ObjectUtils.isNotEmpty(updatedTraining)) {
@@ -169,7 +169,7 @@ public class TrainingServiceImpl implements TrainingService {
 
 		if (action.equals("Reject")) {
 			trainingDetails.setStatus(TrainingStatus.REJECTED.toString());
-			trainingDetails.setTrainingStatus(TrainingStatus.TERMINATED.toString());
+			trainingDetails.setChangeRequestStatus(TrainingStatus.TERMINATED.toString());
 			trainingDetails.setRejectTrainingMessage(rejectMessage);
 			trainingRepository.save(trainingDetails);
 		}
@@ -184,7 +184,19 @@ public class TrainingServiceImpl implements TrainingService {
 	public Training updateTrainingStatus(Training training, long trainingId) {
 		Training trainingDetails = trainingRepository.findById(trainingId).orElseThrow(
 				() -> new TrainingNotFoundException("Training trainingId: " + trainingId + " is not present"));
-		trainingDetails.setTrainingStatus(training.getTrainingStatus());
+		trainingDetails.setChangeRequestStatus(training.getChangeRequestStatus());
+		return trainingRepository.save(trainingDetails);
+	}
+
+	@Override
+	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date changeRequestEndDate) {
+		
+		Training trainingDetails = trainingRepository.findById(trainingId).get();
+		
+			trainingDetails.setChangeRequestStatus(TrainingStatus.CHANGEREQUEST.toString());
+			trainingDetails.setTrainingUpdateReason(trainingUpdateReason);
+			trainingDetails.setChangeRequestEndDate(changeRequestEndDate);		
+		
 		return trainingRepository.save(trainingDetails);
 	}
 

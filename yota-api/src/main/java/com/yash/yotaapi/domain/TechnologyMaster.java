@@ -2,14 +2,7 @@ package com.yash.yotaapi.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -55,7 +48,8 @@ public class TechnologyMaster {
 	/**
 	 * shortDescription of the ParentTechnology, should not be empty
 	 */
-	@NotBlank(message = "Description is required.")
+	//@NotBlank(message = "Description is required.")
+	@Transient
 	private String shortDescription;
 
 	private boolean status;
