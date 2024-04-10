@@ -1,10 +1,10 @@
 package com.yash.yotaapi.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "YOTA_USER")

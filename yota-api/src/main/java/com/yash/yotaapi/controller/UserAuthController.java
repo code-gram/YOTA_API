@@ -1,11 +1,10 @@
 package com.yash.yotaapi.controller;
 
-import com.yash.yotaapi.domain.UserRole;
 import com.yash.yotaapi.domain.YotaUser;
-import com.yash.yotaapi.repository.YotaUserRepository;
 import com.yash.yotaapi.security.jwt.JwtAuthRequest;
 import com.yash.yotaapi.security.jwt.JwtAuthResponse;
 import com.yash.yotaapi.service.IAuthService;
+import com.yash.yotaapi.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +20,12 @@ public class UserAuthController {
     private IAuthService authService;
 
     @Autowired
-    private YotaUserRepository yotaUserRepository;
+    private UserAuthService userAuthService;
 
     @PostMapping(value = "/register")
-    public String registerYotaUser(@RequestBody YotaUser yotaUser) {
-        yotaUser.setRole(new UserRole());
-        yotaUser.getRole().setId(4);
-        yotaUserRepository.save(yotaUser);
-        return "New User Registered Successfully";
+    public ResponseEntity<String> registerYotaUser(@RequestBody YotaUser yotaUser) {
+        String message = this.userAuthService.registerUser(yotaUser);
+        return ResponseEntity.ok(message);
     }
 
     @PostMapping("/authenticate")
