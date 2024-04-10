@@ -2,7 +2,9 @@ package com.yash.yotaapi.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -293,5 +295,81 @@ public class ExcelHelper {
 			}
 		}
 		return associateList;
+	}
+	
+	public static List<Training> convertExcelToListOfTrainings(InputStream inputStream) {
+
+		List<Training> trainingList = new ArrayList<>();
+		System.out.println("check2");
+
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			XSSFSheet sheet = workbook.getSheetAt(0);	
+			
+			int rowNumber = 0;
+			Iterator<Row> iterator = sheet.iterator();
+
+			while (iterator.hasNext()) {
+				Row row = iterator.next();
+
+				if (rowNumber == 0) {
+					rowNumber++;
+					continue;
+				}
+
+				Iterator<Cell> cells = row.iterator();
+				int cId = 0;
+
+				Training training = new Training();
+
+				while (cells.hasNext()) {
+					Cell cell = cells.next();
+
+					switch (cId) {
+					case 0:
+						training.setTrainingName(cell.getStringCellValue());
+						break;
+					case 1:
+						training.setAssignedTo(cell.getStringCellValue());
+						break;
+					case 2:
+//						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
+//                        Date startDate = dateFormat.parse(cell.getDateCellValue());
+                        training.setStartDate(cell.getDateCellValue());
+						break;
+					case 3:
+//						SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
+//                        Date endDate = dateFormate.parse(cell.getStringCellValue());
+	                     training.setEndDate(cell.getDateCellValue());
+	                     break;
+					case 4:
+						training.setAssociateCount((long)0);
+						break;
+					case 5:
+						training.setStatus(cell.getStringCellValue());
+						break;
+					case 6:
+						training.setChangeRequestStatus(cell.getStringCellValue());
+						break;
+					default: break;
+					}
+					cId++;
+				}
+				trainingList.add(training);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return trainingList;
 	}
 }
