@@ -1,12 +1,18 @@
 package com.yash.yotaapi.controller;
 
 import com.yash.yotaapi.domain.Unit;
-
 import com.yash.yotaapi.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -19,7 +25,6 @@ import java.util.List;
  *
  * @author pravin.navarkar
  */
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/units")
 public class UnitController {
@@ -60,7 +65,7 @@ public class UnitController {
 
     /**
      * Endpoint to retrieve the details of a unit based on its ID.
-     *
+     * <p>
      * This method handles HTTP GET requests at the "/getUnitById/{id}" endpoint.
      * It takes the unit ID as a path variable, retrieves the details of the corresponding unit,
      * and returns a ResponseEntity containing the unit details and an HTTP status code.
@@ -75,7 +80,7 @@ public class UnitController {
 
     /**
      * Endpoint to delete a unit from the system based on its ID.
-     *
+     * <p>
      * This method handles HTTP DELETE requests at the "/deleteUnitById/{id}" endpoint.
      * It takes the unit ID as a path variable, deletes the corresponding unit from the system,
      * and returns a ResponseEntity with a message and an HTTP status code.
@@ -91,18 +96,18 @@ public class UnitController {
 
     /**
      * Endpoint to update the details of a unit in the system based on its ID.
-     *
+     * <p>
      * This method handles HTTP PUT requests at the "/updateUnitById/{id}" endpoint.
      * It takes the unit ID as a path variable and the updated unit details in the request body.
      * The method updates the unit with the specified ID and returns a ResponseEntity
      * containing the updated unit details and an HTTP status code.
      *
-     * @param id The ID of the unit to be updated (provided as a path variable).
+     * @param id                The ID of the unit to be updated (provided as a path variable).
      * @param updatedUnitMaster The updated details for the unit (provided in the request body).
      * @return A ResponseEntity with the updated unit details and an HTTP status code.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUnit(@PathVariable long id, @RequestBody Unit updatedUnitMaster,Principal principal) {
+    public ResponseEntity<?> updateUnit(@PathVariable long id, @RequestBody Unit updatedUnitMaster, Principal principal) {
         String username = principal.getName();
         Unit updatedUnit = unitService.updateUnit(id, updatedUnitMaster);
         return new ResponseEntity<>(updatedUnit, HttpStatus.OK);
@@ -115,7 +120,7 @@ public class UnitController {
      * @return unit matching the name.
      */
     @GetMapping("/search/{unitName}")
-    public ResponseEntity<?> searchUnitByName(@PathVariable("unitName") String unitName){
+    public ResponseEntity<?> searchUnitByName(@PathVariable("unitName") String unitName) {
         Unit units = unitService.searchUnit(unitName);
         return new ResponseEntity<>(units, HttpStatus.OK);
     }

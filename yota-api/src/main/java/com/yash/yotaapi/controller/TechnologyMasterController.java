@@ -1,5 +1,5 @@
 package com.yash.yotaapi.controller;
- 
+
 import com.yash.yotaapi.domain.TechnologyMaster;
 import com.yash.yotaapi.service.TechnologyMasterService;
 import com.yash.yotaapi.util.FieldErrorValidationUtillity;
@@ -9,36 +9,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
- 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
- 
+
 /**
-* Parent Technology Controller will facilitates CRUD functionalities
-*
-* @author pratik.kurbet
-*/
-@CrossOrigin("*")
+ * Parent Technology Controller will facilitates CRUD functionalities
+ *
+ * @author pratik.kurbet
+ */
 @Tag(name = "Technology Controller", description = "Controller for Technology")
 @RestController
 @RequestMapping("/technologies")
 public class TechnologyMasterController {
- 
+
     /**
      * ParentTechnologyService is used to interact controller layer with service
      * layer.
      */
     @Autowired
     private TechnologyMasterService technologyMasterService;
- 
+
     /**
      * FieldErrorValidationService is used to validate field errors.
      */
     @Autowired
     private FieldErrorValidationUtillity validationService;
- 
+
     /**
      * addParentTechnology method is used add ParentTechnology through service layer
      *
@@ -47,18 +53,18 @@ public class TechnologyMasterController {
      */
     @PostMapping("/")
     public ResponseEntity<?> addTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result,
-            Principal principal) {
+                                           Principal principal) {
         // Access authenticated user's details (username)
         String username = principal.getName();
         // Add your logic here
- 
+
         ResponseEntity<?> errorMap = validationService.validationError(result);
         if (errorMap != null) {
             return errorMap;
         }
         return new ResponseEntity<TechnologyMaster>(technologyMasterService.save(technology), HttpStatus.OK);
     }
- 
+
     /**
      * getAll method is used to fetch all existing parent technology from DB
      *
@@ -68,7 +74,7 @@ public class TechnologyMasterController {
     public ResponseEntity<List<TechnologyMaster>> getTechnologies() {
         return new ResponseEntity<List<TechnologyMaster>>(technologyMasterService.getAllTechs(), HttpStatus.OK);
     }
- 
+
     /**
      * getTech method is used to get ParentTechnology from DB on basis name.
      *
@@ -79,7 +85,7 @@ public class TechnologyMasterController {
     public ResponseEntity<TechnologyMaster> getTechnology(@PathVariable(value = "id") long id) {
         return new ResponseEntity<TechnologyMaster>(technologyMasterService.getTech(id), HttpStatus.OK);
     }
- 
+
     /**
      * searchTech method is used to get ParentTechnology from DB on basis Keyword.
      *
@@ -91,7 +97,7 @@ public class TechnologyMasterController {
         List<TechnologyMaster> technologies = technologyMasterService.searchTech(keyword);
         return new ResponseEntity<List<TechnologyMaster>>(technologies, HttpStatus.OK);
     }
- 
+
     /**
      * removeTech method is used to delete ParentTechnology by id.
      *
@@ -103,7 +109,7 @@ public class TechnologyMasterController {
         technologyMasterService.removeTech(id);
         return new ResponseEntity<String>("Technology with ID :" + id + " deleted.", HttpStatus.OK);
     }
- 
+
     /**
      * upadateTech method is used update the existing ParentTechnology from DB
      * otherwise it will save one into DB
@@ -115,11 +121,11 @@ public class TechnologyMasterController {
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "successfully updated")
     public ResponseEntity<?> updateTechnology(@Valid @RequestBody TechnologyMaster technology, BindingResult result,
-            Principal principal, @PathVariable long id) {
+                                              Principal principal, @PathVariable long id) {
         // Access authenticated user's details (username)
         String username = principal.getName();
         // Add your logic here
- 
+
         ResponseEntity<?> errorMap = validationService.validationError(result);
         if (errorMap != null) {
             return errorMap;
