@@ -1,375 +1,373 @@
 package com.yash.yotaapi.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
+import com.yash.yotaapi.domain.ClientQuestion;
+import com.yash.yotaapi.domain.NewAssociateDetail;
+import com.yash.yotaapi.domain.Nomination;
+import com.yash.yotaapi.domain.Question;
+import com.yash.yotaapi.domain.Training;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yash.yotaapi.domain.AssociateDetails;
-import com.yash.yotaapi.domain.ClientQuestion;
-import com.yash.yotaapi.domain.NewAssociateDetail;
-import com.yash.yotaapi.domain.Nomination;
-import com.yash.yotaapi.domain.Question;
-import com.yash.yotaapi.domain.Training;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ExcelHelper {
 
-	public static boolean checkExcelFormat(MultipartFile file) {
+    public static boolean checkExcelFormat(MultipartFile file) {
 
-		String contentType = file.getContentType();
-		return contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	}
+        String contentType = file.getContentType();
+        return contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
 
-	
-	public static List<Question> convertExcelToListOfQuestion(InputStream inputStream) {
-	 
-			List<Question> questions = new ArrayList<>();
 
-			try {
+    public static List<Question> convertExcelToListOfQuestion(InputStream inputStream) {
 
-				XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+        List<Question> questions = new ArrayList<>();
 
-				XSSFSheet sheet = workbook.getSheetAt(0);	
+        try {
 
-				int rowNumber = 0;
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
-				Iterator<Row> iterator = sheet.iterator();
+            XSSFSheet sheet = workbook.getSheetAt(0);
 
-				while (iterator.hasNext()) {
+            int rowNumber = 0;
 
-					Row row = iterator.next();
+            Iterator<Row> iterator = sheet.iterator();
 
-					if (rowNumber == 0) {
+            while (iterator.hasNext()) {
 
-						rowNumber++;
+                Row row = iterator.next();
 
-						continue;
+                if (rowNumber == 0) {
 
-					}
+                    rowNumber++;
 
-					Iterator<Cell> cells = row.iterator();
+                    continue;
 
-					int cId = 0;
+                }
 
-					Question ques = new Question();
+                Iterator<Cell> cells = row.iterator();
 
-					while (cells.hasNext()) {
+                int cId = 0;
 
-						Cell cell = cells.next();
+                Question ques = new Question();
 
-						switch (cId) {
+                while (cells.hasNext()) {
 
-						case 0:
+                    Cell cell = cells.next();
 
-							ques.setQuestion(cell.getStringCellValue());
+                    switch (cId) {
 
-							break;
+                        case 0:
 
-						case 1:
+                            ques.setQuestion(cell.getStringCellValue());
 
-							ques.setOption_A(cell.getStringCellValue());
+                            break;
 
-							break;
+                        case 1:
 
-						case 2:
+                            ques.setOption_A(cell.getStringCellValue());
 
-							ques.setOption_B(cell.getStringCellValue());
+                            break;
 
-							break;
+                        case 2:
 
-						case 3:
+                            ques.setOption_B(cell.getStringCellValue());
 
-							ques.setOption_C(cell.getStringCellValue());
+                            break;
 
-							break;
+                        case 3:
 
-						case 4:
+                            ques.setOption_C(cell.getStringCellValue());
 
-							ques.setOption_D(cell.getStringCellValue());
+                            break;
 
-							break;
+                        case 4:
 
-						case 5:
+                            ques.setOption_D(cell.getStringCellValue());
 
-							ques.setCorrectAnswer(cell.getStringCellValue());
+                            break;
 
-							break;
+                        case 5:
 
-						default: break;
+                            ques.setCorrectAnswer(cell.getStringCellValue());
 
-						}
+                            break;
 
-						cId++;
+                        default:
+                            break;
 
-					}
+                    }
 
-					questions.add(ques);
+                    cId++;
 
-				}
-	 
-			} catch (Exception e) {
+                }
 
-				e.printStackTrace();
+                questions.add(ques);
 
-			}
+            }
 
-			return questions;
+        } catch (Exception e) {
 
-		}
-
-
-	public static List<ClientQuestion> convertExcelToListOfClientQuestion(InputStream inputStream) {
-
-		List<ClientQuestion> questions = new ArrayList<>();
-
-		try {
-			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
-			XSSFSheet sheet = wb.getSheetAt(0);
-
-			int rowNumber = 0;
-			Iterator<Row> iterator = sheet.iterator();
-
-			while (iterator.hasNext()) {
-				Row row = iterator.next();
-
-				if (rowNumber == 0) {
-					rowNumber++;
-					continue;
-				}
-
-				Iterator<Cell> cells = row.iterator();
-				int cId = 0;
-
-				ClientQuestion ques = new ClientQuestion();
-
-				while (cells.hasNext()) {
-					Cell cell = cells.next();
-					switch (cId) {
-					case 0:
-						ques.setClientId(cell.getStringCellValue());
-						break;
-					case 1:
-						ques.setTechnologyId(cell.getStringCellValue());
-						break;
-					case 2:
-						ques.setClientQuestion(cell.getStringCellValue());
-						break;
-					case 3:
-						ques.setAnswer(cell.getStringCellValue());
-						break;
-					case 4:
-						ques.setLevel(cell.getStringCellValue());
-						break;
-					default:
-						break;
-					}
-					cId++;
-				}
-				questions.add(ques);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return questions;
-	}
-	
-	public static List<Nomination> convertExcelToListOfNomination(InputStream inputStream) {
-
-		List<Nomination> nominatonList = new ArrayList<>();
-		System.out.println("check2");
-
-		try {
-			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-			XSSFSheet sheet = workbook.getSheetAt(0);	
-			
-			int rowNumber = 0;
-			Iterator<Row> iterator = sheet.iterator();
-
-			while (iterator.hasNext()) {
-				Row row = iterator.next();
-
-				if (rowNumber == 0) {
-					rowNumber++;
-					continue;
-				}
-
-				Iterator<Cell> cells = row.iterator();
-				int cId = 0;
-
-				Nomination nomination = new Nomination();
-
-				while (cells.hasNext()) {
-					Cell cell = cells.next();
-
-					switch (cId) {
-					case 0:
-						nomination.setEmployeeId((long)cell.getNumericCellValue());
-						break;
-					case 1:
-						nomination.setEmployeeName(cell.getStringCellValue());
-						break;
-					case 2:
-						nomination.setEmployeeEmail(cell.getStringCellValue());
-						break;
-					default: break;
-					}
-					cId++;
-				}
-				nominatonList.add(nomination);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return nominatonList;
-	}
-	public static List<NewAssociateDetail> convertExcelToListOfAssociates(InputStream inputStream,Training training) {
-
-		List<NewAssociateDetail> associateList = new ArrayList<>();
-		System.out.println("check2");
-
-		try {
-			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-			XSSFSheet sheet = workbook.getSheetAt(0);	
-			
-			int rowNumber = 0;
-			Iterator<Row> iterator = sheet.iterator();
-
-			while (iterator.hasNext()) {
-				Row row = iterator.next();
-
-				if (rowNumber == 0) {
-					rowNumber++;
-					continue;
-				}
-
-				Iterator<Cell> cells = row.iterator();
-				int cId = 0;
-
-				NewAssociateDetail assDetails = new NewAssociateDetail();
-
-				while (cells.hasNext()) {
-					Cell cell = cells.next();
-
-					switch (cId) {
-					case 0:
-						assDetails.setEmployeeId((long)cell.getNumericCellValue());
-						break;
-					case 1:
-						assDetails.setEmployeeName(cell.getStringCellValue());
-						break;
-					case 2:
-						assDetails.setEmployeeEmailId(cell.getStringCellValue());
-						break;
-					case 3:
-						assDetails.setEmployeePassword(cell.getStringCellValue());
-						break;
-					default: break;
-					}
-					cId++;
-				}
-				assDetails.setTraining(training);
-				associateList.add(assDetails);
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return associateList;
-	}
-	
-	public static List<Training> convertExcelToListOfTrainings(InputStream inputStream) {
-
-		List<Training> trainingList = new ArrayList<>();
-		System.out.println("check2");
-
-		try {
-			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-			XSSFSheet sheet = workbook.getSheetAt(0);	
-			
-			int rowNumber = 0;
-			Iterator<Row> iterator = sheet.iterator();
-
-			while (iterator.hasNext()) {
-				Row row = iterator.next();
-
-				if (rowNumber == 0) {
-					rowNumber++;
-					continue;
-				}
-
-				Iterator<Cell> cells = row.iterator();
-				int cId = 0;
-
-				Training training = new Training();
-
-				while (cells.hasNext()) {
-					Cell cell = cells.next();
-
-					switch (cId) {
-					case 0:
-						training.setTrainingName(cell.getStringCellValue());
-						break;
-					case 1:
-						training.setAssignedTo(cell.getStringCellValue());
-						break;
-					case 2:
+            e.printStackTrace();
+
+        }
+
+        return questions;
+
+    }
+
+
+    public static List<ClientQuestion> convertExcelToListOfClientQuestion(InputStream inputStream) {
+
+        List<ClientQuestion> questions = new ArrayList<>();
+
+        try {
+            XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = wb.getSheetAt(0);
+
+            int rowNumber = 0;
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row row = iterator.next();
+
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cells = row.iterator();
+                int cId = 0;
+
+                ClientQuestion ques = new ClientQuestion();
+
+                while (cells.hasNext()) {
+                    Cell cell = cells.next();
+                    switch (cId) {
+                        case 0:
+                            ques.setClientId(cell.getStringCellValue());
+                            break;
+                        case 1:
+                            ques.setTechnologyId(cell.getStringCellValue());
+                            break;
+                        case 2:
+                            ques.setClientQuestion(cell.getStringCellValue());
+                            break;
+                        case 3:
+                            ques.setAnswer(cell.getStringCellValue());
+                            break;
+                        case 4:
+                            ques.setLevel(cell.getStringCellValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    cId++;
+                }
+                questions.add(ques);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public static List<Nomination> convertExcelToListOfNomination(InputStream inputStream) {
+
+        List<Nomination> nominatonList = new ArrayList<>();
+        System.out.println("check2");
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            int rowNumber = 0;
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row row = iterator.next();
+
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cells = row.iterator();
+                int cId = 0;
+
+                Nomination nomination = new Nomination();
+
+                while (cells.hasNext()) {
+                    Cell cell = cells.next();
+
+                    switch (cId) {
+                        case 0:
+                            nomination.setEmployeeId((long) cell.getNumericCellValue());
+                            break;
+                        case 1:
+                            nomination.setEmployeeName(cell.getStringCellValue());
+                            break;
+                        case 2:
+                            nomination.setEmployeeEmail(cell.getStringCellValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    cId++;
+                }
+                nominatonList.add(nomination);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nominatonList;
+    }
+
+    public static List<NewAssociateDetail> convertExcelToListOfAssociates(InputStream inputStream, Training training) {
+
+        List<NewAssociateDetail> associateList = new ArrayList<>();
+        System.out.println("check2");
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            int rowNumber = 0;
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row row = iterator.next();
+
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cells = row.iterator();
+                int cId = 0;
+
+                NewAssociateDetail assDetails = new NewAssociateDetail();
+
+                while (cells.hasNext()) {
+                    Cell cell = cells.next();
+
+                    switch (cId) {
+                        case 0:
+                            assDetails.setEmployeeId((long) cell.getNumericCellValue());
+                            break;
+                        case 1:
+                            assDetails.setEmployeeName(cell.getStringCellValue());
+                            break;
+                        case 2:
+                            assDetails.setEmployeeEmailId(cell.getStringCellValue());
+                            break;
+                        case 3:
+                            assDetails.setEmployeePassword(cell.getStringCellValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    cId++;
+                }
+                assDetails.setTraining(training);
+                associateList.add(assDetails);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return associateList;
+    }
+
+    public static List<Training> convertExcelToListOfTrainings(InputStream inputStream) {
+
+        List<Training> trainingList = new ArrayList<>();
+        System.out.println("check2");
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            int rowNumber = 0;
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row row = iterator.next();
+
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cells = row.iterator();
+                int cId = 0;
+
+                Training training = new Training();
+
+                while (cells.hasNext()) {
+                    Cell cell = cells.next();
+
+                    switch (cId) {
+                        case 0:
+                            training.setTrainingName(cell.getStringCellValue());
+                            break;
+                        case 1:
+                            training.setAssignedTo(cell.getStringCellValue());
+                            break;
+                        case 2:
 //						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
 //                        Date startDate = dateFormat.parse(cell.getDateCellValue());
-                        training.setStartDate(cell.getDateCellValue());
-						break;
-					case 3:
+                            training.setStartDate(cell.getDateCellValue());
+                            break;
+                        case 3:
 //						SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
 //                        Date endDate = dateFormate.parse(cell.getStringCellValue());
-	                     training.setEndDate(cell.getDateCellValue());
-	                     break;
-					case 4:
-						training.setAssociateCount((long)0);
-						break;
-					case 5:
-						training.setStatus(cell.getStringCellValue());
-						break;
-					case 6:
-						training.setChangeRequestStatus(cell.getStringCellValue());
-						break;
-					default: break;
-					}
-					cId++;
-				}
-				trainingList.add(training);
-			}
+                            training.setEndDate(cell.getDateCellValue());
+                            break;
+                        case 4:
+                            training.setStatus(cell.getStringCellValue());
+                            break;
+                        case 5:
+                            training.setChangeRequestStatus(cell.getStringCellValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    cId++;
+                }
+                trainingList.add(training);
+            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return trainingList;
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return trainingList;
+    }
 }
