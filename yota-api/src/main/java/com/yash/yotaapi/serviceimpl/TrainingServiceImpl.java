@@ -1,5 +1,17 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.yash.yotaapi.constants.TrainingStatus;
 import com.yash.yotaapi.domain.MailRequest;
 import com.yash.yotaapi.domain.Training;
@@ -11,15 +23,7 @@ import com.yash.yotaapi.repository.TrainingRepository;
 import com.yash.yotaapi.service.EmailSenderService;
 import com.yash.yotaapi.service.TrainingService;
 import com.yash.yotaapi.service.UserService;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import com.yash.yotaapi.util.ExcelHelper;
 
 /**
  * 
@@ -91,7 +95,7 @@ public class TrainingServiceImpl implements TrainingService {
 		Training trainingDetails = trainingRepository.findById(trainingId).orElseThrow(
 				() -> new TrainingNotFoundException("Training trainingId: " + trainingId + " is not present"));
 		trainingDetails.setTrainingName(training.getTrainingName());
-		trainingDetails.setTrainingDescription(training.getTrainingDescription());
+		//trainingDetails.setTrainingDescription(training.getTrainingDescription());
 		trainingDetails.setStartDate(training.getStartDate());
 		trainingDetails.setEndDate(training.getEndDate());
 		return trainingRepository.save(trainingDetails);
@@ -105,8 +109,8 @@ public class TrainingServiceImpl implements TrainingService {
 	public Training updateActualStartAndEndDate(Training training, long trainingId) {
 		Training trainingDetails = trainingRepository.findById(trainingId).orElseThrow(
 				() -> new TrainingNotFoundException("Training trainingId: " + trainingId + " is not present"));
-		trainingDetails.setActualStartDate(training.getActualStartDate());
-		trainingDetails.setActualEndDate(training.getActualEndDate());
+		//trainingDetails.setActualStartDate(training.getActualStartDate());
+		//trainingDetails.setActualEndDate(training.getActualEndDate());
 		trainingDetails.setTrainerName(training.getTrainerName());
 		trainingDetails.setStatus(TrainingStatus.APPROVED.toString());
 		trainingDetails.setChangeRequestStatus(TrainingStatus.PLANNED.toString());
@@ -118,8 +122,8 @@ public class TrainingServiceImpl implements TrainingService {
 					.to(Collections.singletonList(trainerUserDetails.getEmailId())).subject("Training Request Approved")
 					.body("Hi, <b>" + trainerUserDetails.getName() + "</b>, You have been assigned a new Training: <b>"
 							+ updatedTraining.getTrainingName() + "</b> with <b>Start Date: "
-							+ updatedTraining.getActualStartDate() + " and End Date: "
-							+ updatedTraining.getActualEndDate()
+							//+ updatedTraining.getActualStartDate() + " and End Date: "
+							//+ updatedTraining.getActualEndDate()
 							+ "!</b> <br/> For More details, please login to your YOTA application.")
 					.build();
 
@@ -189,6 +193,7 @@ public class TrainingServiceImpl implements TrainingService {
 	}
 
 	@Override
+
 	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date changeRequestEndDate) {
 		
 		Training trainingDetails = trainingRepository.findById(trainingId).get();
@@ -198,6 +203,18 @@ public class TrainingServiceImpl implements TrainingService {
 			trainingDetails.setChangeRequestEndDate(changeRequestEndDate);		
 		
 		return trainingRepository.save(trainingDetails);
+	}
+
+	public void saveExcel(MultipartFile file) {
+		try {
+			List<Training> trainings = ExcelHelper.convertExcelToListOfTrainings(file.getInputStream()); 
+	
+			this.trainingRepository.saveAll(trainings);
+			System.out.println("check1");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

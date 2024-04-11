@@ -1,36 +1,33 @@
 package com.yash.yotaapi.controller;
 
-import com.yash.yotaapi.constants.TrainingStatus;
-import com.yash.yotaapi.domain.Training;
-import com.yash.yotaapi.service.TrainingService;
-import com.yash.yotaapi.util.DateValidationUtility;
-import com.yash.yotaapi.util.FieldErrorValidationUtillity;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.Date;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import com.yash.yotaapi.constants.TrainingStatus;
+import com.yash.yotaapi.domain.*;
+import com.yash.yotaapi.service.*;
+import com.yash.yotaapi.util.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
+ *
  * Controller for training.
- * <p>
+ *
  * Manages CRUD operations for Training entities.
  *
+ *
+ *
  * @author raghav.muchhal
+ *
  */
 
 @RestController
@@ -223,5 +220,14 @@ public class TrainingController {
 
     }
 
+    @PostMapping("/bulkUploadTrainings")
+    public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file, Principal principal) {
+
+        if (ExcelHelper.checkExcelFormat(file)) {
+            trainingService.saveExcel(file);
+            return new ResponseEntity<String>("Excel File Uploaded Successfully", HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload Excel File only.");
+    }
 
 }

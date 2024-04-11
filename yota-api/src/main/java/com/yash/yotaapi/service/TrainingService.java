@@ -3,6 +3,8 @@ package com.yash.yotaapi.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.yash.yotaapi.domain.Training;
 
  
@@ -82,7 +84,10 @@ public interface TrainingService {
      * @return changing training status to approve.
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
+
     public Training updateTrainingStatus(Training training, long trainingId); 
     public Training updateTraining(Long trainingId,String trainingUpdateReason, Date changeRequestEndDate);
+    public void saveExcel(MultipartFile file);
+
 
 }
