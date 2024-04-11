@@ -4,6 +4,7 @@ import com.yash.yotaapi.security.jwt.JwtAuthenticationEntryPoint;
 import com.yash.yotaapi.security.jwt.JwtAuthenticationFilter;
 import com.yash.yotaapi.security.userdetails.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,7 +67,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
+    public FilterRegistrationBean coresFilter() {
+        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
+
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOriginPattern("*");
@@ -80,10 +83,11 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("OPTIONS");
         corsConfiguration.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        configurationSource.registerCorsConfiguration("/**", corsConfiguration);
 
-        return new CorsFilter(source);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(configurationSource));
+        bean.setOrder(-110);
+        return bean;
     }
 
     @Bean
