@@ -1,8 +1,19 @@
 package com.yash.yotaapi.serviceimpl;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.yash.yotaapi.constants.TrainingStatus;
 import com.yash.yotaapi.domain.MailRequest;
-import com.yash.yotaapi.domain.Nomination;
 import com.yash.yotaapi.domain.Training;
 import com.yash.yotaapi.domain.YotaUser;
 import com.yash.yotaapi.exception.DateInValidException;
@@ -13,18 +24,6 @@ import com.yash.yotaapi.service.EmailSenderService;
 import com.yash.yotaapi.service.TrainingService;
 import com.yash.yotaapi.service.UserService;
 import com.yash.yotaapi.util.ExcelHelper;
-
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -194,7 +193,7 @@ public class TrainingServiceImpl implements TrainingService {
 	}
 
 	@Override
-<<<<<<< Updated upstream
+
 	public Training updateTraining(Long trainingId,String trainingUpdateReason,Date changeRequestEndDate) {
 		
 		Training trainingDetails = trainingRepository.findById(trainingId).get();
@@ -206,7 +205,6 @@ public class TrainingServiceImpl implements TrainingService {
 		return trainingRepository.save(trainingDetails);
 	}
 
-=======
 	public void saveExcel(MultipartFile file) {
 		try {
 			List<Training> trainings = ExcelHelper.convertExcelToListOfTrainings(file.getInputStream()); 
@@ -218,5 +216,5 @@ public class TrainingServiceImpl implements TrainingService {
 			e.printStackTrace();
 		}
 	}
->>>>>>> Stashed changes
+
 }

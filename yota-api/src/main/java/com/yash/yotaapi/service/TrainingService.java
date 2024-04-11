@@ -84,12 +84,10 @@ public interface TrainingService {
      * @return changing training status to approve.
      */
     public Training updateActualStartAndEndDate(Training training, long trainingId);
-<<<<<<< Updated upstream
+
     public Training updateTrainingStatus(Training training, long trainingId); 
     public Training updateTraining(Long trainingId,String trainingUpdateReason, Date changeRequestEndDate);
-=======
-    public Training updateTrainingStatus(Training training, long trainingId);
     public void saveExcel(MultipartFile file);
->>>>>>> Stashed changes
+
 
 }

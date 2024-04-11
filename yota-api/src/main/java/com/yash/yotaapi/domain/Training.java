@@ -63,15 +63,15 @@ public class Training {
     private String assignedTo;
  
     
-<<<<<<< Updated upstream
+
     /** Description of the training. */
     //@NotBlank(message = "Training description is mandatory")
-    private String trainingDescription;
-=======
+
+
 //    /** Description of the training. */
 //    @NotBlank(message = "Training description is mandatory")
 //    private String trainingDescription;
->>>>>>> Stashed changes
+
  
     /** Start date of the training. */
     @NotNull(message = "Start date cannot be Null")
