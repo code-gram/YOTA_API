@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,10 +38,31 @@ public class UsersController {
         return new ResponseEntity<>(allTrainers, HttpStatus.OK);
     }
 
-    @GetMapping("/get/all-students")
+    @GetMapping("/get/all-pending/associates")
+    @IsTechnicalManager
+    public ResponseEntity<List<YotaUserDto>> getAllPendingAssociates() {
+        List<YotaUserDto> allPendingUsers = this.userService.getAllPendingUsers();
+        return new ResponseEntity<>(allPendingUsers, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/all-associates")
     @PreAuthorize("hasAnyRole('ROLE_TRAINER','ROLE_TECHNICAL_MANAGER')")
     public ResponseEntity<List<YotaUserDto>> getAllAssociates() {
         List<YotaUserDto> allStudents = this.userService.getAllAssociates();
         return new ResponseEntity<>(allStudents, HttpStatus.OK);
+    }
+
+    @IsTechnicalManager
+    @PutMapping("/approve/associate")
+    public ResponseEntity<Boolean> approvePendingUser(@RequestParam String emailAdd) {
+        Boolean status = this.userService.approvePendingUser(emailAdd);
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
+    @IsTechnicalManager
+    @PostMapping("/decline/associate")
+    public ResponseEntity<Boolean> declinePendingUser(@RequestParam String emailAdd) {
+        Boolean status = this.userService.declinePendingUser(emailAdd);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 }

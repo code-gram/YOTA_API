@@ -151,4 +151,32 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
                         .map(penUser, YotaUserDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public Boolean approvePendingUser(String emailAdd) {
+        if (StringUtils.isNotEmpty(emailAdd)) {
+            Integer status = this.userRepository.approvePendingUser(emailAdd);
+            if (status == 1)
+                return true;
+            else
+                throw new ApplicationException("User not approved");
+        } else {
+            throw new ApplicationException("Email address is empty.");
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public Boolean declinePendingUser(String emailAdd) {
+        if (StringUtils.isNotEmpty(emailAdd)) {
+            Integer status = this.userRepository.declinePendingUser(emailAdd);
+            if (status == 1)
+                return true;
+            else
+                throw new ApplicationException("Failed while declining user account");
+        } else {
+            throw new ApplicationException("Email address is empty.");
+        }
+    }
 }
