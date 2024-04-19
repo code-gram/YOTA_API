@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,14 +53,14 @@ public class UsersController {
 
     @IsTechnicalManager
     @PutMapping("/approve/associate")
-    public ResponseEntity<Boolean> approvePendingUser(@RequestParam String emailAdd) {
+    public ResponseEntity<Boolean> approvePendingUser(@RequestParam("email") String emailAdd) {
         Boolean status = this.userService.approvePendingUser(emailAdd);
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
     @IsTechnicalManager
-    @PostMapping("/decline/associate")
-    public ResponseEntity<Boolean> declinePendingUser(@RequestParam String emailAdd) {
+    @PutMapping("/decline/associate")
+    public ResponseEntity<Boolean> declinePendingUser(@RequestParam("email") String emailAdd) {
         Boolean status = this.userService.declinePendingUser(emailAdd);
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
