@@ -27,4 +27,6 @@ public interface IYOTAUserService {
     Boolean approvePendingUser(String emailAdd);
 
     Boolean declinePendingUser(String emailAdd);
+
+    List<YotaUserDto> getAllAssociatesByStatus(String status);
 }

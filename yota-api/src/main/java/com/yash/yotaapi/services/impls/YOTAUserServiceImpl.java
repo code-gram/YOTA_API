@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -178,5 +179,25 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         } else {
             throw new ApplicationException("Email address is empty.");
         }
+    }
+
+    @Override
+    public List<YotaUserDto> getAllAssociatesByStatus(String status) {
+        List<YotaUserDto> yotaUserDto = null;
+        List<YotaUser> user = null;
+        if (StringUtils.isNotEmpty(status)) {
+            UserAccountStatusTypes userAccountStatusTypes = UserAccountStatusTypes.valueOf(status);
+            user = this.userRepository.getAllUserByStatus(userAccountStatusTypes);
+            if(CollectionUtils.isEmpty(user)) {
+                throw new ApplicationException("No associates found with the provided status : " + status);
+            }
+
+            yotaUserDto = user.stream()
+                    .map(users-> modelMapper.map(users, YotaUserDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            throw new ApplicationException("Status is empty");
+        }
+        return yotaUserDto;
     }
 }
