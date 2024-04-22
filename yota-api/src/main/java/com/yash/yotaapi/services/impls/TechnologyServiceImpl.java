@@ -1,5 +1,8 @@
 package com.yash.yotaapi.services.impls;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,14 @@ public class TechnologyServiceImpl  implements ITechnologyService{
 		return this.mapper.map(technology2, TechnologyDto.class);
        
     }
+
+	@Override
+	public List<TechnologyDto> fetchAllTechnology() {
+		// TODO Auto-generated method stub
+		List<Technology> technologies= technologyRepository.findAll();
+		return technologies.stream().map(t->this.mapper.map(t, TechnologyDto.class)).collect(Collectors.toList());
+		
+	}
 	}
 
 
