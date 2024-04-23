@@ -1,13 +1,17 @@
 package com.yash.yotaapi.repositories;
 
+import com.yash.yotaapi.entity.Technology;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.yash.yotaapi.entity.Technology;
+import java.util.List;
 
 @Repository
-public interface TechnologyRepository  extends JpaRepository<Technology, Long>{
+public interface TechnologyRepository extends JpaRepository<Technology, Long> {
 
-	Technology findByTechnology(String technology);
+    Technology findByTechnology(String technology);
 
+    @Query("SELECT TECH FROM Technology TECH")
+    List<Technology> getAllTechnologies();
 }

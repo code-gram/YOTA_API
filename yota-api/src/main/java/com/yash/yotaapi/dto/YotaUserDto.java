@@ -16,6 +16,8 @@ import lombok.Data;
 @Data
 public class YotaUserDto {
 
+    private Long empId;
+
     private String fullName;
 
     private String emailAdd;

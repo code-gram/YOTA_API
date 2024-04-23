@@ -1,7 +1,6 @@
 package com.yash.yotaapi.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,34 +10,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
 
+/**
+ * Project Name - YOTA_NEW
+ * <p>
+ * IDE Used - IntelliJ IDEA
+ *
+ * @author - yashr
+ * @since - 22-04-2024
+ */
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "technology_management")
-public class Technology {
+@Table(name = "category_management")
+public class Category {
 
     @Id
-    @Column(name = "tehnology_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(initialValue = 1, name = "id")
+    @Column(name = "category_id", nullable = false)
     private Long id;
 
-    private String technology;
-
-    private String action;
+    @Column(name = "category_name")
+    private String name;
 
     @Transient
-    private Integer questionCountUnderTechnology;
+    private Integer questionCountUnderCategory;
 
-    @OneToMany(mappedBy = "technology")
-    private List<Category> categories;
+    @ManyToOne
+    @JoinColumn(name = "tech_id", referencedColumnName = "tehnology_id")
+    private Technology technology;
+
+    @OneToMany(mappedBy = "category")
+    private List<Questions> questions;
 }
