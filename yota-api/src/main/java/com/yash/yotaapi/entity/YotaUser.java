@@ -32,6 +32,9 @@ import javax.persistence.Transient;
 @Table(name = "yota_user")
 public class YotaUser {
 
+    @Column(name = "emp_id", unique = true, nullable = false)
+    private Long empId;
+
     @Column(name = "full_name")
     private String fullName;
 
