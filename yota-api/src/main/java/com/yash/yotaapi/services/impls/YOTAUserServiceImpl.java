@@ -192,8 +192,8 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
                 throw new ApplicationException("No associates found with the provided status : " + status);
             }
 
-            yotaUserDto = user.stream()
-                    .map(users -> modelMapper.map(users, YotaUserDto.class))
+            yotaUserDto = user.stream().filter(users-> users.getUserRole().getRoleTypes().equals(UserRoleTypes.ROLE_ASSOCIATE.toString()))
+                    .map(users-> modelMapper.map(users, YotaUserDto.class))
                     .collect(Collectors.toList());
         } else {
             throw new ApplicationException("Status is empty");
