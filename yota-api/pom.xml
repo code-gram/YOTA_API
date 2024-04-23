@@ -12,6 +12,7 @@
     <groupId>com.yash</groupId>
     <artifactId>yota-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>yota-api</name>
     <description>This is application for the YASH Online Test App</description>
     <properties>

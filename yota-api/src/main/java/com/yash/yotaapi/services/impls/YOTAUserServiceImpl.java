@@ -62,37 +62,37 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
                 //user do not exist, new user will be created
                 if (StringUtils.equals(userDto.getPassword(), userDto.getConfirmPassword())) {
 
-                    UserRoleDto userRoleDto = this
-                            .userRoleService
-                            .getUserRoleByRoleName(UserRoleTypes.ROLE_ASSOCIATE.toString());
+                    if (ObjectUtils.isNotEmpty(userDto.getEmpId())) {
+                        UserRoleDto userRoleDto = this
+                                .userRoleService
+                                .getUserRoleByRoleName(UserRoleTypes.ROLE_ASSOCIATE.toString());
 
-                    userDto.setUserRole(userRoleDto);
+                        userDto.setUserRole(userRoleDto);
 
-                    user = this
-                            .modelMapper
-                            .map(userDto, YotaUser.class);
+                        user = this
+                                .modelMapper
+                                .map(userDto, YotaUser.class);
 
-                    user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
-                    user.setAccountStatus(UserAccountStatusTypes.PENDING);
+                        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+                        user.setAccountStatus(UserAccountStatusTypes.PENDING);
 
-                    //reassigned with the new created data
-                    user = this
-                            .userRepository
-                            .save(user);
+                        //reassigned with the new created data
+                        user = this
+                                .userRepository
+                                .save(user);
 
-                    if (ObjectUtils.isNotEmpty(user))
-                        message = AppConstants.NEW_USER_REGISTRATION_SUCCESS_MESSAGE;
-                    else
-                        message = "YOTA User creation failed";
-                } else {
+                        if (ObjectUtils.isNotEmpty(user))
+                            message = AppConstants.NEW_USER_REGISTRATION_SUCCESS_MESSAGE;
+                        else
+                            message = "YOTA User creation failed";
+                    } else
+                        throw new ApplicationException("Employee Id is empty or null, please enter valid employee id");
+                } else
                     throw new ApplicationException("Password did not matched, please try again");
-                }
-            } else {
+            } else
                 throw new ApplicationException("User already exists with this email address");
-            }
-        } else {
+        } else
             throw new ApplicationException("Invalid user details");
-        }
 
         return message;
     }
@@ -188,12 +188,12 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         if (StringUtils.isNotEmpty(status)) {
             UserAccountStatusTypes userAccountStatusTypes = UserAccountStatusTypes.valueOf(status);
             user = this.userRepository.getAllUserByStatus(userAccountStatusTypes);
-            if(CollectionUtils.isEmpty(user)) {
+            if (CollectionUtils.isEmpty(user)) {
                 throw new ApplicationException("No associates found with the provided status : " + status);
             }
 
             yotaUserDto = user.stream()
-                    .map(users-> modelMapper.map(users, YotaUserDto.class))
+                    .map(users -> modelMapper.map(users, YotaUserDto.class))
                     .collect(Collectors.toList());
         } else {
             throw new ApplicationException("Status is empty");
