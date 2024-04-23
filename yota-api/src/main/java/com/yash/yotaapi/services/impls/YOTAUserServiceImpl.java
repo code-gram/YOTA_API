@@ -193,6 +193,7 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
             }
 
             yotaUserDto = user.stream()
+                    .filter(users-> users.getUserRole().getRoleTypes().equals("ROLE_ASSOCIATE"))
                     .map(users-> modelMapper.map(users, YotaUserDto.class))
                     .collect(Collectors.toList());
         } else {

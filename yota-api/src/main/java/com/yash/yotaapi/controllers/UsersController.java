@@ -65,7 +65,7 @@ public class UsersController {
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
-    @GetMapping("/get/all-associates-status")
+    @GetMapping("/all-associates-status")
     @PreAuthorize("hasAnyRole('ROLE_TRAINER','ROLE_TECHNICAL_MANAGER')")
     public ResponseEntity<List<YotaUserDto>> getAllAssociatesByStatus(@RequestParam("status") String status) {
         List<YotaUserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
