@@ -34,8 +34,6 @@ public class Technology {
 
     private String technology;
 
-    private String action;
-
     @Transient
     private Integer questionCountUnderTechnology;
 

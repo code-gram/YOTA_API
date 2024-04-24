@@ -8,6 +8,8 @@ public interface ITechnologyService {
 
     TechnologyDto addTechnology(TechnologyDto technology);
 
+    TechnologyDto findTechnologyById(Long techId);
+
     List<TechnologyDto> fetchAllTechnology();
 
 }

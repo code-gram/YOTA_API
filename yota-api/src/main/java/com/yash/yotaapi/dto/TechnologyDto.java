@@ -17,9 +17,7 @@ public class TechnologyDto {
 
     private String technology;
 
-    private Integer questionCountUnderTechnology;
-
-    private String action;
+    private Integer questionCountUnderTechnology = 0;
 
     private List<CategoryDto> categories;
 }

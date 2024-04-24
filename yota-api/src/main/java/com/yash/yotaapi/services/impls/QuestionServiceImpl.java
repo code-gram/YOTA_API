@@ -1,0 +1,180 @@
+package com.yash.yotaapi.services.impls;
+
+import com.yash.yotaapi.dto.CategoryDto;
+import com.yash.yotaapi.dto.QuestionsDto;
+import com.yash.yotaapi.entity.Questions;
+import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.repositories.QuestionsRepository;
+import com.yash.yotaapi.services.IServices.ICategoryService;
+import com.yash.yotaapi.services.IServices.IQuestionService;
+import com.yash.yotaapi.services.IServices.ITechnologyService;
+import org.apache.commons.lang3.ObjectUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Project Name - YOTA_NEW
+ * <p>
+ * IDE Used - IntelliJ IDEA
+ *
+ * @author - yashr
+ * @since - 24-04-2024
+ */
+@Service
+public class QuestionServiceImpl implements IQuestionService {
+
+    @Autowired
+    private QuestionsRepository questionsRepository;
+
+    @Autowired
+    private ITechnologyService technologyService;
+
+    @Autowired
+    private ICategoryService categoryService;
+
+    @Autowired
+    private ModelMapper mapper;
+
+    /**
+     * Method to create new question, please provide the technology id and category id to create question
+     *
+     * @param questionsDto DTO body object
+     * @param techId       Long technology id
+     * @param catId        Long category id
+     * @return newly created question object
+     * @author yashr
+     * @since 24-04-24
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public QuestionsDto createQuestion(QuestionsDto questionsDto,
+                                       Long techId,
+                                       Long catId) {
+        Questions questions = null;
+        if (ObjectUtils.isNotEmpty(questionsDto)) {
+            CategoryDto category = this
+                    .categoryService
+                    .findCategoryByTechnologyIdAndCategoryId(techId, catId);
+
+            questionsDto.setCategory(category);
+
+            questions = this
+                    .mapper
+                    .map(questionsDto, Questions.class);
+
+            questions = this
+                    .questionsRepository.save(questions);
+
+            questionsDto = this
+                    .mapper
+                    .map(questions, QuestionsDto.class);
+
+            questions = null;
+            return questionsDto;
+        } else
+            throw new ApplicationException("Invalid Question details, please check and Try again...");
+    }
+
+    /**
+     * Get question data based on technology id and category id
+     *
+     * @param questionId Long question id against which the data is required
+     * @param techId     Long technology id
+     * @param catId      Long category id
+     * @return newly created question object
+     * @author yashr
+     * @since 24-04-24
+     */
+    @Override
+    public QuestionsDto getQuestionById(Long questionId,
+                                        Long techId,
+                                        Long catId) {
+        Questions questions = null;
+        if (ObjectUtils.isNotEmpty(questionId)) {
+
+            CategoryDto category = this
+                    .categoryService
+                    .findCategoryByTechnologyIdAndCategoryId(techId, catId);
+
+            questions = this
+                    .questionsRepository
+                    .getQuestionById(questionId, category.getId())
+                    .orElseThrow(() -> new ApplicationException("Question not found..."));
+
+            QuestionsDto questionsDto = this
+                    .mapper
+                    .map(questions, QuestionsDto.class);
+
+            questionsDto.setCategory(category);
+
+            questions = null;
+            return questionsDto;
+        } else
+            throw new ApplicationException("Invalid Question details, please check and Try again...");
+    }
+
+    /**
+     * Get all questions data based on technology id and category id
+     *
+     * @param techId Long technology id
+     * @param catId  Long category id
+     * @return List of questions under category
+     * @author yashr
+     * @since 24-04-24
+     */
+    @Override
+    public List<QuestionsDto> getAllQuestionsUnderCategory(Long techId, Long catId) {
+        if (ObjectUtils.isNotEmpty(techId)
+                && ObjectUtils.isNotEmpty(catId)) {
+            Set<Questions> questionsSet = this
+                    .questionsRepository
+                    .getAllQuestionsUnderCategory(techId, catId)
+                    .orElseThrow(() -> new ApplicationException("Question not found..."));
+
+            if (!questionsSet.isEmpty()) {
+                return questionsSet
+                        .stream()
+                        .map(ques -> this
+                                .mapper
+                                .map(ques, QuestionsDto.class))
+                        .collect(Collectors.toList());
+            }
+        } else
+            throw new ApplicationException("Provided details are invalid or empty, please check and try again...");
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get all questions data based on technology id
+     *
+     * @param techId Long technology id
+     * @return List of questions under Technology
+     * @author yashr
+     * @since 24-04-24
+     */
+    @Override
+    public List<QuestionsDto> getAllQuestionsUnderTechnology(Long techId) {
+        if (ObjectUtils.isNotEmpty(techId)) {
+            Set<Questions> questionsSet = this
+                    .questionsRepository
+                    .getAllQuestionsUnderTechnology(techId)
+                    .orElseThrow(() -> new ApplicationException("Question not found..."));
+
+            return questionsSet
+                    .stream()
+                    .map(ques -> this
+                            .mapper
+                            .map(ques, QuestionsDto.class))
+                    .collect(Collectors.toList());
+        } else
+            throw new ApplicationException("Provided details are invalid or empty, please check and try again...");
+    }
+}
