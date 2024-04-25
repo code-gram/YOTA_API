@@ -10,9 +10,9 @@ package com.yash.yotaapi.constants;
  */
 public enum QuestionLevelTypes {
 
-    BEGINNER,
+    EASY,
 
-    INTERMEDIATE,
+    MEDIUM,
 
-    ADVANCED
+    HARD
 }

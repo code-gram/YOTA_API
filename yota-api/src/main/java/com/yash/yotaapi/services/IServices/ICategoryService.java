@@ -14,9 +14,19 @@ import java.util.List;
  */
 public interface ICategoryService {
 
-    CategoryDto createCategory(CategoryDto categoryDto);
+    CategoryDto createCategory(CategoryDto categoryDto, Long techId);
+
+    /**
+     * finds the Category only when the parameters satisfied
+     *
+     * @param technologyId Long technology id
+     * @param categoryId   Long category id
+     * @return CategoryDto object
+     * @author yashr
+     * @since 24-04-24
+     */
+    CategoryDto findCategoryByTechnologyIdAndCategoryId(Long technologyId, Long categoryId);
 
     List<CategoryDto> getAllCategoriesUnderTechnologyById(Long technologyId);
 
-    Long getQuestionCountUnderCategory(Long categoryId);
 }

@@ -42,7 +42,7 @@ public class Category {
     private String name;
 
     @Transient
-    private Integer questionCountUnderCategory;
+    private Integer questionCountUnderCategory = 0;
 
     @ManyToOne
     @JoinColumn(name = "tech_id", referencedColumnName = "tehnology_id")

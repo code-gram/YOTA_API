@@ -3,10 +3,10 @@ package com.yash.yotaapi.controllers;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
 import com.yash.yotaapi.validators.IsTechnicalManager;
+import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +45,7 @@ public class UsersController {
     }
 
     @GetMapping("/get/all-associates")
-    @PreAuthorize("hasAnyRole('ROLE_TRAINER','ROLE_TECHNICAL_MANAGER')")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<YotaUserDto>> getAllAssociates() {
         List<YotaUserDto> allStudents = this.userService.getAllAssociates();
         return new ResponseEntity<>(allStudents, HttpStatus.OK);
@@ -66,7 +66,7 @@ public class UsersController {
     }
 
     @GetMapping("/all-associates-status")
-    @PreAuthorize("hasAnyRole('ROLE_TRAINER','ROLE_TECHNICAL_MANAGER')")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<YotaUserDto>> getAllAssociatesByStatus(@RequestParam("status") String status) {
         List<YotaUserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
         return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
