@@ -2,6 +2,7 @@ package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.services.IServices.IQuestionService;
+import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class QuestionsController {
     private IQuestionService questionService;
 
     @PostMapping("/create-new")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<QuestionsDto> createQuestion(@RequestBody QuestionsDto questionsDto,
                                                        @RequestParam Long techId,
                                                        @RequestParam Long catId) {
@@ -39,6 +41,7 @@ public class QuestionsController {
     }
 
     @GetMapping("/get/{questionId}")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<QuestionsDto> getQuestionById(@PathVariable Long questionId,
                                                         @RequestParam Long techId,
                                                         @RequestParam Long catId) {
@@ -49,6 +52,7 @@ public class QuestionsController {
     }
 
     @GetMapping("/get/all/cat/{catId}")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
                                                                            @PathVariable Long catId) {
         List<QuestionsDto> questions = this
@@ -58,6 +62,7 @@ public class QuestionsController {
     }
 
     @GetMapping("/get/all/tech")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderTechnology(@RequestParam Long techId) {
         List<QuestionsDto> questions = this
                 .questionService
