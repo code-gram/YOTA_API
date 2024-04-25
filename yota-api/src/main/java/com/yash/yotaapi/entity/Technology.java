@@ -35,7 +35,7 @@ public class Technology {
     private String technology;
 
     @Transient
-    private Integer questionCountUnderTechnology;
+    private Integer questionCountUnderTechnology = 0;
 
     @OneToMany(mappedBy = "technology")
     private List<Category> categories;
