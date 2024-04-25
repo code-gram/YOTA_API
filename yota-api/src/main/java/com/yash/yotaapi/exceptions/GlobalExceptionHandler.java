@@ -33,4 +33,9 @@ public class GlobalExceptionHandler {
         String message = technologyAlreadyAvailableException.getMessage();
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(TestAvailableException.class)
+    public ResponseEntity<String> handleTestAvailableException(TestAvailableException testAvailableException) {
+        String message = testAvailableException.getMessage();
+        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
