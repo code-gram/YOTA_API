@@ -77,6 +77,7 @@ public class QuestionsController {
     }
 
     @PostMapping("/upload-excel-questions")
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<String> uploadExcelFile(@Valid @RequestParam("file") MultipartFile file, @RequestParam Long techId, @RequestParam Long catId) {
         try {
             if (!ExcelHelper.checkExcelFormat(file)) {
