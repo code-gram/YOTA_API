@@ -1,19 +1,15 @@
 package com.yash.yotaapi.controllers;
 
-import java.util.List;
-
+import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.entity.YotaUser;
+import com.yash.yotaapi.services.impls.TrainingServiceImpl;
+import com.yash.yotaapi.validators.IsTechnicalManager;
+import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.yash.yotaapi.entity.Trainings;
-import com.yash.yotaapi.services.impls.TrainingServiceImpl;
-import com.yash.yotaapi.validators.IsTechnicalManager;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/training")
@@ -33,5 +29,23 @@ public class TrainingController {
 	@GetMapping("/listTraining")
     public ResponseEntity<List<Trainings>> listTraining() {
         return new ResponseEntity<List<Trainings>>(trainingService.listTraining(), HttpStatus.OK);
+    }
+
+    @PostMapping("/assign")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<Integer> assignTraining(@RequestParam("trainingId") Integer trainingId,
+                                                  @RequestBody List<String> emailIds) {
+        return new ResponseEntity<>(trainingService.assignTraining(trainingId, emailIds), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/registered-count")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<Integer> registeredCount(@RequestParam("trainingId") Integer trainingIds) {
+        return ResponseEntity.status(HttpStatus.OK).body(trainingService.registeredCount(trainingIds));
+    }
+
+    @GetMapping("/assigned-associated")
+    public ResponseEntity<List<YotaUser>> assignedAssociated(@RequestParam("trainingId") Integer trainingIds) {
+      return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
     }
 }

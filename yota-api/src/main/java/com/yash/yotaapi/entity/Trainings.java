@@ -1,20 +1,9 @@
 package com.yash.yotaapi.entity;
 
+import lombok.*;
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "training_management")
+@Table(name = "training")
 public class Trainings {
 
 	@Id
@@ -42,4 +31,7 @@ public class Trainings {
 	private int totalNominations;
 	
 	private int registeredInTraining;
+
+	@ManyToMany
+	private List<YotaUser> assign;
 }

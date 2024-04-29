@@ -1,11 +1,20 @@
 package com.yash.yotaapi.services.IServices;
 
-import java.util.List;
-
 import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.entity.YotaUser;
+import java.util.List;
 
 public interface ITrainingService {
 
-	public Trainings addTraining (Trainings training);
-	public List<Trainings> listTraining ();
+	Trainings addTraining (Trainings training);
+
+	List<Trainings> listTraining ();
+
+	Integer assignTraining(Integer trainingId, List<String> emailId);
+
+	Integer registeredCount(Integer trainingId);
+
+	Integer updateRegisteredCount(Integer trainingId, Integer registeredCount);
+
+	List<YotaUser> assignedAssociated(Integer trainingId);
 }
