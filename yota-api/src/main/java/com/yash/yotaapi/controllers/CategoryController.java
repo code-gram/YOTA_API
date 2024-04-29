@@ -39,7 +39,7 @@ public class CategoryController {
 
     @GetMapping("/get/{categoryId}")
     @IsTechnicalManagerOrTrainer
-    public ResponseEntity<CategoryDto> findCategoryByTechnologyIdAndCategoryId(@RequestParam("tech-id") Long technologyId,
+    public ResponseEntity<CategoryDto> findCategoryByTechnologyIdAndCategoryId(@RequestParam("tech_id") Long technologyId,
                                                                                @PathVariable Long categoryId) {
         CategoryDto category = this.categoryService.findCategoryByTechnologyIdAndCategoryId(technologyId, categoryId);
         return ResponseEntity.ok(category);
