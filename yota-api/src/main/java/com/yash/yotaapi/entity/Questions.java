@@ -34,7 +34,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "question_management")
+@Table(name = "question_bank")
 public class Questions {
 
     @Id
