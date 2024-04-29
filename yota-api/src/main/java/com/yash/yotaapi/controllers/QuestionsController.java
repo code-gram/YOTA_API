@@ -1,7 +1,9 @@
 package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.QuestionsDto;
+import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
+import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -68,5 +74,27 @@ public class QuestionsController {
                 .questionService
                 .getAllQuestionsUnderTechnology(techId);
         return ResponseEntity.ok(questions);
+    }
+
+    @PostMapping("/upload-excel-questions")
+    public ResponseEntity<String> uploadExcelFile(@Valid @RequestParam("file") MultipartFile file, @RequestParam Long techId, @RequestParam Long catId) {
+        try {
+            if (!ExcelHelper.checkExcelFormat(file)) {
+                return ResponseEntity.badRequest().body("Please upload an Excel file only.");
+            }
+
+            try (InputStream inputStream = file.getInputStream()) {
+
+                List<Questions> excelQuestionList = ExcelHelper.convertExcelToListOfQuestion(inputStream);
+
+                questionService.saveExcelQuestions(excelQuestionList, techId, catId);
+                return ResponseEntity.ok("Excel File Uploaded Successfully");
+            } catch (IOException e) {
+                // Handle IOException
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the file.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

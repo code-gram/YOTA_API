@@ -2,9 +2,13 @@ package com.yash.yotaapi.services.impls;
 
 import com.yash.yotaapi.dto.CategoryDto;
 import com.yash.yotaapi.dto.QuestionsDto;
+import com.yash.yotaapi.entity.Category;
 import com.yash.yotaapi.entity.Questions;
+import com.yash.yotaapi.entity.Technology;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.repositories.CategoryRepository;
 import com.yash.yotaapi.repositories.QuestionsRepository;
+import com.yash.yotaapi.repositories.TechnologyRepository;
 import com.yash.yotaapi.services.IServices.ICategoryService;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.services.IServices.ITechnologyService;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,6 +47,13 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    TechnologyRepository technologyRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
 
     /**
      * Method to create new question, please provide the technology id and category id to create question
@@ -176,5 +188,46 @@ public class QuestionServiceImpl implements IQuestionService {
                     .collect(Collectors.toList());
         } else
             throw new ApplicationException("Provided details are invalid or empty, please check and try again...");
+    }
+
+    /**
+     * Method to upload new question bank, please provide the technology id and category id to upload question bank
+     *
+     * @param excelQuestionList    body object
+     * @param techId       Long technology id
+     * @param catId        Long category id
+     *
+     * @author amar sawant
+     * @since 29-04-24
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void saveExcelQuestions(List<Questions> excelQuestionList, Long techId, Long catId) {
+
+        try {
+
+            Optional<Technology> optionalTechnology = technologyRepository.findById(techId);
+            if (!optionalTechnology.isPresent()) {
+                throw new IllegalArgumentException("Technology with ID " + techId + " not found");
+            }
+            Technology technology = optionalTechnology.get();
+
+            Optional<Category> optionalCategory = categoryRepository.findById(catId);
+            if (!optionalCategory.isPresent()) {
+                throw new IllegalArgumentException("Category with ID " + catId + " not found");
+            }
+
+            Category category = optionalCategory.get();
+            category.setTechnology(technology);
+
+            for (Questions question : excelQuestionList) {
+                question.setCategory(category);
+            }
+
+            questionsRepository.saveAll(excelQuestionList);
+            System.out.println("Excel data saved successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while processing the file", e);
+        }
     }
 }
