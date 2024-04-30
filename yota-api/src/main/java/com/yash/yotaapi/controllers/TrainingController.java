@@ -1,7 +1,6 @@
 package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.entity.Trainings;
-import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
@@ -21,8 +20,6 @@ public class TrainingController {
 	@PostMapping("/addTraining")
     @IsTechnicalManager
     public ResponseEntity<Trainings> addTraining(@RequestBody Trainings training) {
-		System.out.println("api called");
-		System.out.println(training);
         return new ResponseEntity<Trainings>(trainingService.addTraining(training), HttpStatus.CREATED);
     }
 	
@@ -45,7 +42,7 @@ public class TrainingController {
     }
 
     @GetMapping("/assigned-associated")
-    public ResponseEntity<List<YotaUser>> assignedAssociated(@RequestParam("trainingId") Integer trainingIds) {
+    public ResponseEntity<Trainings> assignedAssociated(@RequestParam("trainingId") Integer trainingIds) {
       return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
     }
 }
