@@ -1,7 +1,7 @@
 package com.yash.yotaapi.services.IServices;
 
 import com.yash.yotaapi.dto.QuestionsDto;
-
+import com.yash.yotaapi.entity.Questions;
 import java.util.List;
 
 /**
@@ -58,4 +58,16 @@ public interface IQuestionService {
      * @since 24-04-24
      */
     List<QuestionsDto> getAllQuestionsUnderTechnology(Long techId);
+
+    /**
+     * Method to upload new question bank, please provide the technology id and category id to upload question bank
+     *
+     * @param excelDTOList    body object
+     * @param techId       Long technology id
+     * @param catId        Long category id
+     *
+     * @author amar sawant
+     * @since 29-04-24
+     */
+    void saveExcelQuestions(List<Questions> excelDTOList, Long techId, Long catId);
 }
