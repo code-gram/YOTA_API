@@ -3,6 +3,9 @@ package com.yash.yotaapi.controllers;
 import com.yash.yotaapi.dto.CategoryDto;
 import com.yash.yotaapi.services.IServices.ICategoryService;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +46,13 @@ public class CategoryController {
                                                                                @PathVariable Long categoryId) {
         CategoryDto category = this.categoryService.findCategoryByTechnologyIdAndCategoryId(technologyId, categoryId);
         return ResponseEntity.ok(category);
+    }
+    
+    @GetMapping("/getAllCategory/{id}")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<CategoryDto>> getAllCategoriesUnderTechnologyById(@PathVariable Long id
+                                                                              ) {
+        List<CategoryDto> category = this.categoryService.getAllCategoriesUnderTechnologyById(id);
+        return new ResponseEntity<>(category, HttpStatus.OK);
     }
 }

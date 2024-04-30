@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -106,6 +107,16 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public List<CategoryDto> getAllCategoriesUnderTechnologyById(Long technologyId) {
-        return Collections.emptyList();
+    	    	List<Category> categories = this.categoryRepository.findAllCategoryByTechnologyId(technologyId);
+    	        List<CategoryDto> categoryDtos = new ArrayList<>();
+    	        for (Category category : categories) {
+    	            CategoryDto categoryDto = this.mapper.map(category, CategoryDto.class);
+    	            categoryDtos.add(categoryDto);
+    	        }
+
+    	        return categoryDtos;
+    	    
+    	    	
+    	    }
     }
-}
+
