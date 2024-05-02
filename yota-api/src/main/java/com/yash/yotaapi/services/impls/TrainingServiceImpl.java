@@ -84,13 +84,21 @@ public class TrainingServiceImpl implements ITrainingService {
         }
     }
 
-    public List<YotaUser> assignedAssociated(Integer trainingIds) {
+    public Trainings assignedAssociated(Integer trainingIds) {
+        Trainings training = null;
         final List<YotaUser> yotaUserList = new ArrayList<>();
         final List<Object[]> trainings = trainingRepository.assignedAssociated(trainingIds);
-        trainings.forEach(email -> {
-            YotaUser userByEmail = yotaUserRepository.getUserByEmail(String.valueOf(email[1]));
-            yotaUserList.add(userByEmail);
-        });
-        return yotaUserList;
+        if(CollectionUtils.isEmpty(trainings)) {
+            throw new ApplicationException("Training hasn't been assigned yet");
+        } else {
+            training = trainingRepository.findById(trainingIds.longValue()).get();
+            trainings.forEach(email -> {
+                YotaUser userByEmail = yotaUserRepository.getUserByEmail(String.valueOf(email[1]));
+                yotaUserList.add(userByEmail);
+            });
+            training.setAssign(yotaUserList);
+        }
+        return training;
     }
+
 }

@@ -30,15 +30,10 @@ public class TechnologyServiceImpl implements ITechnologyService {
         // Check if the technology already exists
         Technology existingTechnology = technologyRepository.findByTechnology(technology.getTechnology());
         if (existingTechnology != null) {
-            // If technology already exists, return null or throw an exception
-            // In this example, I'm returning null, but you can handle it as needed
             throw new TechnologyAlreadyAvailableException("Technology is already available");
         }
         Technology technology2 = this.mapper.map(technology, Technology.class);
-
-        // Save the technology
         technology2 = technologyRepository.save(technology2);
-        Assert.notNull(technology2);
         return this.mapper.map(technology2, TechnologyDto.class);
 
     }

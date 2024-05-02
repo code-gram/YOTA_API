@@ -1,7 +1,6 @@
 package com.yash.yotaapi.services.IServices;
 
 import com.yash.yotaapi.entity.Trainings;
-import com.yash.yotaapi.entity.YotaUser;
 import java.util.List;
 
 public interface ITrainingService {
@@ -16,5 +15,5 @@ public interface ITrainingService {
 
 	Integer updateRegisteredCount(Integer trainingId, Integer registeredCount);
 
-	List<YotaUser> assignedAssociated(Integer trainingId);
+	Trainings assignedAssociated(Integer trainingId);
 }
