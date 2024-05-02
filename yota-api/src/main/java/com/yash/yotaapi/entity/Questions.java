@@ -42,7 +42,7 @@ public class Questions {
     @Column(name = "ques_id", nullable = false)
     private Long id;
 
-    @Column(name = "question_title")
+    @Column(name = "question_title" )
     private String questionTitle;
 
     @Column(name = "correct_answer")
