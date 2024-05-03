@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,6 +98,14 @@ public class QuestionsController {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/download-excel")
+    public void downloadExcel(HttpServletResponse response) {
+        try {
+            ExcelHelper.downloadExcel(response);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while downloading the Excel file", e);
         }
     }
 }

@@ -4,10 +4,14 @@ import com.yash.yotaapi.constants.QuestionLevelTypes;
 import com.yash.yotaapi.entity.Questions;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -85,5 +89,24 @@ public class ExcelHelper {
             e.printStackTrace();
         }
         return questions;
+    }
+
+    public static void downloadExcel(HttpServletResponse response) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Data");
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("id");
+        headerRow.createCell(1).setCellValue("questionTitle");
+        headerRow.createCell(2).setCellValue("correctAnswer");
+        headerRow.createCell(3).setCellValue("option_A");
+        headerRow.createCell(4).setCellValue("option_B");
+        headerRow.createCell(5).setCellValue("option_C");
+        headerRow.createCell(6).setCellValue("option_D");
+        headerRow.createCell(7).setCellValue("questionLevel");
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+        workbook.write(response.getOutputStream());
+        workbook.close();
     }
 }
