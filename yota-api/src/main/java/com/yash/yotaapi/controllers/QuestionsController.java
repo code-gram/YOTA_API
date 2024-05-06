@@ -16,13 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Project Name - YOTA_NEW
@@ -100,12 +106,24 @@ public class QuestionsController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/download-excel")
-    public void downloadExcel(HttpServletResponse response) {
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<Resource> downloadExcelFile() {
         try {
-            ExcelHelper.downloadExcel(response);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while downloading the Excel file", e);
+            Path fileLocation = Paths.get("src/main/resources/questionBank.xlsx");
+            Resource resource = new UrlResource(fileLocation.toUri());
+
+            if(resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

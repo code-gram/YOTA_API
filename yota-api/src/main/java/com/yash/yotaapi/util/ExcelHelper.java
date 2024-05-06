@@ -91,22 +91,4 @@ public class ExcelHelper {
         return questions;
     }
 
-    public static void downloadExcel(HttpServletResponse response) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("id");
-        headerRow.createCell(1).setCellValue("questionTitle");
-        headerRow.createCell(2).setCellValue("correctAnswer");
-        headerRow.createCell(3).setCellValue("option_A");
-        headerRow.createCell(4).setCellValue("option_B");
-        headerRow.createCell(5).setCellValue("option_C");
-        headerRow.createCell(6).setCellValue("option_D");
-        headerRow.createCell(7).setCellValue("questionLevel");
-
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
-        workbook.write(response.getOutputStream());
-        workbook.close();
-    }
 }
