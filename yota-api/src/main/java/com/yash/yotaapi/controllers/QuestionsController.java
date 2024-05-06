@@ -22,6 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * Project Name - YOTA_NEW
  * <p>
@@ -96,6 +104,26 @@ public class QuestionsController {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/download-excel")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<Resource> downloadExcelFile() {
+        try {
+            Path fileLocation = Paths.get("src/main/resources/questionBank.xlsx");
+            Resource resource = new UrlResource(fileLocation.toUri());
+
+            if(resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
