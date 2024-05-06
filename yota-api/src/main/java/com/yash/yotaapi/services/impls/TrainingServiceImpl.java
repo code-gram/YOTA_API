@@ -1,5 +1,6 @@
 package com.yash.yotaapi.services.impls;
 
+import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
@@ -101,4 +102,25 @@ public class TrainingServiceImpl implements ITrainingService {
         return training;
     }
 
+
+    public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws  ApplicationException {
+
+        List<Long> trainingIds = trainingRepository.getTrainingIdByEmailId(email);
+        List<TrainingsDto> trainingDTOs = new ArrayList<>();
+        for (Long trainingId : trainingIds) {
+            Trainings training = trainingRepository.getTrainingById(trainingId);
+            if (training != null) {
+                TrainingsDto trainingDTO = new TrainingsDto();
+                trainingDTO.setId(training.getId());
+                trainingDTO.setTrainingName(training.getTrainingName());
+                trainingDTO.setStartDate(training.getStartDate());
+                trainingDTO.setEndDate(training.getEndDate());
+                trainingDTOs.add(trainingDTO);
+            }
+        }
+        if (trainingDTOs.isEmpty()) {
+            throw new ApplicationException("No training assigned to the associate with email: " +email );
+        }
+        return trainingDTOs;
+    }
 }
