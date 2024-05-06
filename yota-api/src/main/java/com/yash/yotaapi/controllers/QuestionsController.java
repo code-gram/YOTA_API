@@ -111,7 +111,7 @@ public class QuestionsController {
     @IsTechnicalManagerOrTrainer
     public ResponseEntity<Resource> downloadExcelFile() {
         try {
-            Path fileLocation = Paths.get("src/main/resources/questionBank.xlsx");
+            Path fileLocation = Paths.get("src/main/resources/QuestionPaper.xlsx");
             Resource resource = new UrlResource(fileLocation.toUri());
 
             if(resource.exists()) {
