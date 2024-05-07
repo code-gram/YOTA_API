@@ -15,7 +15,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -113,8 +118,9 @@ public class TrainingServiceImpl implements ITrainingService {
                 TrainingsDto trainingDTO = new TrainingsDto();
                 trainingDTO.setId(training.getId());
                 trainingDTO.setTrainingName(training.getTrainingName());
-                trainingDTO.setStartDate(training.getStartDate());
-                trainingDTO.setEndDate(training.getEndDate());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                trainingDTO.setStartDate(convertDateToLocalDateTime(training.getStartDate()).format(formatter));
+                trainingDTO.setEndDate(convertDateToLocalDateTime(training.getEndDate()).format(formatter));
                 trainingDTOs.add(trainingDTO);
             }
         }
@@ -123,4 +129,9 @@ public class TrainingServiceImpl implements ITrainingService {
         }
         return trainingDTOs;
     }
+
+    public static LocalDateTime convertDateToLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    }
+
 }
