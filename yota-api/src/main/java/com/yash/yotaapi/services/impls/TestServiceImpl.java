@@ -1,10 +1,15 @@
 package com.yash.yotaapi.services.impls;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
+import com.yash.yotaapi.dto.TestsDto;
+import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.exceptions.ApplicationException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +35,11 @@ public class TestServiceImpl implements ITestService {
 	@Override
 	public TestDto addTest(TestDto testDto) {
 		 // Check if the test already exists
-        Test existingTest = testRepository.findByTestName(testDto.getTestName());
+        Tests existingTest = testRepository.findByTestTitle(testDto.getTestTitle());
         if (existingTest!=null) {
             throw new TestAvailableException("Test is already exist");
         }
-      Test test =  mapper.map(testDto, Test.class);
+      Tests test =  mapper.map(testDto, Tests.class);
       test=testRepository.save(test);
 		Assert.notNull(test);
 		return this.mapper.map(test, TestDto.class);
@@ -43,7 +48,7 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	public List<TestDto> fetchAllTest() {
-		List<Test> tests= testRepository.findAll();
+		List<Tests> tests= testRepository.findAll();
 		return tests.stream().map(t->this.mapper.map(t, TestDto.class)).collect(Collectors.toList());
 	}
 
@@ -66,5 +71,35 @@ public class TestServiceImpl implements ITestService {
 
 		return appearedTestCount;
 	}
+
+
+	public List<TestsDto> getTestsByAssociateEmail(String email) throws ApplicationException {
+		List<Long> testIds = testRepository.getTestIdByEmailId(email);
+		List<TestsDto> testsDTOs = new ArrayList<>();
+
+		for (Long testId : testIds) {
+			Tests tests = testRepository.findById(testId).orElse(null); // Fetch test by ID
+
+			if (tests != null) {
+				TestsDto testsDTO = new TestsDto();
+				testsDTO.setId(tests.getId());
+				testsDTO.setTestName(tests.getTestTitle());
+				testsDTO.setStartDate(tests.getStartDate());
+				testsDTO.setEndDate(tests.getEndDate());
+				testsDTO.setAction(tests.getAction());
+
+				testsDTOs.add(testsDTO);
+			}
+		}
+
+		if (testsDTOs.isEmpty()) {
+			throw new ApplicationException("No training assigned to the associate with email: " + email);
+		}
+
+		return testsDTOs;
+	}
+
+
+
 
 }
