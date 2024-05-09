@@ -7,6 +7,7 @@ import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.repositories.TrainingRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITrainingService;
+import com.yash.yotaapi.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -118,9 +115,8 @@ public class TrainingServiceImpl implements ITrainingService {
                 TrainingsDto trainingDTO = new TrainingsDto();
                 trainingDTO.setId(training.getId());
                 trainingDTO.setTrainingName(training.getTrainingName());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                trainingDTO.setStartDate(convertDateToLocalDateTime(training.getStartDate()).format(formatter));
-                trainingDTO.setEndDate(convertDateToLocalDateTime(training.getEndDate()).format(formatter));
+                trainingDTO.setStartDate(DateUtil.convertDateToLocalDateTime(training.getStartDate()));
+                trainingDTO.setEndDate(DateUtil.convertDateToLocalDateTime(training.getEndDate()));
                 trainingDTOs.add(trainingDTO);
             }
         }
@@ -128,10 +124,6 @@ public class TrainingServiceImpl implements ITrainingService {
             throw new ApplicationException("No training assigned to the associate with email: " +email );
         }
         return trainingDTOs;
-    }
-
-    public static LocalDateTime convertDateToLocalDateTime(Date date) {
-        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
 }
