@@ -15,7 +15,7 @@ public class TestDto {
 	
     private Long id;
 
-    private String testName;
+    private String testTitle;
 
     private String description;
 

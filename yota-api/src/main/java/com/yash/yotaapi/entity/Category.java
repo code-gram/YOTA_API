@@ -30,7 +30,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category_management")
+@Table(name = "categories")
 public class Category {
 
     @Id

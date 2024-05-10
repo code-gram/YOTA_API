@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
@@ -44,5 +45,14 @@ public class TrainingController {
     @GetMapping("/assigned-associated")
     public ResponseEntity<Trainings> assignedAssociated(@RequestParam("trainingId") Integer trainingIds) {
       return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
+    }
+
+    @GetMapping("/assigned")
+    public ResponseEntity<List<TrainingsDto>> getTrainingByEmail(@RequestParam String email) {
+        List<TrainingsDto> trainingList = trainingService.getTrainingByAssociateEmail(email);
+        if (trainingList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(trainingList);
     }
 }

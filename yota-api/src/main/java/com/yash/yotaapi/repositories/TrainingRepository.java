@@ -1,6 +1,7 @@
 package com.yash.yotaapi.repositories;
 
 import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.entity.YotaUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,5 +29,12 @@ public interface TrainingRepository extends JpaRepository<Trainings, Long> {
 
     @Query(value = "select * from training_assign where trainings_id= :trainingId", nativeQuery = true)
     List<Object[]> assignedAssociated(@Param("trainingId") Integer trainingId);
+
+
+    @Query(value = "select trainings_id from training_assign  trainings_id where trainings_id.assign_email_add=?1", nativeQuery = true)
+    List<Long> getTrainingIdByEmailId(@Param("assign_email_add") String assign_email_add);
+
+    @Query(value = "select * from training where id= :id", nativeQuery = true)
+    Trainings getTrainingById(@Param("id") Long trainingId);
 
 }
