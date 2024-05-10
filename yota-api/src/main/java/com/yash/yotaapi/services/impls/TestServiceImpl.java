@@ -1,6 +1,7 @@
 package com.yash.yotaapi.services.impls;
 
 import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +79,7 @@ public class TestServiceImpl implements ITestService {
 		List<Long> testIds = testRepository.getTestIdByEmailId(email);
 		List<TestsDto> testsDTOs = new ArrayList<>();
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 		for (Long testId : testIds) {
 			Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
@@ -94,7 +95,6 @@ public class TestServiceImpl implements ITestService {
 				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
 				testsDTO.setModified_at(tests.getModified_at().format(formatter));
 				testsDTO.setEndTime(tests.getEndTime());
-//				testsDTO.setAssign(tests.getAssign());
 				testsDTO.setResult(tests.getResult());
 				testsDTO.setTestType(tests.getTestType());
 				testsDTOs.add(testsDTO);
