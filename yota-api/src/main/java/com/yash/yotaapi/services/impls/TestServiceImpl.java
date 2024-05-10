@@ -3,7 +3,9 @@ package com.yash.yotaapi.services.impls;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
 
 
 import com.yash.yotaapi.dto.TestsDto;
@@ -72,34 +74,36 @@ public class TestServiceImpl implements ITestService {
 		return appearedTestCount;
 	}
 
-
 	public List<TestsDto> getTestsByAssociateEmail(String email) throws ApplicationException {
 		List<Long> testIds = testRepository.getTestIdByEmailId(email);
 		List<TestsDto> testsDTOs = new ArrayList<>();
 
-		for (Long testId : testIds) {
-			Tests tests = testRepository.findById(testId).orElse(null); // Fetch test by ID
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-			if (tests != null) {
+		for (Long testId : testIds) {
+			Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
+			optionalTests.ifPresent(tests -> {
 				TestsDto testsDTO = new TestsDto();
 				testsDTO.setId(tests.getId());
-				testsDTO.setTestName(tests.getTestTitle());
-				testsDTO.setStartDate(tests.getStartDate());
-				testsDTO.setEndDate(tests.getEndDate());
+				testsDTO.setTestTitle(tests.getTestTitle());
+				testsDTO.setTestDescription(tests.getTestDescription());
+				testsDTO.setTestInstruction(tests.getTestInstruction());
 				testsDTO.setAction(tests.getAction());
-
+				testsDTO.setStartDate(tests.getStartDate().format(formatter));
+				testsDTO.setEndDate(tests.getEndDate().format(formatter));
+				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
+				testsDTO.setModified_at(tests.getModified_at().format(formatter));
+				testsDTO.setEndTime(tests.getEndTime());
+//				testsDTO.setAssign(tests.getAssign());
+				testsDTO.setResult(tests.getResult());
+				testsDTO.setTestType(tests.getTestType());
 				testsDTOs.add(testsDTO);
-			}
+			});
 		}
 
 		if (testsDTOs.isEmpty()) {
 			throw new ApplicationException("No training assigned to the associate with email: " + email);
 		}
-
 		return testsDTOs;
 	}
-
-
-
-
 }
