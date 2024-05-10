@@ -23,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "technology_management")
+@Table(name = "technologies")
 public class Technology {
 
     @Id
