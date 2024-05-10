@@ -23,10 +23,10 @@ public class TestsDto {
     private String testDescription;
     private String testInstruction;
     private String action;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
+    private String startDate;
+    private String endDate;
+    private String created_at;
+    private String modified_at;
     private String endTime;
     private List<YotaUser> assign;
     private Result result;

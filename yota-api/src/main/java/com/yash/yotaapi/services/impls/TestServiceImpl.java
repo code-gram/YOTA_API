@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
 
 
 import com.yash.yotaapi.dto.TestsDto;
@@ -73,45 +74,11 @@ public class TestServiceImpl implements ITestService {
 		return appearedTestCount;
 	}
 
-
-//	public List<TestsDto> getTestsByAssociateEmail(String email) throws ApplicationException {
-//		List<Long> testIds = testRepository.getTestIdByEmailId(email);
-//		List<TestsDto> testsDTOs = new ArrayList<>();
-//
-//		for (Long testId : testIds) {
-//			Tests tests = testRepository.findById(testId).orElse(null); // Fetch test by ID
-//
-//			if (tests != null) {
-//				TestsDto testsDTO = new TestsDto();
-//				testsDTO.setId(tests.getId());
-//				testsDTO.setTestTitle(tests.getTestTitle());
-//				testsDTO.setTestDescription(tests.getTestDescription());
-//				testsDTO.setTestInstruction(tests.getTestInstruction());
-//				testsDTO.setAction(tests.getAction());
-//				testsDTO.setStartDate(tests.getStartDate());
-//				testsDTO.setEndDate(tests.getEndDate());
-//				testsDTO.setCreated_at(tests.getCreated_at());
-//				testsDTO.setModified_at(tests.getModified_at());
-//				testsDTO.setEndTime(tests.getEndTime());
-//				testsDTO.setAssign(tests.getAssign());
-//				testsDTO.setResult(tests.getResult());
-//				testsDTO.setTestType(tests.getTestType());
-//
-//
-//				testsDTOs.add(testsDTO);
-//			}
-//		}
-//
-//		if (testsDTOs.isEmpty()) {
-//			throw new ApplicationException("No training assigned to the associate with email: " + email);
-//		}
-//
-//		return testsDTOs;
-//	}
-
 	public List<TestsDto> getTestsByAssociateEmail(String email) throws ApplicationException {
 		List<Long> testIds = testRepository.getTestIdByEmailId(email);
 		List<TestsDto> testsDTOs = new ArrayList<>();
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		for (Long testId : testIds) {
 			Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
@@ -122,10 +89,10 @@ public class TestServiceImpl implements ITestService {
 				testsDTO.setTestDescription(tests.getTestDescription());
 				testsDTO.setTestInstruction(tests.getTestInstruction());
 				testsDTO.setAction(tests.getAction());
-				testsDTO.setStartDate(tests.getStartDate());
-				testsDTO.setEndDate(tests.getEndDate());
-				testsDTO.setCreated_at(tests.getCreated_at());
-				testsDTO.setModified_at(tests.getModified_at());
+				testsDTO.setStartDate(tests.getStartDate().format(formatter));
+				testsDTO.setEndDate(tests.getEndDate().format(formatter));
+				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
+				testsDTO.setModified_at(tests.getModified_at().format(formatter));
 				testsDTO.setEndTime(tests.getEndTime());
 				testsDTO.setAssign(tests.getAssign());
 				testsDTO.setResult(tests.getResult());
@@ -137,12 +104,6 @@ public class TestServiceImpl implements ITestService {
 		if (testsDTOs.isEmpty()) {
 			throw new ApplicationException("No training assigned to the associate with email: " + email);
 		}
-
 		return testsDTOs;
 	}
-
-
-
-
-
 }
