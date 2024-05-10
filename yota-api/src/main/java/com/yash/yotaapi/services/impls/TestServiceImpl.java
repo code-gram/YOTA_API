@@ -94,7 +94,7 @@ public class TestServiceImpl implements ITestService {
 				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
 				testsDTO.setModified_at(tests.getModified_at().format(formatter));
 				testsDTO.setEndTime(tests.getEndTime());
-				testsDTO.setAssign(tests.getAssign());
+//				testsDTO.setAssign(tests.getAssign());
 				testsDTO.setResult(tests.getResult());
 				testsDTO.setTestType(tests.getTestType());
 				testsDTOs.add(testsDTO);

@@ -28,7 +28,7 @@ public class TestsDto {
     private String created_at;
     private String modified_at;
     private String endTime;
-    private List<YotaUser> assign;
+//    private List<YotaUser> assign;
     private Result result;
     private String testType;
 }
