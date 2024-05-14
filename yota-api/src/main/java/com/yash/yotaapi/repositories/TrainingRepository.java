@@ -15,26 +15,26 @@ public interface TrainingRepository extends JpaRepository<Trainings, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "insert into training_assign (trainings_id, assign_email_add) values (:trainingId, :emailId)", nativeQuery = true)
+    @Query(value = "insert into trainings_assign (trainings_id, assign_email_add) values (:trainingId, :emailId)", nativeQuery = true)
     Integer addAssignTraining(@Param("trainingId") Integer trainingId,
                               @Param("emailId") String emailId);
 
-    @Query(value = "select count(trainings_id) from training_assign where trainings_id= :trainingId", nativeQuery = true)
+    @Query(value = "select count(trainings_id) from trainings_assign where trainings_id= :trainingId", nativeQuery = true)
     Integer registeredCount(@Param("trainingId") Integer trainingId);
 
     @Modifying
-    @Query(value = "update Training t set t.registered_in_training= :registeredCount where t.id= :id", nativeQuery = true)
+    @Query(value = "update Trainings t set t.registered_in_training= :registeredCount where t.id= :id", nativeQuery = true)
     Integer updateRegisteredCount(@Param("id") Integer id,
                                   @Param("registeredCount") Integer registeredCount);
 
-    @Query(value = "select * from training_assign where trainings_id= :trainingId", nativeQuery = true)
+    @Query(value = "select * from trainings_assign where trainings_id= :trainingId", nativeQuery = true)
     List<Object[]> assignedAssociated(@Param("trainingId") Integer trainingId);
 
 
-    @Query(value = "select trainings_id from training_assign  trainings_id where trainings_id.assign_email_add=?1", nativeQuery = true)
+    @Query(value = "select trainings_id from trainings_assign  trainings_id where trainings_id.assign_email_add=?1", nativeQuery = true)
     List<Long> getTrainingIdByEmailId(@Param("assign_email_add") String assign_email_add);
 
-    @Query(value = "select * from training where id= :id", nativeQuery = true)
+    @Query(value = "select * from trainings where id= :id", nativeQuery = true)
     Trainings getTrainingById(@Param("id") Long trainingId);
 
 }
