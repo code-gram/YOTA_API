@@ -39,5 +39,12 @@ public class Test {
     
     private String endTime;
 
-   
+    private int totalQuestions;
+
+    private int totalMarks;
+
+    private int totalTime;
+
+    private String testType;
+
 }

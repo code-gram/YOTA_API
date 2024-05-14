@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "testes")
+@Table(name = "tests")
 public class Tests {
 
         @Id
-    @Column(name = "testId")
+    @Column(name = "test_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(initialValue = 1, name = "id")
         private Long id;
@@ -46,7 +46,9 @@ public class Tests {
     private Result result;
 
     private String testType;
-
+    private String testName;
+    private int totalQuestions;
+    private int totalTime;
 
 
 }
