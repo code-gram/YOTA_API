@@ -2,10 +2,7 @@ package com.yash.yotaapi.services.IServices;
 
 import java.util.List;
 
-import com.yash.yotaapi.dto.TechnologyDto;
-import com.yash.yotaapi.dto.TestDto;
-import com.yash.yotaapi.dto.TestsDto;
-import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.dto.*;
 
 public interface ITestService {
 	public TestDto addTest(TestDto testDto);
@@ -14,5 +11,6 @@ public interface ITestService {
 
 	public List<TestsDto> getTestsByAssociateEmail(String email);
 
+	public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId);
 
 }

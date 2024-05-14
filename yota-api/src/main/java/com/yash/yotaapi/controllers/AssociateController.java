@@ -4,6 +4,7 @@ package com.yash.yotaapi.controllers;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.services.impls.TestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,17 @@ public class AssociateController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(testList);
+    }
+    @GetMapping("/testResult")
+    public ResponseEntity<TestsDto> getTestResultByUserEmailAndTestId(
+            @RequestParam String email,
+            @RequestParam Long testId) {
+        try {
+            TestsDto testsDto = testService.getTestResultByUserEmailAndTestId(email, testId);
+            return ResponseEntity.ok(testsDto);
+        } catch (ApplicationException e) {
+            return ResponseEntity.status(404).body(null);
+        }
     }
 
 }
