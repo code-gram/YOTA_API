@@ -1,7 +1,10 @@
 package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.YotaUserDto;
+import com.yash.yotaapi.entity.Test;
+import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
+import com.yash.yotaapi.validators.IsAssociate;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Project Name - YOTASecurityPOC
@@ -29,6 +33,8 @@ public class UsersController {
 
     @Autowired
     private IYOTAUserService userService;
+
+
 
     @GetMapping("/get/all-trainers")
     @IsTechnicalManager
@@ -71,4 +77,6 @@ public class UsersController {
         List<YotaUserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
         return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
     }
+
+
 }

@@ -1,7 +1,10 @@
 package com.yash.yotaapi.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.yash.yotaapi.entity.Test;
+import com.yash.yotaapi.validators.IsAssociate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +41,13 @@ public class TestController {
  	 @GetMapping("/")
 	    public ResponseEntity<List<TestDto>> fetchAllTest() {
 	        return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
-	    }	
+	    }
+
+	@GetMapping("/testPaper")
+	@IsAssociate
+	public ResponseEntity<Optional<TestDto>> testPaper(@RequestParam("id") Long id) {
+		Optional<TestDto> test = this.testService.findById(id);
+		return new ResponseEntity<>(test, HttpStatus.OK);
+	}
 	   
 }
