@@ -4,9 +4,13 @@ package com.yash.yotaapi.controllers;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.entity.Test;
+import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.services.impls.TestServiceImpl;
+import com.yash.yotaapi.validators.IsAssociate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -22,6 +27,9 @@ public class AssociateController {
 
     @Autowired
     private TestServiceImpl testService;
+
+    @Autowired
+    private ITestService iTestService;
 
     @GetMapping("/appeared")
     public ResponseEntity<Long> getApparedTestCountByEmail(@RequestParam String email) {
@@ -41,6 +49,7 @@ public class AssociateController {
         }
         return ResponseEntity.ok(testList);
     }
+
     @GetMapping("/testResult")
     public ResponseEntity<TestsDto> getTestResultByUserEmailAndTestId(
             @RequestParam String email,

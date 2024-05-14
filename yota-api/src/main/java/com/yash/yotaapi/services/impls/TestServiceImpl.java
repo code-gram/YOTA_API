@@ -54,6 +54,22 @@ public class TestServiceImpl implements ITestService {
 		List<Tests> tests= testRepository.findAll();
 		return tests.stream().map(t->this.mapper.map(t, TestDto.class)).collect(Collectors.toList());
 	}
+	@Override
+	public Optional<TestDto> findById(Long id) {
+		Optional<Tests> tests= testRepository.findById(id);
+		TestDto testDto = new TestDto();
+		tests.ifPresent((test)->{
+			testDto.setId(test.getId());
+			testDto.setTestName(test.getTestName());
+			testDto.setDescription(test.getTestDescription());
+			testDto.setInstruction(test.getTestInstruction());
+			testDto.setTestType(test.getTestType());
+			testDto.setTotalQuestions(test.getTotalQuestions());
+			testDto.setTotalTime(test.getTotalTime());
+		});
+
+		return Optional.of(testDto);
+	}
 
 	public Long getAppearedTestCountByAssociateEmail(String email) throws ApplicationException {
 
