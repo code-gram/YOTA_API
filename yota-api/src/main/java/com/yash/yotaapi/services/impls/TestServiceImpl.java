@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.dto.TestDto;
-import com.yash.yotaapi.entity.Test;
 import com.yash.yotaapi.exceptions.TestAvailableException;
 import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.services.IServices.ITestService;

@@ -1,10 +1,7 @@
 package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.YotaUserDto;
-import com.yash.yotaapi.entity.Test;
-import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
-import com.yash.yotaapi.validators.IsAssociate;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
