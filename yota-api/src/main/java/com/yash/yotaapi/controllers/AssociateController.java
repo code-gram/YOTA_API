@@ -3,7 +3,9 @@ package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.services.IServices.ITestService;
+import com.yash.yotaapi.services.IServices.IYOTAUserService;
 import com.yash.yotaapi.services.impls.TestServiceImpl;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class AssociateController {
 
     @Autowired
     private ITestService iTestService;
+
+    @Autowired
+    private IYOTAUserService userService;
 
     @Autowired
     private TrainingServiceImpl trainingService;
@@ -67,6 +72,12 @@ public class AssociateController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(trainingList);
+    }
+
+    @GetMapping("/get/user")
+    public ResponseEntity<YotaUserDto> getUserByEmail(@RequestParam String email) {
+        YotaUserDto user = userService.getUserByEmailAdd(email);
+        return ResponseEntity.ok(user);
     }
 
 }
