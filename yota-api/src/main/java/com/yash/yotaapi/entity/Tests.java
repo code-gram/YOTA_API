@@ -50,5 +50,4 @@ public class Tests {
     private int totalQuestions;
     private int totalTime;
 
-
 }
