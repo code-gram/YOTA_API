@@ -3,11 +3,13 @@ package com.yash.yotaapi.services.impls;
 import com.yash.yotaapi.constants.AppConstants;
 import com.yash.yotaapi.constants.UserAccountStatusTypes;
 import com.yash.yotaapi.constants.UserRoleTypes;
+import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.UserProfileDto;
 import com.yash.yotaapi.dto.UserRoleDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.PasswordMismatchException;
 import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.IUserRoleService;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
@@ -15,6 +17,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -115,24 +118,6 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         return userDto;
     }
 
-    public UserProfileDto getUserByEmailAddress(String emailAdd){
-
-        UserProfileDto userDto = null;
-        YotaUser user = null;
-
-        if (StringUtils.isNotEmpty(emailAdd)) {
-            user = this.userRepository.getUserByEmail(emailAdd);
-
-            userDto = this
-                    .modelMapper
-                    .map(user, UserProfileDto.class);
-        } else {
-            throw new ApplicationException("Email add is empty");
-        }
-        return userDto;
-
-    }
-
     @Override
     public List<YotaUserDto> getAllTrainers() {
         List<YotaUser> allTrainers = this.userRepository.findAllUsersByRole(UserRoleTypes.ROLE_TRAINER.toString());
@@ -218,5 +203,44 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
             throw new ApplicationException("Status is empty");
         }
         return yotaUserDto;
+    }
+
+    public String resetPassword(PasswordDto passwordDto) {
+        String message = null;
+        YotaUser user = userRepository.getUserByEmail(passwordDto.getEmailAdd());
+        if (user == null) {
+            throw new ApplicationException("User not found with email: " + passwordDto.getEmailAdd());
+        }
+        if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword())) {
+            throw new PasswordMismatchException("NewPassword do not match with ConfirmPassword");
+        }
+        if(!this.passwordEncoder.matches(passwordDto.getCurrentPassword(), user.getPassword())){
+            throw  new PasswordMismatchException("Current Password is incorrect");
+        }
+        if (this.passwordEncoder.matches(passwordDto.getNewPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("Password is already exist");
+        }
+        user.setPassword(this.passwordEncoder.encode(passwordDto.getNewPassword()));
+        userRepository.save(user);
+        message="Password Change Successfully";
+        return message;
+    }
+
+    public UserProfileDto getUserByEmailAddress(String emailAdd){
+
+        UserProfileDto userDto = null;
+        YotaUser user = null;
+
+        if (StringUtils.isNotEmpty(emailAdd)) {
+            user = this.userRepository.getUserByEmail(emailAdd);
+
+            userDto = this
+                    .modelMapper
+                    .map(user, UserProfileDto.class);
+        } else {
+            throw new ApplicationException("Email add is empty");
+        }
+        return userDto;
+
     }
 }
