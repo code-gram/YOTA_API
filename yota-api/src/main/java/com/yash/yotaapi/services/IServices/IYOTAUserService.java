@@ -1,5 +1,6 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.UserProfileDto;
 import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.entity.YotaUser;
@@ -20,6 +21,8 @@ public interface IYOTAUserService {
     String createNewUser(YotaUserDto userDto);
 
     YotaUserDto getUserByEmailAdd(String emailAdd);
+
+    UserProfileDto getUserByEmailAddress(String emailAdd);
 
     List<YotaUserDto> getAllTrainers();
 

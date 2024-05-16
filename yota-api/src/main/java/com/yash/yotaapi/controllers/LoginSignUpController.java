@@ -43,7 +43,6 @@ public class LoginSignUpController {
                 .createNewUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
-
     @GetMapping("/get/user")
     public ResponseEntity<YotaUserDto> getUserByEmail(@RequestParam String email) {
         YotaUserDto user = this
