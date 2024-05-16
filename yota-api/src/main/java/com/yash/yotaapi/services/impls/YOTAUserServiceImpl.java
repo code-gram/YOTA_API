@@ -4,6 +4,7 @@ import com.yash.yotaapi.constants.AppConstants;
 import com.yash.yotaapi.constants.UserAccountStatusTypes;
 import com.yash.yotaapi.constants.UserRoleTypes;
 import com.yash.yotaapi.dto.PasswordDto;
+import com.yash.yotaapi.dto.UserProfileDto;
 import com.yash.yotaapi.dto.UserRoleDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.entity.YotaUser;
@@ -223,5 +224,23 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         userRepository.save(user);
         message="Password Change Successfully";
         return message;
+    }
+
+    public UserProfileDto getUserByEmailAddress(String emailAdd){
+
+        UserProfileDto userDto = null;
+        YotaUser user = null;
+
+        if (StringUtils.isNotEmpty(emailAdd)) {
+            user = this.userRepository.getUserByEmail(emailAdd);
+
+            userDto = this
+                    .modelMapper
+                    .map(user, UserProfileDto.class);
+        } else {
+            throw new ApplicationException("Email add is empty");
+        }
+        return userDto;
+
     }
 }
