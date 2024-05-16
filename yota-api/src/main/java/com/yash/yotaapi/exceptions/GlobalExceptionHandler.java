@@ -38,4 +38,10 @@ public class GlobalExceptionHandler {
         String message = testAvailableException.getMessage();
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException passwordMismatchException) {
+        String message = passwordMismatchException.getMessage();
+        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
