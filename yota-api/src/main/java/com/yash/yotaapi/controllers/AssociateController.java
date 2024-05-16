@@ -3,6 +3,7 @@ package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.dto.UserProfileDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
@@ -75,8 +76,8 @@ public class AssociateController {
     }
 
     @GetMapping("/get/user")
-    public ResponseEntity<YotaUserDto> getUserByEmail(@RequestParam String email) {
-        YotaUserDto user = userService.getUserByEmailAdd(email);
+    public ResponseEntity<UserProfileDto> getUserByEmail(@RequestParam String email) {
+        UserProfileDto user = userService.getUserByEmailAddress(email);
         return ResponseEntity.ok(user);
     }
 
