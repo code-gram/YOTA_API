@@ -213,8 +213,11 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword())) {
             throw new PasswordMismatchException("NewPassword do not match with ConfirmPassword");
         }
-        if(!this.passwordEncoder.matches(passwordDto.getPassword(), user.getPassword())){
-            throw  new PasswordMismatchException("Passwords do not match");
+        if(!this.passwordEncoder.matches(passwordDto.getCurrentPassword(), user.getPassword())){
+            throw  new PasswordMismatchException("Current Password is incorrect");
+        }
+        if (this.passwordEncoder.matches(passwordDto.getNewPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("Password is already exist");
         }
         user.setPassword(this.passwordEncoder.encode(passwordDto.getNewPassword()));
         userRepository.save(user);
