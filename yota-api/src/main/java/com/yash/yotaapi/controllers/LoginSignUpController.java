@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.security.jwt.JwtAuthRequest;
 import com.yash.yotaapi.security.jwt.JwtAuthResponse;
@@ -8,11 +9,7 @@ import com.yash.yotaapi.services.IServices.IYOTAUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Project Name - YOTASecurityAPI
@@ -47,5 +44,19 @@ public class LoginSignUpController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
+    @GetMapping("/get/user")
+    public ResponseEntity<YotaUserDto> getUserByEmail(@RequestParam String email) {
+        YotaUserDto user = this
+                .userService
+                .getUserByEmailAdd(email);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordDto passwordDto){
+        String newPassword = this
+                .userService
+                .resetPassword(passwordDto);
+        return new ResponseEntity<>(newPassword, HttpStatus.CREATED);
+    }
 }
