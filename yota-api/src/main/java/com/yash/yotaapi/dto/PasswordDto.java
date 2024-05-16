@@ -14,7 +14,7 @@ public class PasswordDto {
 
     private String emailAdd;
 
-    private String password;
+    private String currentPassword;
 
     private String newPassword;
 

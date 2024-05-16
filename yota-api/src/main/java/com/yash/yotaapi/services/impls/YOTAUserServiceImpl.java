@@ -3,7 +3,6 @@ package com.yash.yotaapi.services.impls;
 import com.yash.yotaapi.constants.AppConstants;
 import com.yash.yotaapi.constants.UserAccountStatusTypes;
 import com.yash.yotaapi.constants.UserRoleTypes;
-import com.yash.yotaapi.dto.UserProfileDto;
 import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.UserRoleDto;
 import com.yash.yotaapi.dto.YotaUserDto;
@@ -118,24 +117,6 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         return userDto;
     }
 
-    public UserProfileDto getUserByEmailAddress(String emailAdd){
-
-        UserProfileDto userDto = null;
-        YotaUser user = null;
-
-        if (StringUtils.isNotEmpty(emailAdd)) {
-            user = this.userRepository.getUserByEmail(emailAdd);
-
-            userDto = this
-                    .modelMapper
-                    .map(user, UserProfileDto.class);
-        } else {
-            throw new ApplicationException("Email add is empty");
-        }
-        return userDto;
-
-    }
-
     @Override
     public List<YotaUserDto> getAllTrainers() {
         List<YotaUser> allTrainers = this.userRepository.findAllUsersByRole(UserRoleTypes.ROLE_TRAINER.toString());
@@ -232,8 +213,11 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         if (!passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword())) {
             throw new PasswordMismatchException("NewPassword do not match with ConfirmPassword");
         }
-        if(!this.passwordEncoder.matches(passwordDto.getPassword(), user.getPassword())){
-            throw  new PasswordMismatchException("Old Passwords do not match with new password");
+        if(!this.passwordEncoder.matches(passwordDto.getCurrentPassword(), user.getPassword())){
+            throw  new PasswordMismatchException("Current Password is incorrect");
+        }
+        if (this.passwordEncoder.matches(passwordDto.getNewPassword(), user.getPassword())) {
+            throw new PasswordMismatchException("Password is already exist");
         }
         user.setPassword(this.passwordEncoder.encode(passwordDto.getNewPassword()));
         userRepository.save(user);
