@@ -75,7 +75,7 @@ public class AssociateController {
         return ResponseEntity.ok(trainingList);
     }
 
-    @GetMapping("/get/user")
+    @GetMapping("/profile-details")
     public ResponseEntity<UserProfileDto> getUserByEmail(@RequestParam String email) {
         UserProfileDto user = userService.getUserByEmailAddress(email);
         return ResponseEntity.ok(user);
