@@ -8,13 +8,7 @@ import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -126,4 +120,21 @@ public class QuestionsController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/questionset/{testId}")
+    public ResponseEntity<List<QuestionsDto>> getQuestionSetByEmailAndTestId(@RequestParam String email, @PathVariable Long testId) {
+        List<QuestionsDto> questionset = questionService.getQuestionByAssociateEmail(email, testId);
+        if (questionset.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(questionset);
+    }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionsDto> updateQuestion(@PathVariable Long questionId, @RequestBody QuestionsDto questionsDto) {
+        QuestionsDto updatedQuestion = questionService.updateQuestion(questionId, questionsDto);
+        return ResponseEntity.ok(updatedQuestion);
+    }
+
+
 }

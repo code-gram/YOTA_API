@@ -70,4 +70,9 @@ public interface IQuestionService {
      * @since 29-04-24
      */
     void saveExcelQuestions(List<Questions> excelDTOList, Long techId, Long catId);
+
+   List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testId);
+
+   QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
+
 }
