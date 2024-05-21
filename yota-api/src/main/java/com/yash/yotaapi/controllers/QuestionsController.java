@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
@@ -75,6 +76,15 @@ public class QuestionsController {
         List<QuestionsDto> questions = this
                 .questionService
                 .getAllQuestionsUnderTechnology(techId);
+        return ResponseEntity.ok(questions);
+    }
+
+    @GetMapping("/get/list/tech")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionlistDto>> getQuestionsListUnderTechnology(@RequestParam Long techId) {
+        List<QuestionlistDto> questions = this
+                .questionService
+                .getQuestionsListUnderTechnology(techId);
         return ResponseEntity.ok(questions);
     }
 

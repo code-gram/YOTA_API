@@ -1,5 +1,6 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import java.util.List;
@@ -74,5 +75,8 @@ public interface IQuestionService {
    List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testId);
 
    QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
+
+    List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId);
+
 
 }

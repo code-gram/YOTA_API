@@ -1,6 +1,7 @@
 package com.yash.yotaapi.services.impls;
 
 import com.yash.yotaapi.dto.CategoryDto;
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Category;
 import com.yash.yotaapi.entity.Questions;
@@ -276,4 +277,21 @@ public class QuestionServiceImpl implements IQuestionService {
                 .map(questions1, QuestionsDto.class);
         return questionsDto;
     }
+
+    @Override
+    public List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId) {
+        if (ObjectUtils.isNotEmpty(techId)) {
+            Set<Questions> questionsSet = this
+                    .questionsRepository
+                    .getAllQuestionsUnderTechnology(techId)
+                    .orElseThrow(() -> new ApplicationException("Question not found..."));
+
+            return questionsSet
+                    .stream()
+                    .map(ques -> this
+                            .mapper
+                            .map(ques, QuestionlistDto.class))
+                    .collect(Collectors.toList());
+        } else
+            throw new ApplicationException("Provided details are invalid or empty, please check and try again...");    }
 }
