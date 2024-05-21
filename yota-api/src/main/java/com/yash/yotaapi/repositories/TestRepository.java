@@ -30,5 +30,6 @@ public interface TestRepository extends JpaRepository<Tests, Long>  {
 			"WHERE t.test_id = :testId AND u.email_add = :email", nativeQuery = true)
 	Optional<Tests> findByTestIdAndUserEmail(@Param("testId") Long testId, @Param("email") String email);
 
-
+	@Query(value = "select questions_ques_id from tests_questions questions_ques_id where questions_ques_id.tests_test_id=?1", nativeQuery = true)
+	List<Long> getQuestionIdByTestId(@Param("tests_test_id") Long tests_test_id);
 }

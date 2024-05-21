@@ -8,13 +8,7 @@ import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -42,84 +36,105 @@ import java.nio.file.Paths;
 @RequestMapping("/questions")
 public class QuestionsController {
 
-	@Autowired
-	private IQuestionService questionService;
+    @Autowired
+    private IQuestionService questionService;
 
-	@PostMapping("/create-new")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<QuestionsDto> createQuestion(@RequestBody QuestionsDto questionsDto,
-			@RequestParam Long techId, @RequestParam Long catId) {
-		QuestionsDto question = this.questionService.createQuestion(questionsDto, techId, catId);
-		return new ResponseEntity<>(question, HttpStatus.CREATED);
-	}
+    @PostMapping("/create-new")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<QuestionsDto> createQuestion(@RequestBody QuestionsDto questionsDto,
+                                                       @RequestParam Long techId,
+                                                       @RequestParam Long catId) {
+        QuestionsDto question = this.questionService.createQuestion(questionsDto, techId, catId);
+        return new ResponseEntity<>(question, HttpStatus.CREATED);
+    }
 
-	@GetMapping("/get/{questionId}")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<QuestionsDto> getQuestionById(@PathVariable Long questionId, @RequestParam Long techId,
-			@RequestParam Long catId) {
-		QuestionsDto question = this.questionService.getQuestionById(questionId, techId, catId);
-		return ResponseEntity.ok(question);
-	}
+    @GetMapping("/get/{questionId}")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<QuestionsDto> getQuestionById(@PathVariable Long questionId,
+                                                        @RequestParam Long techId,
+                                                        @RequestParam Long catId) {
+        QuestionsDto question = this
+                .questionService
+                .getQuestionById(questionId, techId, catId);
+        return ResponseEntity.ok(question);
+    }
 
-	@GetMapping("/get/all/cat")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
-			@RequestParam Long catId) {
-		List<QuestionsDto> questions = this.questionService.getAllQuestionsUnderCategory(techId, catId);
-		return ResponseEntity.ok(questions);
-	}
+    @GetMapping("/get/all/cat/{catId}")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
+                                                                           @PathVariable Long catId) {
+        List<QuestionsDto> questions = this
+                .questionService
+                .getAllQuestionsUnderCategory(techId, catId);
+        return ResponseEntity.ok(questions);
+    }
 
-	@GetMapping("/get/all/tech")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderTechnology(@RequestParam Long techId) {
-		List<QuestionsDto> questions = this.questionService.getAllQuestionsUnderTechnology(techId);
-		return ResponseEntity.ok(questions);
-	}
+    @GetMapping("/get/all/tech")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderTechnology(@RequestParam Long techId) {
+        List<QuestionsDto> questions = this
+                .questionService
+                .getAllQuestionsUnderTechnology(techId);
+        return ResponseEntity.ok(questions);
+    }
 
-	@PostMapping("/upload-excel-questions")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<String> uploadExcelFile(@Valid @RequestParam("file") MultipartFile file,
-			@RequestParam Long techId, @RequestParam Long catId) {
-		try {
-			if (!ExcelHelper.checkExcelFormat(file)) {
-				return ResponseEntity.badRequest().body("Please upload an Excel file only.");
-			}
+    @PostMapping("/upload-excel-questions")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<String> uploadExcelFile(@Valid @RequestParam("file") MultipartFile file, @RequestParam Long techId, @RequestParam Long catId) {
+        try {
+            if (!ExcelHelper.checkExcelFormat(file)) {
+                return ResponseEntity.badRequest().body("Please upload an Excel file only.");
+            }
 
-			try (InputStream inputStream = file.getInputStream()) {
+            try (InputStream inputStream = file.getInputStream()) {
 
-				List<Questions> excelQuestionList = ExcelHelper.convertExcelToListOfQuestion(inputStream);
+                List<Questions> excelQuestionList = ExcelHelper.convertExcelToListOfQuestion(inputStream);
 
-				questionService.saveExcelQuestions(excelQuestionList, techId, catId);
-				return ResponseEntity.ok("Excel File Uploaded Successfully");
-			} catch (IOException e) {
-				// Handle IOException
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body("An error occurred while processing the file.");
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+                questionService.saveExcelQuestions(excelQuestionList, techId, catId);
+                return ResponseEntity.ok("Excel File Uploaded Successfully");
+            } catch (IOException e) {
+                // Handle IOException
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the file.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@GetMapping("/download-excel")
-	@IsTechnicalManagerOrTrainer
-	public ResponseEntity<Resource> downloadExcelFile() {
-		try {
-			Path fileLocation = Paths.get("src/main/resources/QuestionPaper.xlsx");
-			Resource resource = new UrlResource(fileLocation.toUri());
+    @GetMapping("/download-excel")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<Resource> downloadExcelFile() {
+        try {
+            Path fileLocation = Paths.get("src/main/resources/QuestionPaper.xlsx");
+            Resource resource = new UrlResource(fileLocation.toUri());
 
-			if (resource.exists()) {
-				return ResponseEntity.ok()
-						.contentType(MediaType
-								.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-						.header(HttpHeaders.CONTENT_DISPOSITION,
-								"attachment; filename=\"" + resource.getFilename() + "\"")
-						.body(resource);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
-			return ResponseEntity.internalServerError().build();
-		}
-	}
+            if(resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/questionset/{testId}")
+    public ResponseEntity<List<QuestionsDto>> getQuestionSetByEmailAndTestId(@RequestParam String email, @PathVariable Long testId) {
+        List<QuestionsDto> questionset = questionService.getQuestionByAssociateEmail(email, testId);
+        if (questionset.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(questionset);
+    }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionsDto> updateQuestion(@PathVariable Long questionId, @RequestBody QuestionsDto questionsDto) {
+        QuestionsDto updatedQuestion = questionService.updateQuestion(questionId, questionsDto);
+        return ResponseEntity.ok(updatedQuestion);
+    }
+
+
 }

@@ -9,6 +9,7 @@ import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.repositories.CategoryRepository;
 import com.yash.yotaapi.repositories.QuestionsRepository;
 import com.yash.yotaapi.repositories.TechnologyRepository;
+import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.services.IServices.ICategoryService;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.services.IServices.ITechnologyService;
@@ -19,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +52,8 @@ public class QuestionServiceImpl implements IQuestionService {
     @Autowired
     CategoryRepository categoryRepository;
 
-
+    @Autowired
+    TestRepository testRepository;
     /**
      * Method to create new question, please provide the technology id and category id to create question
      *
@@ -229,5 +228,52 @@ public class QuestionServiceImpl implements IQuestionService {
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while processing the file", e);
         }
+    }
+
+    @Override
+    public List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testid) {
+        List<Long> testIds = testRepository.getTestIdByEmailId(email);
+        if (testIds.isEmpty() || !testIds.contains(testid)) {
+            throw new ApplicationException("Check emailId : " + email+ "  And testId:-"+testid+ " which you provided has not assign any test");
+        }
+        List<QuestionsDto> questionsDtos = new ArrayList<>();
+            List<Long> questionIds = testRepository.getQuestionIdByTestId(testid);
+            for (Long questionId : questionIds) {
+                Questions question = questionsRepository.getQuestionsByAllId(questionId);
+                if (question != null) {
+                    QuestionsDto questionsDto=new QuestionsDto();
+                    questionsDto.setId(question.getId());
+                    questionsDto.setQuestionTitle(question.getQuestionTitle());
+                    questionsDto.setOption_A(question.getOption_A());
+                    questionsDto.setOption_B(question.getOption_B());
+                    questionsDto.setOption_C(question.getOption_C());
+                    questionsDto.setOption_D(question.getOption_D());
+                    questionsDto.setCorrectAnswer(question.getCorrectAnswer());
+                    questionsDtos.add(questionsDto);
+                }
+            }
+        return questionsDtos;
+    }
+
+    @Override
+    @Transactional
+    public QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto) {
+        Questions question = questionsRepository.findById(questionId).orElseThrow(() -> new ApplicationException("Question not found with id: " + questionId));
+
+        question.setQuestionTitle(questionsDto.getQuestionTitle());
+        question.setCorrectAnswer(questionsDto.getCorrectAnswer());
+        question.setOption_A(questionsDto.getOption_A());
+        question.setOption_B(questionsDto.getOption_B());
+        question.setOption_C(questionsDto.getOption_C());
+        question.setOption_D(questionsDto.getOption_D());
+        question.setQuestionLevel(questionsDto.getQuestionLevel());
+        question.setUpdated_At(questionsDto.getUpdated_At());
+        questionsRepository.save(question);
+        Questions questions1 = questionsRepository.findById(questionId).orElseThrow(() -> new ApplicationException("Question not found with id: " + questionId));
+
+        questionsDto = this
+                .mapper
+                .map(questions1, QuestionsDto.class);
+        return questionsDto;
     }
 }

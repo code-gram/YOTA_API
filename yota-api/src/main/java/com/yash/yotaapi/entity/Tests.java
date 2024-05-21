@@ -42,6 +42,9 @@ public class Tests {
     @ManyToMany
     private List<YotaUser> assign;
 
+    @ManyToMany
+    private List<Questions> questions;
+
     @OneToOne
     private Result result;
 
