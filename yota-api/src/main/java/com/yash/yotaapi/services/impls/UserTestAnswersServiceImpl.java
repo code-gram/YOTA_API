@@ -5,7 +5,7 @@ import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.entity.UserTestAnswer;
 import com.yash.yotaapi.entity.YotaUser;
-import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.ResourceNotFoundException;
 import com.yash.yotaapi.repositories.QuestionsRepository;
 import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.repositories.UserTestAnswersRepository;
@@ -39,22 +39,22 @@ public class UserTestAnswersServiceImpl implements UserTestAnswersService {
 
     @Override
     public UserTestAnswer saveUserTestAnswers(UserTestAnswerDto userTestAnswerDto) {
-
         Optional<Tests> test = testRepository.findById(userTestAnswerDto.getTestid());
-        Optional<Questions> question = questionsRepository.findById(userTestAnswerDto.getQuestionId());
-
-        YotaUser yotaUser = yotaUserRepository.getUserByEmail(userTestAnswerDto.getUserEmailId());
-
         if (!test.isPresent()) {
-            throw new ApplicationException("Invalid test ID provided.");
+            throw new ResourceNotFoundException("Invalid test ID provided.");
         }
 
+        Optional<Questions> question = questionsRepository.findById(userTestAnswerDto.getQuestionId());
         if (!question.isPresent()) {
-            throw new ApplicationException("Invalid question ID provided.");
+            throw new ResourceNotFoundException("Invalid question ID provided.");
+        }
+
+        YotaUser yotaUser = yotaUserRepository.getUserByEmail(userTestAnswerDto.getUserEmailId());
+        if (yotaUser == null) {
+            throw new ResourceNotFoundException("User not found with email: " + userTestAnswerDto.getUserEmailId());
         }
 
         UserTestAnswer userTestAnswer = new UserTestAnswer();
-
         userTestAnswer.setUser(yotaUser);
         userTestAnswer.setQuestion(question.get());
         userTestAnswer.setTest(test.get());

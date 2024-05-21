@@ -56,4 +56,10 @@ public class GlobalExceptionHandler {
         String message=questionDeletionException.getMessage();
         return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException){
+        String message=resourceNotFoundException.getMessage();
+        return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
