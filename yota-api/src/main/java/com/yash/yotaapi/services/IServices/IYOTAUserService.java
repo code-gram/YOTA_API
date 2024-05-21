@@ -1,6 +1,10 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.UserProfileDto;
+import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.YotaUserDto;
+import com.yash.yotaapi.entity.YotaUser;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -18,6 +22,8 @@ public interface IYOTAUserService {
 
     YotaUserDto getUserByEmailAdd(String emailAdd);
 
+    UserProfileDto getUserByEmailAddress(String emailAdd);
+
     List<YotaUserDto> getAllTrainers();
 
     List<YotaUserDto> getAllAssociates();
@@ -29,4 +35,6 @@ public interface IYOTAUserService {
     Boolean declinePendingUser(String emailAdd);
 
     List<YotaUserDto> getAllAssociatesByStatus(String status);
+
+    public String resetPassword(PasswordDto passwordDto);
 }

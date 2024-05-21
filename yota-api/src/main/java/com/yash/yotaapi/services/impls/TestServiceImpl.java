@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yash.yotaapi.dto.TestDto;
-import com.yash.yotaapi.entity.Test;
 import com.yash.yotaapi.exceptions.TestAvailableException;
 import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.services.IServices.ITestService;
@@ -121,5 +120,32 @@ public class TestServiceImpl implements ITestService {
 			throw new ApplicationException("No training assigned to the associate with email: " + email);
 		}
 		return testsDTOs;
+	}
+
+	public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId) throws ApplicationException {
+		Optional<Tests> optionalTest = testRepository.findByTestIdAndUserEmail(testId, email);
+
+		if (!optionalTest.isPresent()) {
+			throw new ApplicationException("No test found for the given email and test ID");
+		}
+
+		Tests tests = optionalTest.get();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		TestsDto testsDTO = new TestsDto();
+		testsDTO.setId(tests.getId());
+		testsDTO.setTestTitle(tests.getTestTitle());
+		testsDTO.setTestDescription(tests.getTestDescription());
+		testsDTO.setTestInstruction(tests.getTestInstruction());
+		testsDTO.setAction(tests.getAction());
+		testsDTO.setStartDate(tests.getStartDate().format(formatter));
+		testsDTO.setEndDate(tests.getEndDate().format(formatter));
+		testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
+		testsDTO.setModified_at(tests.getModified_at().format(formatter));
+		testsDTO.setEndTime(tests.getEndTime());
+		testsDTO.setResult(tests.getResult());
+		testsDTO.setTestType(tests.getTestType());
+
+		return testsDTO;
 	}
 }
