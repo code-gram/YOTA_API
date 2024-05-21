@@ -1,8 +1,11 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.UserTestAnswerDto;
 import com.yash.yotaapi.entity.UserTestAnswer;
 import com.yash.yotaapi.services.IServices.UserTestAnswersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,15 +22,11 @@ public class UserTestAnswersController {
     }
 
     @PostMapping("/user-test-answers")
-    public UserTestAnswer saveUserTestAnswers(@RequestBody UserTestAnswer userTestAnswer) {
-        return userTestAnswersService.saveUserTestAnswers(userTestAnswer);
+    public ResponseEntity<String> saveUserTestAnswer(@RequestBody UserTestAnswerDto userTestAnswerDto) {
+        UserTestAnswer savedAnswer = userTestAnswersService.saveUserTestAnswers(userTestAnswerDto);
+        return ResponseEntity.status(HttpStatus.OK).body("entry saved successfully");
     }
 }
 
-//{
-//        "testId": 123,
-//        "userId": 456,
-//        "questionId": 789,
-//        "selectedOption": "option_A"
-//        }
+
 

@@ -5,10 +5,12 @@ import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Category;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.entity.Technology;
+import com.yash.yotaapi.entity.UserTestAnswer;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.repositories.CategoryRepository;
 import com.yash.yotaapi.repositories.QuestionsRepository;
 import com.yash.yotaapi.repositories.TechnologyRepository;
+import com.yash.yotaapi.repositories.UserTestAnswersRepository;
 import com.yash.yotaapi.services.IServices.ICategoryService;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.services.IServices.ITechnologyService;
@@ -19,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +52,9 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    UserTestAnswersRepository userTestAnswersRepository;
 
 
     /**
@@ -193,10 +195,9 @@ public class QuestionServiceImpl implements IQuestionService {
     /**
      * Method to upload new question bank, please provide the technology id and category id to upload question bank
      *
-     * @param excelQuestionList    body object
-     * @param techId       Long technology id
-     * @param catId        Long category id
-     *
+     * @param excelQuestionList body object
+     * @param techId            Long technology id
+     * @param catId             Long category id
      * @author amar sawant
      * @since 29-04-24
      */
@@ -229,5 +230,16 @@ public class QuestionServiceImpl implements IQuestionService {
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while processing the file", e);
         }
+    }
+
+    @Override
+    public String deleteQuestion(Long questionId) {
+
+        Optional<Questions> question = questionsRepository.findById(questionId);
+        if (question.isPresent()) {
+            questionsRepository.deleteById(questionId);
+            return "Question deleted successfully";
+        }
+        return "Question not found";
     }
 }

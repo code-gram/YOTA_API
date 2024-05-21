@@ -42,9 +42,6 @@ public class Tests {
     @ManyToMany
     private List<YotaUser> assign;
 
-    @OneToOne
-    private Result result;
-
     private String testType;
     private String testName;
     private int totalQuestions;

@@ -32,4 +32,6 @@ public interface YotaUserRepository extends JpaRepository<YotaUser, String> {
 
     @Query("select yur from YotaUser yur where yur.accountStatus=?1")
     List<YotaUser> getAllUserByStatus(UserAccountStatusTypes accountStatus);
+
+    YotaUser findByempId(Long empId);
 }

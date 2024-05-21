@@ -70,4 +70,14 @@ public interface IQuestionService {
      * @since 29-04-24
      */
     void saveExcelQuestions(List<Questions> excelDTOList, Long techId, Long catId);
+
+    /**
+     * Method to delete question, please provide the question id to delete question
+     *
+     * @param questionId
+     *
+     * @author amar sawant
+     * @since 21-05-24
+     */
+    public String deleteQuestion(Long questionId);
 }

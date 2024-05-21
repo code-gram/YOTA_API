@@ -5,16 +5,11 @@ import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -29,6 +24,7 @@ import org.springframework.http.MediaType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * Project Name - YOTA_NEW
@@ -68,7 +64,7 @@ public class QuestionsController {
     @GetMapping("/get/all/cat/{catId}")
     @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
-                                                                           @PathVariable Long catId) {
+                                                                           @RequestParam Long catId) {
         List<QuestionsDto> questions = this
                 .questionService
                 .getAllQuestionsUnderCategory(techId, catId);
@@ -125,5 +121,12 @@ public class QuestionsController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+    @DeleteMapping("/delete-question")
+    @IsTechnicalManagerOrTrainer
+    public String deleteQuestion(@RequestParam Long id){
+        String questions= questionService.deleteQuestion(id);
+        return questions;
+
     }
 }
