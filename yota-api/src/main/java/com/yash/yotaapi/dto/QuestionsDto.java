@@ -1,6 +1,6 @@
 package com.yash.yotaapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yash.yotaapi.constants.QuestionLevelTypes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,10 +41,12 @@ public class QuestionsDto {
 
     private QuestionLevelTypes questionLevel;
 
-    @JsonIgnore
+//    @JsonIgnore
     private CategoryDto category;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date created_At;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updated_At;
 }

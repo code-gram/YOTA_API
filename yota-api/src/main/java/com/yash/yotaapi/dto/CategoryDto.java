@@ -28,7 +28,7 @@ public class CategoryDto {
 
     private String name;
 
-//    @JsonIgnore
+    @JsonIgnore
     private List<QuestionsDto> questions;
 
     private Integer questionCountUnderCategory = 0;
