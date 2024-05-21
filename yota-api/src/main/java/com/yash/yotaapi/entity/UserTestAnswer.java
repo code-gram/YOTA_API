@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public class UserTestAnswer {
     @JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
     private YotaUser user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)  // Add cascade option if appropriate
     @JoinColumn(name = "ques_id", referencedColumnName = "ques_id")
     private Questions question;
 

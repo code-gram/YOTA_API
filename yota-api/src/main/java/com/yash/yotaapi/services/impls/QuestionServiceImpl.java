@@ -5,8 +5,9 @@ import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Category;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.entity.Technology;
-import com.yash.yotaapi.entity.UserTestAnswer;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.QuestionDeletionException;
+import com.yash.yotaapi.exceptions.QuestionNotFoundException;
 import com.yash.yotaapi.repositories.CategoryRepository;
 import com.yash.yotaapi.repositories.QuestionsRepository;
 import com.yash.yotaapi.repositories.TechnologyRepository;
@@ -233,13 +234,15 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
-    public String deleteQuestion(Long questionId) {
-
-        Optional<Questions> question = questionsRepository.findById(questionId);
-        if (question.isPresent()) {
-            questionsRepository.deleteById(questionId);
-            return "Question deleted successfully";
+    public String deleteQuestionById(Long id) {
+        if (!questionsRepository.existsById(id)) {
+            throw new QuestionNotFoundException("Question not found with id " + id);
         }
-        return "Question not found";
+        if (userTestAnswersRepository.existsByQuestionId(id)) {
+            throw new QuestionDeletionException("Question with id " + id + " cannot be deleted because it is referenced in user test answers");
+        }
+        questionsRepository.deleteById(id);
+        return "Question deleted successfully";
     }
+
 }

@@ -122,11 +122,11 @@ public class QuestionsController {
             return ResponseEntity.internalServerError().build();
         }
     }
-    @DeleteMapping("/delete-question")
-    @IsTechnicalManagerOrTrainer
-    public String deleteQuestion(@RequestParam Long id){
-        String questions= questionService.deleteQuestion(id);
-        return questions;
 
+    @DeleteMapping("/{id}")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
+        String message = questionService.deleteQuestionById(id);
+        return ResponseEntity.ok(message);
     }
 }

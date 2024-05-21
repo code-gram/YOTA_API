@@ -74,10 +74,10 @@ public interface IQuestionService {
     /**
      * Method to delete question, please provide the question id to delete question
      *
-     * @param questionId
+     * @param id
      *
      * @author amar sawant
      * @since 21-05-24
      */
-    public String deleteQuestion(Long questionId);
+    public String deleteQuestionById(Long id);
 }
