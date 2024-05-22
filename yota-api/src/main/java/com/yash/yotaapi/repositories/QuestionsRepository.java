@@ -3,6 +3,7 @@ package com.yash.yotaapi.repositories;
 import com.yash.yotaapi.entity.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 import java.util.Set;
@@ -34,5 +35,8 @@ public interface QuestionsRepository extends JpaRepository<Questions, Long> {
      */
     @Query("select distinct ques from Questions ques where ques.category.technology.id=?1")
     Optional<Set<Questions>> getAllQuestionsUnderTechnology(Long techId);
+
+    @Query(value = "select * from question_bank where ques_id=?1", nativeQuery = true)
+    Questions getQuestionsByAllId(@Param("ques_id") Long questionId);
 }
 

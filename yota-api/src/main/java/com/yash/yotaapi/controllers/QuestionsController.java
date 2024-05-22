@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
@@ -80,6 +81,15 @@ public class QuestionsController {
         return ResponseEntity.ok(questions);
     }
 
+    @GetMapping("/get/list/tech")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionlistDto>> getQuestionsListUnderTechnology(@RequestParam Long techId) {
+        List<QuestionlistDto> questions = this
+                .questionService
+                .getQuestionsListUnderTechnology(techId);
+        return ResponseEntity.ok(questions);
+    }
+
     @PostMapping("/upload-excel-questions")
     @IsTechnicalManagerOrTrainer
     public ResponseEntity<String> uploadExcelFile(@Valid @RequestParam("file") MultipartFile file, @RequestParam Long techId, @RequestParam Long catId) {
@@ -122,6 +132,23 @@ public class QuestionsController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/questionset/{testId}")
+    public ResponseEntity<List<QuestionsDto>> getQuestionSetByEmailAndTestId(@RequestParam String email, @PathVariable Long testId) {
+        List<QuestionsDto> questionset = questionService.getQuestionByAssociateEmail(email, testId);
+        if (questionset.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(questionset);
+    }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionsDto> updateQuestion(@PathVariable Long questionId, @RequestBody QuestionsDto questionsDto) {
+        QuestionsDto updatedQuestion = questionService.updateQuestion(questionId, questionsDto);
+        return ResponseEntity.ok(updatedQuestion);
+    }
+
+
 
     @DeleteMapping("/{id}")
     @IsTechnicalManagerOrTrainer

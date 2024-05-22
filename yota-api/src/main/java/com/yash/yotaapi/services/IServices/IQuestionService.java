@@ -1,5 +1,6 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import java.util.List;
@@ -70,6 +71,14 @@ public interface IQuestionService {
      * @since 29-04-24
      */
     void saveExcelQuestions(List<Questions> excelDTOList, Long techId, Long catId);
+
+   List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testId);
+
+   QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
+
+    List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId);
+
+
 
     /**
      * Method to delete question, please provide the question id to delete question
