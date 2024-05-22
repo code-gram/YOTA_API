@@ -7,10 +7,13 @@ import com.yash.yotaapi.entity.Category;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.entity.Technology;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.QuestionDeletionException;
+import com.yash.yotaapi.exceptions.QuestionNotFoundException;
 import com.yash.yotaapi.repositories.CategoryRepository;
 import com.yash.yotaapi.repositories.QuestionsRepository;
 import com.yash.yotaapi.repositories.TechnologyRepository;
 import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.repositories.UserTestAnswersRepository;
 import com.yash.yotaapi.services.IServices.ICategoryService;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.services.IServices.ITechnologyService;
@@ -55,6 +58,10 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Autowired
     TestRepository testRepository;
+    @Autowired
+    UserTestAnswersRepository userTestAnswersRepository;
+
+
     /**
      * Method to create new question, please provide the technology id and category id to create question
      *
@@ -193,10 +200,9 @@ public class QuestionServiceImpl implements IQuestionService {
     /**
      * Method to upload new question bank, please provide the technology id and category id to upload question bank
      *
-     * @param excelQuestionList    body object
-     * @param techId       Long technology id
-     * @param catId        Long category id
-     *
+     * @param excelQuestionList body object
+     * @param techId            Long technology id
+     * @param catId             Long category id
      * @author amar sawant
      * @since 29-04-24
      */
@@ -294,4 +300,17 @@ public class QuestionServiceImpl implements IQuestionService {
                     .collect(Collectors.toList());
         } else
             throw new ApplicationException("Provided details are invalid or empty, please check and try again...");    }
+
+    @Override
+    public String deleteQuestionById(Long id) {
+        if (!questionsRepository.existsById(id)) {
+            throw new QuestionNotFoundException("Question not found with id " + id);
+        }
+        if (userTestAnswersRepository.existsByQuestionId(id)) {
+            throw new QuestionDeletionException("Question with id " + id + " cannot be deleted because it is referenced in user test answers");
+        }
+        questionsRepository.deleteById(id);
+        return "Question deleted successfully";
+    }
+
 }
