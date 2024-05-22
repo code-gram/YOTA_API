@@ -62,7 +62,7 @@ public class QuestionsController {
         return ResponseEntity.ok(question);
     }
 
-    @GetMapping("/get/all/cat/{catId}")
+    @GetMapping("/get/all/cat")
     @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
                                                                            @RequestParam Long catId) {
