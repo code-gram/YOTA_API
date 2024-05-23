@@ -3,8 +3,6 @@ package com.yash.yotaapi.services.IServices;
 import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
-
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -65,22 +63,22 @@ public interface IQuestionService {
     /**
      * Method to upload new question bank, please provide the technology id and category id to upload question bank
      *
-     * @param excelDTOList body object
+     * @param excelDTOList    body object
      * @param techId       Long technology id
      * @param catId        Long category id
+     *
      * @author amar sawant
      * @since 29-04-24
      */
     void saveExcelQuestions(List<Questions> excelDTOList, Long techId, Long catId);
 
-    List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testId);
+   List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testId);
 
-    QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
+   QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
 
     List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId);
 
 
-    HashMap<String, Integer> countQuestionDetails(Long techId);
 
     /**
      * Method to delete question, please provide the question id to delete question

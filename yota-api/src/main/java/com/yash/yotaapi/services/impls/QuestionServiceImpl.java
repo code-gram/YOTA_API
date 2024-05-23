@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -301,15 +302,6 @@ public class QuestionServiceImpl implements IQuestionService {
             throw new ApplicationException("Provided details are invalid or empty, please check and try again...");    }
 
     @Override
-    public HashMap<String, Integer> countQuestionDetails(Long techId) {
-        HashMap<String, Integer> integerHashMap = new HashMap<>();
-        integerHashMap.put("questionCount", questionsRepository.questionCount(techId));
-        integerHashMap.put("easyCount", questionsRepository.easyQuestionCount(techId));
-        integerHashMap.put("mediumCount", questionsRepository.mediumQuestionCount(techId));
-        integerHashMap.put("hardCount", questionsRepository.hardQuestionCount(techId));
-        return integerHashMap;
-    }
-
     public String deleteQuestionById(Long id) {
         if (!questionsRepository.existsById(id)) {
             throw new QuestionNotFoundException("Question not found with id " + id);
@@ -320,4 +312,5 @@ public class QuestionServiceImpl implements IQuestionService {
         questionsRepository.deleteById(id);
         return "Question deleted successfully";
     }
+
 }
