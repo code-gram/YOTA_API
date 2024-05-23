@@ -5,6 +5,7 @@ import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
+import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -148,6 +147,11 @@ public class QuestionsController {
         return ResponseEntity.ok(updatedQuestion);
     }
 
+    @GetMapping("/count-details")
+    @IsTechnicalManager
+    public ResponseEntity<HashMap<String, Integer>> countQuestionDetails(@RequestParam Long techId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(questionService.countQuestionDetails(techId));
 
 
     @DeleteMapping("/{id}")
