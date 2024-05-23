@@ -35,6 +35,54 @@ public class TestServiceImpl implements ITestService {
         return "Test details added successfully";
     }
 
+		for (Long testId : testIds) {
+			Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
+			optionalTests.ifPresent(tests -> {
+				TestsDto testsDTO = new TestsDto();
+				testsDTO.setId(tests.getId());
+				testsDTO.setTestTitle(tests.getTestTitle());
+				testsDTO.setTestDescription(tests.getTestDescription());
+				testsDTO.setTestInstruction(tests.getTestInstruction());
+				testsDTO.setAction(tests.getAction());
+				testsDTO.setStartDate(tests.getStartDate().format(formatter));
+				testsDTO.setEndDate(tests.getEndDate().format(formatter));
+				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
+				testsDTO.setModified_at(tests.getModified_at().format(formatter));
+				testsDTO.setEndTime(tests.getEndTime());
+				testsDTO.setTestType(tests.getTestType());
+				testsDTOs.add(testsDTO);
+			});
+		}
+
+		if (testsDTOs.isEmpty()) {
+			throw new ApplicationException("No training assigned to the associate with email: " + email);
+		}
+		return testsDTOs;
+	}
+
+	public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId) throws ApplicationException {
+		Optional<Tests> optionalTest = testRepository.findByTestIdAndUserEmail(testId, email);
+
+		if (!optionalTest.isPresent()) {
+			throw new ApplicationException("No test found for the given email and test ID");
+		}
+
+		Tests tests = optionalTest.get();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		TestsDto testsDTO = new TestsDto();
+		testsDTO.setId(tests.getId());
+		testsDTO.setTestTitle(tests.getTestTitle());
+		testsDTO.setTestDescription(tests.getTestDescription());
+		testsDTO.setTestInstruction(tests.getTestInstruction());
+		testsDTO.setAction(tests.getAction());
+		testsDTO.setStartDate(tests.getStartDate().format(formatter));
+		testsDTO.setEndDate(tests.getEndDate().format(formatter));
+		testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
+		testsDTO.setModified_at(tests.getModified_at().format(formatter));
+		testsDTO.setEndTime(tests.getEndTime());
+		testsDTO.setTestType(tests.getTestType());
+
 //    @Override
 //    public List<TestDto> fetchAllTest() {
 //        List<Tests> tests = testRepository.findAll();

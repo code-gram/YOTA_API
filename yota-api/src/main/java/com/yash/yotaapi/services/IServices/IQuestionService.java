@@ -79,5 +79,16 @@ public interface IQuestionService {
 
     List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId);
 
+
     HashMap<String, Integer> countQuestionDetails(Long techId);
+
+    /**
+     * Method to delete question, please provide the question id to delete question
+     *
+     * @param id
+     *
+     * @author amar sawant
+     * @since 21-05-24
+     */
+    public String deleteQuestionById(Long id);
 }

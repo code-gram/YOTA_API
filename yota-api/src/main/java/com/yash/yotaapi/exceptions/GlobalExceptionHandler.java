@@ -44,4 +44,22 @@ public class GlobalExceptionHandler {
         String message = passwordMismatchException.getMessage();
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(QuestionNotFoundException.class)
+    public ResponseEntity<String> handleQuestionNotFoundException(QuestionNotFoundException questionNotFoundException){
+        String message= questionNotFoundException.getMessage();
+        return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(QuestionDeletionException.class)
+    public ResponseEntity<String> handleQuestionDeletionException(QuestionDeletionException questionDeletionException){
+        String message=questionDeletionException.getMessage();
+        return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException){
+        String message=resourceNotFoundException.getMessage();
+        return new ResponseEntity<>(message,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
