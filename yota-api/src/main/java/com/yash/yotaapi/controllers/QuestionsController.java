@@ -5,6 +5,7 @@ import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
+import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
@@ -155,5 +157,12 @@ public class QuestionsController {
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         String message = questionService.deleteQuestionById(id);
         return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/count-details")
+    @IsTechnicalManager
+    public ResponseEntity<HashMap<String, Integer>> countQuestionDetails(@RequestParam Long techId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(questionService.countQuestionDetails(techId));
     }
 }

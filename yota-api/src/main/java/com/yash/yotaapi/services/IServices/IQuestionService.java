@@ -3,6 +3,8 @@ package com.yash.yotaapi.services.IServices;
 import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -89,4 +91,6 @@ public interface IQuestionService {
      * @since 21-05-24
      */
     public String deleteQuestionById(Long id);
+
+    HashMap<String, Integer> countQuestionDetails(Long techId);
 }
