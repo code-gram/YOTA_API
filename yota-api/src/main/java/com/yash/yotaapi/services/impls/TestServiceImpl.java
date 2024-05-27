@@ -45,7 +45,6 @@ public class TestServiceImpl implements ITestService {
       test=testRepository.save(test);
 		Assert.notNull(test);
 		return this.mapper.map(test, TestDto.class);
-       
     }
 
 	@Override
@@ -59,10 +58,10 @@ public class TestServiceImpl implements ITestService {
 		TestDto testDto = new TestDto();
 		tests.ifPresent((test)->{
 			testDto.setId(test.getId());
-			testDto.setTestName(test.getTestName());
+			testDto.setTestTitle(test.getTestTitle());
 			testDto.setDescription(test.getTestDescription());
 			testDto.setInstruction(test.getTestInstruction());
-			testDto.setTestType(test.getTestType());
+			testDto.setType(test.getTestType());
 			testDto.setTotalQuestions(test.getTotalQuestions());
 			testDto.setTotalTime(test.getTotalTime());
 		});

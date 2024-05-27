@@ -15,11 +15,11 @@ import java.util.List;
 @Table(name = "tests")
 public class Tests {
 
-        @Id
+    @Id
     @Column(name = "test_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(initialValue = 1, name = "id")
-        private Long id;
+    private Long id;
 
     private String testTitle;
 

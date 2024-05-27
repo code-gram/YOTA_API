@@ -38,5 +38,17 @@ public interface QuestionsRepository extends JpaRepository<Questions, Long> {
 
     @Query(value = "select * from question_bank where ques_id=?1", nativeQuery = true)
     Questions getQuestionsByAllId(@Param("ques_id") Long questionId);
+
+    @Query("SELECT COUNT(ques) FROM Questions ques where ques.category.technology.id=?1")
+    Integer questionCount(Long techId);
+
+    @Query("select count(ques) from Questions ques where ques.questionLevel=com.yash.yotaapi.constants.QuestionLevelTypes.EASY and ques.category.technology.id=?1")
+    Integer easyQuestionCount(Long techId);
+
+    @Query("select count(ques) from Questions ques where ques.questionLevel=com.yash.yotaapi.constants.QuestionLevelTypes.MEDIUM and ques.category.technology.id=?1")
+    Integer mediumQuestionCount(Long techId);
+
+    @Query("select count(ques) from Questions ques where ques.questionLevel=com.yash.yotaapi.constants.QuestionLevelTypes.HARD and ques.category.technology.id=?1")
+    Integer hardQuestionCount(Long techId);
 }
 

@@ -28,8 +28,7 @@ public class TestController {
 
  	@PostMapping("/addTest")
     @IsTechnicalManager
-    public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto
-    		) {
+    public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto) {
         return new ResponseEntity<>(this.testService.addTest(testDto), HttpStatus.OK);
     }
 		

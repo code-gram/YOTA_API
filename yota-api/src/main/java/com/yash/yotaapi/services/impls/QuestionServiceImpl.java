@@ -313,4 +313,14 @@ public class QuestionServiceImpl implements IQuestionService {
         return "Question deleted successfully";
     }
 
+    @Override
+    public HashMap<String, Integer> countQuestionDetails(Long techId) {
+        HashMap<String, Integer> integerHashMap = new HashMap<>();
+        integerHashMap.put("questionCount", questionsRepository.questionCount(techId));
+        integerHashMap.put("easyCount", questionsRepository.easyQuestionCount(techId));
+        integerHashMap.put("mediumCount", questionsRepository.mediumQuestionCount(techId));
+        integerHashMap.put("hardCount", questionsRepository.hardQuestionCount(techId));
+        return integerHashMap;
+    }
+
 }
