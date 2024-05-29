@@ -1,9 +1,11 @@
 package com.yash.yotaapi.services.impls;
 
 import com.yash.yotaapi.dto.TrainingsDto;
+import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.repositories.TrainingRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITrainingService;
@@ -29,6 +31,9 @@ public class TrainingServiceImpl implements ITrainingService {
 
     @Autowired
     private YotaUserRepository yotaUserRepository;
+
+    @Autowired
+    private TestRepository testRepository;
 
     @Override
     public Trainings addTraining(Trainings training) {
@@ -117,6 +122,7 @@ public class TrainingServiceImpl implements ITrainingService {
                 trainingDTO.setTrainingName(training.getTrainingName());
                 trainingDTO.setStartDate(DateUtil.convertDateToLocalDateTime(training.getStartDate()));
                 trainingDTO.setEndDate(DateUtil.convertDateToLocalDateTime(training.getEndDate()));
+                trainingDTO.setStatus(training.getStatus());
                 trainingDTOs.add(trainingDTO);
             }
         }
@@ -126,4 +132,12 @@ public class TrainingServiceImpl implements ITrainingService {
         return trainingDTOs;
     }
 
+
+    public Trainings assignTest(Long trainingId, Long testId) {
+        Trainings training = trainingRepository.findById(trainingId).orElseThrow(()->new ApplicationException("Training is not available for trainingId:-"+trainingId));
+        Tests test = testRepository.findById(testId).orElseThrow(()->new ApplicationException("Test is not available for testId:-"+testId));
+        training.getTests().add(test);
+        trainingRepository.save(training);
+        return training;
+    }
 }

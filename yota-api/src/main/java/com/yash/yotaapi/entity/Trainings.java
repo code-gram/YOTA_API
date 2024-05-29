@@ -26,13 +26,21 @@ public class Trainings {
 	private String assignTo;
 
 	private Date startDate;
-	
+
 	private Date endDate;
-	
+
+	private String status;
+
 	private int totalNominations;
 	
 	private int registeredInTraining;
 
 	@ManyToMany
 	private List<YotaUser> assign;
+
+	@ManyToMany
+	@JoinTable(name = "training_test_assign",
+			joinColumns = @JoinColumn(name = "training_id"),
+			inverseJoinColumns = @JoinColumn(name = "test_id"))
+	private List<Tests> tests;
 }
