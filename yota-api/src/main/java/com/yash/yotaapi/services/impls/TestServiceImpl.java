@@ -1,28 +1,21 @@
 package com.yash.yotaapi.services.impls;
 
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
+import com.yash.yotaapi.dto.TestDto;
+import com.yash.yotaapi.dto.TestsDto;
+import com.yash.yotaapi.entity.Tests;
+import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.TestAvailableException;
+import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.services.IServices.ITestService;
+import io.jsonwebtoken.lang.Assert;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.time.format.DateTimeFormatter;
-
-
-import com.yash.yotaapi.dto.TestsDto;
-import com.yash.yotaapi.entity.Tests;
-import com.yash.yotaapi.exceptions.ApplicationException;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.yash.yotaapi.dto.TestDto;
-import com.yash.yotaapi.exceptions.TestAvailableException;
-import com.yash.yotaapi.repositories.TestRepository;
-import com.yash.yotaapi.services.IServices.ITestService;
-
-import io.jsonwebtoken.lang.Assert;
 
 @Service
 public class TestServiceImpl implements ITestService {
@@ -61,7 +54,7 @@ public class TestServiceImpl implements ITestService {
 			testDto.setTestTitle(test.getTestTitle());
 			testDto.setDescription(test.getTestDescription());
 			testDto.setInstruction(test.getTestInstruction());
-			testDto.setType(test.getTestType());
+			testDto.setType(test.getType());
 			testDto.setTotalQuestions(test.getTotalQuestions());
 			testDto.setTotalTime(test.getTotalTime());
 		});
@@ -103,13 +96,13 @@ public class TestServiceImpl implements ITestService {
 				testsDTO.setTestTitle(tests.getTestTitle());
 				testsDTO.setTestDescription(tests.getTestDescription());
 				testsDTO.setTestInstruction(tests.getTestInstruction());
-				testsDTO.setAction(tests.getAction());
+				testsDTO.setAction(tests.getStatus());
 				testsDTO.setStartDate(tests.getStartDate().format(formatter));
-				testsDTO.setEndDate(tests.getEndDate().format(formatter));
-				testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
-				testsDTO.setModified_at(tests.getModified_at().format(formatter));
+				testsDTO.setEndDate(tests.getEndDate());
+				testsDTO.setCreated_at(tests.getCreatedAt());
+				testsDTO.setModified_at(tests.getModifiedAt());
 				testsDTO.setEndTime(tests.getEndTime());
-				testsDTO.setTestType(tests.getTestType());
+				testsDTO.setTestType(tests.getType());
 				testsDTOs.add(testsDTO);
 			});
 		}
@@ -135,13 +128,13 @@ public class TestServiceImpl implements ITestService {
 		testsDTO.setTestTitle(tests.getTestTitle());
 		testsDTO.setTestDescription(tests.getTestDescription());
 		testsDTO.setTestInstruction(tests.getTestInstruction());
-		testsDTO.setAction(tests.getAction());
+		testsDTO.setAction(tests.getStatus());
 		testsDTO.setStartDate(tests.getStartDate().format(formatter));
-		testsDTO.setEndDate(tests.getEndDate().format(formatter));
-		testsDTO.setCreated_at(tests.getCreated_at().format(formatter));
-		testsDTO.setModified_at(tests.getModified_at().format(formatter));
+		testsDTO.setEndDate(tests.getEndDate());
+		testsDTO.setCreated_at(tests.getCreatedAt());
+		testsDTO.setModified_at(tests.getModifiedAt());
 		testsDTO.setEndTime(tests.getEndTime());
-		testsDTO.setTestType(tests.getTestType());
+		testsDTO.setTestType(tests.getType());
 
 		return testsDTO;
 	}
