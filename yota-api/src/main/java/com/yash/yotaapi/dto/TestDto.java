@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import java.util.Date;
 
 @Data
@@ -24,23 +21,8 @@ public class TestDto {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date endDate; // Represents the end date
     private String startTime;
-    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date createdAt;
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    private Date modifiedAt;
-
-//    private String testName;
     private int totalQuestions;
     private int totalMarks;
     private int totalTime;
-
-    @PrePersist
-    public void created_At() {
-        this.createdAt = new Date();
-    }
-
-    @PreUpdate
-    public void modified_At() {
-        this.modifiedAt = new Date();
-    }
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.validators.IsTechnicalManager;
@@ -21,27 +20,28 @@ import com.yash.yotaapi.validators.IsTechnicalManager;
 @RestController
 @RequestMapping("/tests")
 public class TestController {
-	
-	@Autowired
-	private ITestService testService;
-	
 
- 	@PostMapping("/addTest")
+    @Autowired
+    private ITestService testService;
+
+
+    @PostMapping("/add-test")
     @IsTechnicalManager
     public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto) {
         return new ResponseEntity<>(this.testService.addTest(testDto), HttpStatus.OK);
     }
-		
- 	 @GetMapping("/")
-	    public ResponseEntity<List<TestDto>> fetchAllTest() {
-	        return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
-	    }
 
-	@GetMapping("/testPaper")
-	@IsAssociate
-	public ResponseEntity<Optional<TestDto>> testPaper(@RequestParam("id") Long id) {
-		Optional<TestDto> test = this.testService.findById(id);
-		return new ResponseEntity<>(test, HttpStatus.OK);
-	}
-	   
+    @GetMapping("/all-test")
+    @IsTechnicalManager
+    public ResponseEntity<List<TestDto>> fetchAllTest() {
+        return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
+    }
+
+    @GetMapping("/testPaper")
+    @IsAssociate
+    public ResponseEntity<Optional<TestDto>> testPaper(@RequestParam("id") Long id) {
+        Optional<TestDto> test = this.testService.findById(id);
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
 }

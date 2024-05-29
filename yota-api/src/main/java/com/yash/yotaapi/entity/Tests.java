@@ -1,9 +1,10 @@
 package com.yash.yotaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -27,30 +28,40 @@ public class Tests {
 
     private String testInstruction;
 
-    private String action;
+    private String type;
+
+    private String status;
 
     private LocalDateTime startDate;
+    private Date endDate;
 
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date createdAt;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date modifiedAt;
 
-    private LocalDateTime created_at;
-
-    private LocalDateTime modified_at;
-
+    private String startTime;
     private String endTime;
+
+    private int totalQuestions;
+    private int totalTime;
+
 
     @ManyToMany
     private List<YotaUser> assign;
-
     @ManyToMany
     private List<Questions> questions;
-
     @OneToOne
     private Result result;
 
-    private String testType;
-    private String testName;
-    private int totalQuestions;
-    private int totalTime;
+    @PrePersist
+    public void created_At() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    public void modified_At() {
+        this.modifiedAt = new Date();
+    }
 
 }
