@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
@@ -46,6 +47,15 @@ public class TrainingController {
     @GetMapping("/assigned-associated")
     public ResponseEntity<Trainings> assignedAssociated(@RequestParam("trainingId") Integer trainingIds) {
         return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
+    }
+
+    @PostMapping("/assign-test-to-training/{trainingId}")
+    public ResponseEntity<Trainings> assignTestToTraining(@PathVariable Long trainingId, @RequestBody TestDto testDto) {
+        Trainings training = trainingService.assignTest(trainingId, testDto.getId());
+        if (training == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(training);
     }
 
 }
