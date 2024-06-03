@@ -1,8 +1,8 @@
 package com.yash.yotaapi.controllers;
 
-import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
@@ -49,13 +49,16 @@ public class TrainingController {
         return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
     }
 
-    @PostMapping("/assign-test-to-training/{trainingId}")
-    public ResponseEntity<Trainings> assignTestToTraining(@PathVariable Long trainingId, @RequestBody TestDto testDto) {
-        Trainings training = trainingService.assignTest(trainingId, testDto.getId());
-        if (training == null) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/assign-test-to-training/{testId}")
+    public ResponseEntity<String> assignTestToTraining(@PathVariable Long testId, @RequestBody TrainingsDto trainingsDto) {
+        try {
+            trainingService.assignTest(trainingsDto.getId(), testId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Test successfully assigned to Training.");
+        } catch (ApplicationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(training);
     }
 
 }

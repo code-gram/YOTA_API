@@ -1,5 +1,6 @@
 package com.yash.yotaapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yash.yotaapi.entity.Result;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +19,12 @@ public class TestsDto {
     private String testTitle;
     private String testDescription;
     private String testInstruction;
-    private String action;
-    private String startDate;
+    private String status;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startDate;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date endDate;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date created_at;
     private Date modified_at;
     private String endTime;
