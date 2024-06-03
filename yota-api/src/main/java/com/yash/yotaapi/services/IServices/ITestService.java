@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.dto.*;
+import com.yash.yotaapi.entity.Tests;
 
 public interface ITestService {
 	public TestDto addTest(TestDto testDto);
@@ -17,4 +18,5 @@ public interface ITestService {
 
 	public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId);
 
+	public void assignTestToUser(Long testId, List<Long> userIds);
 }
