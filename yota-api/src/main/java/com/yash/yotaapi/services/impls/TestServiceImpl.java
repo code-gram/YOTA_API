@@ -149,21 +149,27 @@ public class TestServiceImpl implements ITestService {
 	public void assignTestToUser(Long testId, List<Long> userIds) {
 		Tests test = testRepository.findById(testId)
 				.orElseThrow(() -> new ApplicationException("Test with ID " + testId + " not found"));
-		List<YotaUser> users=new ArrayList<>();
-        for(Long userId: userIds){
-			YotaUser user=yotaUserRepository.findByempId(userId);
-			if(user==null){
-				throw new ApplicationException("User with ID " +userId+ " not found");
+		List<YotaUser> usersToAdd = new ArrayList<>();
+		List<Long> alreadyAssignedUserIds = new ArrayList<>();
+		for (Long userId : userIds) {
+			YotaUser user = yotaUserRepository.findByempId(userId);
+			if (user == null) {
+				throw new ApplicationException("User with ID " + userId + " not found");
 			}
-			List<Long> testIds=testRepository.getTestIdByEmailId(user.getEmailAdd());
-			for(Long testid:testIds){
-				if(testid==testId){
-					throw new ApplicationException("Test is already assign to user");
-				}
+			List<Long> assignedTestIds = testRepository.getTestIdByEmailId(user.getEmailAdd());
+			if (assignedTestIds.contains(testId)) {
+				alreadyAssignedUserIds.add(userId);
+			} else {
+				usersToAdd.add(user);
 			}
-			users.add(user);
 		}
-		test.getAssign().addAll(users);
+		if (!alreadyAssignedUserIds.isEmpty()) {
+			String alreadyAssigned = String.join(", ", alreadyAssignedUserIds.stream()
+					.map(Object::toString)
+					.collect(Collectors.toList()));
+			throw new ApplicationException("Test is already assigned to users with IDs: " + alreadyAssigned);
+		}
+		test.getAssign().addAll(usersToAdd);
 		testRepository.save(test);
 	}
 }
