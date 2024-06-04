@@ -43,14 +43,16 @@ public class Tests {
     private String startTime;
     private String endTime;
 
-    private int totalQuestions;
+    private Integer totalQuestions;
     private int totalTime;
 
 
     @ManyToMany
     private List<YotaUser> assign;
+
     @ManyToMany
     private List<Questions> questions;
+
     @OneToOne
     private Result result;
 
