@@ -9,14 +9,19 @@ import com.yash.yotaapi.dto.*;
 import com.yash.yotaapi.entity.Tests;
 
 public interface ITestService {
-	public TestDto addTest(TestDto testDto);
+    public TestDto addTest(TestDto testDto);
 
-	public List<TestDto> fetchAllTest();
+    public List<TestDto> fetchAllTest();
 
-	public List<TestsDto> getTestsByAssociateEmail(String email);
-	public Optional<TestDto> findById(Long id);
+    public List<TestsDto> getTestsByAssociateEmail(String email);
 
-	public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId);
+    public Optional<TestDto> findById(Long id);
 
-	public void assignTestToUser(Long testId, List<Long> userIds);
+    public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId);
+
+    public void assignTestToUser(Long testId, List<Long> userIds);
+
+    String addQuestionInTest(Long testId, List<Long> questionIds);
+
+    String updateTotalQuestionCount(Integer totalQuestionCount, Long testId);
 }

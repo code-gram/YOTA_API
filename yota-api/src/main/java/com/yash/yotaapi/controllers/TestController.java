@@ -53,4 +53,22 @@ public class TestController {
         }
     }
 
+    @PostMapping("/add-question-in-test")
+    @IsTechnicalManager
+    public ResponseEntity<String> addQuestionInTest(@RequestParam("testId") Long testId,
+                                                    @RequestBody List<Long> questionIds) {
+        String s = testService.addQuestionInTest(testId, questionIds);
+        String responseBody = "{\"statusCode\": 201, \"data\": \"" + s + "\"}";
+        return new ResponseEntity<>(responseBody,
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("/total-question-count")
+    @IsTechnicalManager
+    public ResponseEntity<String> updateQuestionCount(@RequestParam("totalQuestionCounts") Integer totalQuestionCount,
+                                                      @RequestParam("testIds") Long testId) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(testService.updateTotalQuestionCount(totalQuestionCount, testId));
+    }
+
 }
