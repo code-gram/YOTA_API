@@ -32,7 +32,7 @@ public class Tests {
 
     private String status;
 
-    private LocalDateTime startDate;
+    private Date startDate;
     private Date endDate;
 
     @JsonFormat(pattern = "yyyy-mm-dd")

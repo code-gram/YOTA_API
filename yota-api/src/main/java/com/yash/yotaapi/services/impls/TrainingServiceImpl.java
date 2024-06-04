@@ -132,12 +132,13 @@ public class TrainingServiceImpl implements ITrainingService {
         return trainingDTOs;
     }
 
-
-    public Trainings assignTest(Long trainingId, Long testId) {
+    public void assignTest(Long trainingId, Long testId) {
         Trainings training = trainingRepository.findById(trainingId).orElseThrow(()->new ApplicationException("Training is not available for trainingId:-"+trainingId));
         Tests test = testRepository.findById(testId).orElseThrow(()->new ApplicationException("Test is not available for testId:-"+testId));
+        if (training.getTests().stream().anyMatch(t -> t.getId() == testId)) {
+            throw new ApplicationException("Test with ID " + testId + " is already assigned to this training.");
+        }
         training.getTests().add(test);
         trainingRepository.save(training);
-        return training;
     }
 }

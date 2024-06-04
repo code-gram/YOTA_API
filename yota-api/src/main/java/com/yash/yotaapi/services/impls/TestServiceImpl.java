@@ -3,16 +3,16 @@ package com.yash.yotaapi.services.impls;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.entity.Tests;
+import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TestAvailableException;
 import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITestService;
 import io.jsonwebtoken.lang.Assert;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
@@ -28,6 +28,8 @@ public class TestServiceImpl implements ITestService {
     @Autowired
     private TestRepository testRepository;
 
+    @Autowired
+    private YotaUserRepository yotaUserRepository;
 
     @Autowired
     private ModelMapper mapper;
@@ -92,7 +94,6 @@ public class TestServiceImpl implements ITestService {
         List<Long> testIds = testRepository.getTestIdByEmailId(email);
         List<TestsDto> testsDTOs = new ArrayList<>();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         for (Long testId : testIds) {
             Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
@@ -102,8 +103,8 @@ public class TestServiceImpl implements ITestService {
                 testsDTO.setTestTitle(tests.getTestTitle());
                 testsDTO.setTestDescription(tests.getTestDescription());
                 testsDTO.setTestInstruction(tests.getTestInstruction());
-                testsDTO.setAction(tests.getStatus());
-                testsDTO.setStartDate(tests.getStartDate().format(formatter));
+                testsDTO.setStatus(tests.getStatus());
+                testsDTO.setStartDate(tests.getStartDate());
                 testsDTO.setEndDate(tests.getEndDate());
                 testsDTO.setCreated_at(tests.getCreatedAt());
                 testsDTO.setModified_at(tests.getModifiedAt());
@@ -134,8 +135,8 @@ public class TestServiceImpl implements ITestService {
         testsDTO.setTestTitle(tests.getTestTitle());
         testsDTO.setTestDescription(tests.getTestDescription());
         testsDTO.setTestInstruction(tests.getTestInstruction());
-        testsDTO.setAction(tests.getStatus());
-        testsDTO.setStartDate(tests.getStartDate().format(formatter));
+        testsDTO.setStatus(tests.getStatus());
+        testsDTO.setStartDate(tests.getStartDate());
         testsDTO.setEndDate(tests.getEndDate());
         testsDTO.setCreated_at(tests.getCreatedAt());
         testsDTO.setModified_at(tests.getModifiedAt());
@@ -143,6 +144,35 @@ public class TestServiceImpl implements ITestService {
         testsDTO.setTestType(tests.getType());
 
         return testsDTO;
+    }
+
+    @Override
+    @Transactional
+    public void assignTestToUser(Long testId, List<Long> userIds) {
+        Tests test = testRepository.findById(testId)
+                .orElseThrow(() -> new ApplicationException("Test with ID " + testId + " not found"));
+        List<YotaUser> usersToAdd = new ArrayList<>();
+        List<Long> alreadyAssignedUserIds = new ArrayList<>();
+        for (Long userId : userIds) {
+            YotaUser user = yotaUserRepository.findByempId(userId);
+            if (user == null) {
+                throw new ApplicationException("User with ID " + userId + " not found");
+            }
+            List<Long> assignedTestIds = testRepository.getTestIdByEmailId(user.getEmailAdd());
+            if (assignedTestIds.contains(testId)) {
+                alreadyAssignedUserIds.add(userId);
+            } else {
+                usersToAdd.add(user);
+            }
+        }
+        if (!alreadyAssignedUserIds.isEmpty()) {
+            String alreadyAssigned = String.join(", ", alreadyAssignedUserIds.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toList()));
+            throw new ApplicationException("Test is already assigned to users with IDs: " + alreadyAssigned);
+        }
+        test.getAssign().addAll(usersToAdd);
+        testRepository.save(test);
     }
 
     @Override

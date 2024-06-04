@@ -3,6 +3,8 @@ package com.yash.yotaapi.controllers;
 import java.util.List;
 import java.util.Optional;
 
+
+import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.validators.IsAssociate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,18 @@ public class TestController {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
+    @PostMapping("/assign-test-user/{testId}")
+    public ResponseEntity<String> assignTestToUser(@PathVariable Long testId, @RequestBody List<Long> userIds) {
+        try {
+            testService.assignTestToUser(testId, userIds);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Test successfully assigned to user.");
+        } catch (ApplicationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+    }
+
     @PostMapping("/add-question-in-test")
     @IsTechnicalManager
     public ResponseEntity<String> addQuestionInTest(@RequestParam("testId") Long testId,
@@ -46,7 +60,7 @@ public class TestController {
         String s = testService.addQuestionInTest(testId, questionIds);
         String responseBody = "{\"statusCode\": 201, \"data\": \"" + s + "\"}";
         return new ResponseEntity<>(responseBody,
-                                    HttpStatus.CREATED);
+                HttpStatus.CREATED);
     }
 
     @PutMapping("/total-question-count")
