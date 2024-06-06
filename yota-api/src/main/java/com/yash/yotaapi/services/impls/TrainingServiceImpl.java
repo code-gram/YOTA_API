@@ -160,7 +160,7 @@ public class TrainingServiceImpl implements ITrainingService {
                 .orElseThrow(() -> new TrainingException("Test is not available for testId :-" + testId, HttpStatus.BAD_REQUEST));
 
         if (training.getTests().stream().anyMatch(t -> Objects.equals(t.getId(), testId))) {
-            throw new TrainingException("Test with ID " + testId + " is already assigned to this training.", HttpStatus.BAD_REQUEST);
+            throw new TrainingException("Test is already assigned to this training.", HttpStatus.BAD_REQUEST);
         }
         training.getTests().add(test);
         trainingRepository.save(training);
