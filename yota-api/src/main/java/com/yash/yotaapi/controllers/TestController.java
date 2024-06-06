@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.services.IServices.ITestService;
 import com.yash.yotaapi.validators.IsTechnicalManager;
+import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 
 @RestController
 @RequestMapping("/tests")
@@ -23,13 +24,13 @@ public class TestController {
 
 
     @PostMapping("/add-test")
-    @IsTechnicalManager
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto) {
         return new ResponseEntity<>(this.testService.addTest(testDto), HttpStatus.OK);
     }
 
     @GetMapping("/all-test")
-    @IsTechnicalManager
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<TestDto>> fetchAllTest() {
         return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
     }
@@ -54,7 +55,7 @@ public class TestController {
     }
 
     @PostMapping("/add-question-in-test")
-    @IsTechnicalManager
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<String> addQuestionInTest(@RequestParam("testId") Long testId,
                                                     @RequestBody List<Long> questionIds) {
         String s = testService.addQuestionInTest(testId, questionIds);
@@ -64,7 +65,7 @@ public class TestController {
     }
 
     @PutMapping("/total-question-count")
-    @IsTechnicalManager
+    @IsTechnicalManagerOrTrainer
     public ResponseEntity<String> updateQuestionCount(@RequestParam("totalQuestionCounts") Integer totalQuestionCount,
                                                       @RequestParam("testIds") Long testId) {
         return ResponseEntity.status(HttpStatus.OK).
