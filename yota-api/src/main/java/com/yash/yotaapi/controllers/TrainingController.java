@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
@@ -28,8 +29,8 @@ public class TrainingController {
     }
 
     @GetMapping("/listTraining")
-    public ResponseEntity<List<Trainings>> listTraining() {
-        return new ResponseEntity<List<Trainings>>(trainingService.listTraining(), HttpStatus.OK);
+    public ResponseEntity<List<TrainingListDto>> listTraining() {
+        return new ResponseEntity<List<TrainingListDto>>(trainingService.listTraining(), HttpStatus.OK);
     }
 
     @PostMapping("/assign")
@@ -49,12 +50,13 @@ public class TrainingController {
         return ResponseEntity.status(HttpStatus.OK).body(trainingService.assignedAssociated(trainingIds));
     }
 
-    @PostMapping("/assign-test-to-training/{testId}")
-    public ResponseEntity<String> assignTestToTraining(@PathVariable Long testId, @RequestBody TrainingsDto trainingsDto) {
+    @PostMapping("/assign-test-to-training")
+    public ResponseEntity<String> assignTestToTraining(@RequestParam Long testIds, @RequestParam Long trainingIds) {
         try {
-            trainingService.assignTest(trainingsDto.getId(), testId);
+            trainingService.assignTest(testIds, trainingIds);
+            String responseBody = "{\"statusCode\": 201, \"data\": \"" + "Test successfully assigned to Training." + "\"}";
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Test successfully assigned to Training.");
+                    .body(responseBody);
         } catch (ApplicationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());

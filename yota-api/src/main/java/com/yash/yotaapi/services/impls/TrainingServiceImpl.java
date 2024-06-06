@@ -1,10 +1,12 @@
 package com.yash.yotaapi.services.impls;
 
+import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.repositories.TrainingRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
@@ -13,6 +15,7 @@ import com.yash.yotaapi.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -41,8 +45,24 @@ public class TrainingServiceImpl implements ITrainingService {
     }
 
     @Override
-    public List<Trainings> listTraining() {
-        return trainingRepository.findAll();
+    public List<TrainingListDto> listTraining() {
+        List<TrainingListDto> trainingListDtoList = new ArrayList<>();
+        List<Trainings> trainingsList = trainingRepository.findAll();
+        trainingsList.forEach(trainings -> {
+            if (Objects.nonNull(trainings)) {
+                TrainingListDto trainingListDto = new TrainingListDto();
+                trainingListDto.setId(trainings.getId());
+                trainingListDto.setTrainingName(trainings.getTrainingName());
+                trainingListDto.setAssignTo(trainings.getAssignTo());
+                trainingListDto.setStartDate(trainings.getStartDate());
+                trainingListDto.setEndDate(trainings.getEndDate());
+                trainingListDto.setStatus(trainings.getStatus());
+                trainingListDto.setTotalNominations(trainings.getTotalNominations());
+                trainingListDto.setRegisteredInTraining(trainings.getRegisteredInTraining());
+                trainingListDtoList.add(trainingListDto);
+            }
+        });
+        return trainingListDtoList;
     }
 
     @Override
@@ -96,7 +116,7 @@ public class TrainingServiceImpl implements ITrainingService {
         Trainings training = null;
         final List<YotaUser> yotaUserList = new ArrayList<>();
         final List<Object[]> trainings = trainingRepository.assignedAssociated(trainingIds);
-        if(CollectionUtils.isEmpty(trainings)) {
+        if (CollectionUtils.isEmpty(trainings)) {
             throw new ApplicationException("Training hasn't been assigned yet");
         } else {
             training = trainingRepository.findById(trainingIds.longValue()).get();
@@ -110,7 +130,7 @@ public class TrainingServiceImpl implements ITrainingService {
     }
 
 
-    public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws  ApplicationException {
+    public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws ApplicationException {
 
         List<Long> trainingIds = trainingRepository.getTrainingIdByEmailId(email);
         List<TrainingsDto> trainingDTOs = new ArrayList<>();
@@ -127,16 +147,20 @@ public class TrainingServiceImpl implements ITrainingService {
             }
         }
         if (trainingDTOs.isEmpty()) {
-            throw new ApplicationException("No training assigned to the associate with email: " +email );
+            throw new ApplicationException("No training assigned to the associate with email: " + email);
         }
         return trainingDTOs;
     }
 
     public void assignTest(Long trainingId, Long testId) {
-        Trainings training = trainingRepository.findById(trainingId).orElseThrow(()->new ApplicationException("Training is not available for trainingId:-"+trainingId));
-        Tests test = testRepository.findById(testId).orElseThrow(()->new ApplicationException("Test is not available for testId:-"+testId));
-        if (training.getTests().stream().anyMatch(t -> t.getId() == testId)) {
-            throw new ApplicationException("Test with ID " + testId + " is already assigned to this training.");
+        Trainings training = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
+
+        Tests test = testRepository.findById(testId)
+                .orElseThrow(() -> new TrainingException("Test is not available for testId :-" + testId, HttpStatus.BAD_REQUEST));
+
+        if (training.getTests().stream().anyMatch(t -> Objects.equals(t.getId(), testId))) {
+            throw new TrainingException("Test with ID " + testId + " is already assigned to this training.", HttpStatus.BAD_REQUEST);
         }
         training.getTests().add(test);
         trainingRepository.save(training);

@@ -6,19 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-/**
- * Project Name - YOTASecurityAPI
- * <p>
- * IDE Used - IntelliJ IDEA
- *
- * @author - yash.raj
- * @since - 02-04-2024
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationException extends RuntimeException {
-
+public class TrainingException extends RuntimeException{
     private String message;
+    private HttpStatus httpStatus;
 }

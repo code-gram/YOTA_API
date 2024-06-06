@@ -1,5 +1,6 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public interface ITrainingService {
 
 	Trainings addTraining (Trainings training);
 
-	List<Trainings> listTraining ();
+	List<TrainingListDto> listTraining ();
 
 	Integer assignTraining(Integer trainingId, List<String> emailId);
 
