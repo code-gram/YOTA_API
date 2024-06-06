@@ -8,7 +8,6 @@ import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.ResourceNotFoundException;
 import com.yash.yotaapi.services.IServices.ITestResultService;
 import com.yash.yotaapi.services.IServices.UserTestAnswersService;
-import com.yash.yotaapi.services.impls.TestResultServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
