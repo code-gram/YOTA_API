@@ -1,9 +1,9 @@
 package com.yash.yotaapi.controllers;
 
 import com.yash.yotaapi.dto.TrainingListDto;
-import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
@@ -62,5 +62,18 @@ public class TrainingController {
                     .body(e.getMessage());
         }
     }
+
+    @PostMapping("/assign-test-to-trainings")
+    public ResponseEntity<String> assignTestToTrainings(@RequestParam Long testIds, @RequestParam Long trainingIds) {
+        try {
+            trainingService.assignTestTraining(testIds, trainingIds);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Test successfully assigned to Training");
+        } catch (TrainingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+    }
+
 
 }
