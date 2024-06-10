@@ -1,5 +1,7 @@
 package com.yash.yotaapi.services.impls;
 
+import com.yash.yotaapi.dto.TestEmployeeResult;
+import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Tests;
@@ -25,6 +27,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -165,4 +169,48 @@ public class TrainingServiceImpl implements ITrainingService {
         training.getTests().add(test);
         trainingRepository.save(training);
     }
+
+	@Override
+	public List<TprReportDto> getTprReport(Integer trainingId) {
+		// TODO Auto-generated method stub
+		
+		Function<Object[],TprReportDto> myfun=(f)-> {
+			
+			
+			TprReportDto tpr=new TprReportDto();
+			tpr.setTid(trainingId);
+			if(f[1]!=null)
+			tpr.setTrainingName(f[1].toString());
+			if(f[2]!=null)
+			tpr.setEmailId(f[2].toString());
+			if(f[3]!=null)
+			tpr.setEmpName(f[3].toString());
+			if(f[4]!=null)
+			tpr.setEmployeeId(Integer.parseInt(f[4].toString()));
+			if(f[5]!=null)
+			tpr.setAvgPercentageMarks(Double.valueOf(f[5].toString()));
+						
+			return tpr;
+		};
+		
+		return trainingRepository.getTprReport(trainingId).stream().map(myfun).collect(Collectors.toList());
+		
+	}
+
+	@Override
+	public List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId, Integer empId) {
+		// TODO Auto-generated method stub
+		//TestEmployeeResult r;
+		Function<Object[],TestEmployeeResult> myfun=(f)->{
+			System.out.println(f);
+			TestEmployeeResult r=new TestEmployeeResult();
+			if(f[0]!=null)r.setTestName(f[0].toString());
+			if(f[1]!=null)r.setEmpName(f[1].toString());
+			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
+			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
+			
+			
+			return r;};		
+		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
+	}
 }
