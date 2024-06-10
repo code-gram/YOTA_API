@@ -27,6 +27,4 @@ public class TrainingListDto {
     private int totalNominations;
 
     private int registeredInTraining;
-
-    private int totalAssociateCount;
 }
