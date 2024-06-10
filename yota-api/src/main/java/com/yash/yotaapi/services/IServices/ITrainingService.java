@@ -17,4 +17,7 @@ public interface ITrainingService {
 	Integer updateRegisteredCount(Integer trainingId, Integer registeredCount);
 
 	Trainings assignedAssociated(Integer trainingId);
+
+	public void assignTestTraining(Long trainingId, Long testId);
+
 }
