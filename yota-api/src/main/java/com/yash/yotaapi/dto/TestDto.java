@@ -25,4 +25,5 @@ public class TestDto {
     private int totalQuestions;
     private int totalMarks;
     private int totalTime;
+    private int totalAssociateCount;
 }

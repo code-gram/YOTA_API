@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
 @Repository
@@ -36,5 +38,8 @@ public interface TrainingRepository extends JpaRepository<Trainings, Long> {
 
     @Query(value = "select * from trainings where id= :id", nativeQuery = true)
     Trainings getTrainingById(@Param("id") Long trainingId);
+
+    @Query(value = "SELECT COUNT(emp_id) FROM user_training_test WHERE test_id= :testId", nativeQuery = true)
+    Integer countAssociateToAddedTraining(@Param("testId") Long testIds);
 
 }

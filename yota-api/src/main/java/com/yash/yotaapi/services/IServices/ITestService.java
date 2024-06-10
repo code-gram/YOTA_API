@@ -24,4 +24,6 @@ public interface ITestService {
     String addQuestionInTest(Long testId, List<Long> questionIds);
 
     String updateTotalQuestionCount(Integer totalQuestionCount, Long testId);
+
+    void updateTotalAssociateCount(Integer totalAssociateCount, Long testId);
 }

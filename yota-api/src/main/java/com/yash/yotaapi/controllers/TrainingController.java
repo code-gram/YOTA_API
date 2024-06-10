@@ -51,9 +51,9 @@ public class TrainingController {
     }
 
     @PostMapping("/assign-test-to-training")
-    public ResponseEntity<String> assignTestToTraining(@RequestParam Long testIds, @RequestParam Long trainingIds) {
+    public ResponseEntity<String> assignTestToTrainings(@RequestParam Long testIds, @RequestParam Long trainingIds) {
         try {
-            trainingService.assignTest(testIds, trainingIds);
+            trainingService.assignTestTraining(testIds, trainingIds);
             String responseBody = "{\"statusCode\": 201, \"data\": \"" + "Test successfully assigned to Training." + "\"}";
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(responseBody);
@@ -63,17 +63,9 @@ public class TrainingController {
         }
     }
 
-    @PostMapping("/assign-test-to-trainings")
-    public ResponseEntity<String> assignTestToTrainings(@RequestParam Long testIds, @RequestParam Long trainingIds) {
-        try {
-            trainingService.assignTestTraining(testIds, trainingIds);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Test successfully assigned to Training");
-        } catch (TrainingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+    @GetMapping("/count-associate-to-added-training")
+    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
+         trainingService.countAssociateToAddedTraining(testIds);
     }
-
 
 }

@@ -45,5 +45,10 @@ public interface TestRepository extends JpaRepository<Tests, Long>  {
 	@Transactional
 	@Query("update Tests t set t.totalQuestions=?1 where t.id=?2")
 	Integer updateTotalQuestionCount(Integer totalQuestions, Long id);
+
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Transactional
+	@Query("update Tests t set t.totalAssociateCount=?1 where t.id=?2")
+    Integer updateTotalAssociateCount(Integer totalAssociateCount, Long testId);
 }
 
