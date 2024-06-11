@@ -23,10 +23,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Slf4j
@@ -63,6 +66,7 @@ public class TrainingServiceImpl implements ITrainingService {
                 trainingListDto.setStatus(trainings.getStatus());
                 trainingListDto.setTotalNominations(trainings.getTotalNominations());
                 trainingListDto.setRegisteredInTraining(trainings.getRegisteredInTraining());
+
                 trainingListDtoList.add(trainingListDto);
             }
         });
@@ -134,7 +138,7 @@ public class TrainingServiceImpl implements ITrainingService {
     }
 
     @Override
-    public void assignTestTraining(Long trainingId, Long testId) {
+    public void assignTestTraining(Long testId, Long trainingId) {
 
         Trainings training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
@@ -149,17 +153,19 @@ public class TrainingServiceImpl implements ITrainingService {
         }
 
         List<UserTrainingTest> userTrainingTests = new ArrayList<>();
-        for (YotaUser user : training.getAssign()) {
-            UserTrainingTest userTrainingTest = new UserTrainingTest();
-            userTrainingTest.setUser(user);
-            userTrainingTest.setTrainings(training);
-            userTrainingTest.setTest(test);
-            userTrainingTests.add(userTrainingTest);
+        if (training.getAssign().isEmpty()) {
+            throw new TrainingException("No users are assigned to this training. Cannot assign test.", HttpStatus.BAD_REQUEST);
+        } else {
+            for (YotaUser user : training.getAssign()) {
+                UserTrainingTest userTrainingTest = new UserTrainingTest();
+                userTrainingTest.setUser(user);
+                userTrainingTest.setTrainings(training);
+                userTrainingTest.setTest(test);
+                userTrainingTests.add(userTrainingTest);
+            }
+            userTrainingTestRepository.saveAll(userTrainingTests);
         }
-
-        userTrainingTestRepository.saveAll(userTrainingTests);
     }
-
 
     public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws ApplicationException {
 
@@ -183,17 +189,14 @@ public class TrainingServiceImpl implements ITrainingService {
         return trainingDTOs;
     }
 
-    public void assignTest(Long trainingId, Long testId) {
-        Trainings training = trainingRepository.findById(trainingId)
-                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
-
-        Tests test = testRepository.findById(testId)
-                .orElseThrow(() -> new TrainingException("Test is not available for testId :-" + testId, HttpStatus.BAD_REQUEST));
-
-        if (training.getTests().stream().anyMatch(t -> Objects.equals(t.getId(), testId))) {
-            throw new TrainingException("Test is already assigned to this training.", HttpStatus.BAD_REQUEST);
+    @Override
+    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
+        Integer count = trainingRepository.countAssociateToAddedTraining(testIds);
+        System.out.println("count = " + count);
+        if(count > 0) {
+            testRepository.updateTotalAssociateCount(count, testIds);
         }
-        training.getTests().add(test);
-        trainingRepository.save(training);
     }
+
+
 }

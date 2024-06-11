@@ -198,4 +198,9 @@ public class TestServiceImpl implements ITestService {
             return "Something went wrong while updating question count";
         }
     }
+
+    @Override
+    public void updateTotalAssociateCount(Integer totalAssociateCount, Long testId) {
+        testRepository.updateTotalAssociateCount(totalAssociateCount, testId);
+    }
 }
