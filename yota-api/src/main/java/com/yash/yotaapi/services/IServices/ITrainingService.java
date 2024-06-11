@@ -1,5 +1,7 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.TestEmployeeResult;
+import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,4 +25,6 @@ public interface ITrainingService {
     void assignTestTraining(Long trainingId, Long testId);
 
     void countAssociateToAddedTraining(Long testId);
+    List<TprReportDto> getTprReport(Integer trainingId);
+    List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId,Integer empId);
 }

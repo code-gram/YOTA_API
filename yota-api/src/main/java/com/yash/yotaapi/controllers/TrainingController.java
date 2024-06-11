@@ -1,5 +1,7 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.TestEmployeeResult;
+import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
@@ -62,6 +64,16 @@ public class TrainingController {
                     .body(e.getMessage());
         }
     }
+    
+    @GetMapping("/getTprReport/{trainingId}")
+    public ResponseEntity<List<TprReportDto>> getTprReport(@PathVariable("trainingId") Integer trainingIds) {
+        return ResponseEntity.status(HttpStatus.OK).body(trainingService.getTprReport(trainingIds));
+    }
+    @GetMapping("/getEmpWiseTstDtls/{trainingId}/{empId}")
+    public ResponseEntity<List<TestEmployeeResult>> getEmployeWiseTestRpt(@PathVariable("trainingId") Integer trainingIds,@PathVariable("empId") Integer empId) {
+    	return ResponseEntity.status(HttpStatus.OK).body(trainingService.getEmployeeWiseTestDetails(trainingIds, empId));
+    }
+
 
     @GetMapping("/count-associate-to-added-training")
     public void countAssociateToAddedTraining(@RequestParam Long testIds) {
