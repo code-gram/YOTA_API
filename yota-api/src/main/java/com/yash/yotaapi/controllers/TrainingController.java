@@ -3,9 +3,9 @@ package com.yash.yotaapi.controllers;
 import com.yash.yotaapi.dto.TestEmployeeResult;
 import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
-import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
@@ -53,9 +53,9 @@ public class TrainingController {
     }
 
     @PostMapping("/assign-test-to-training")
-    public ResponseEntity<String> assignTestToTraining(@RequestParam Long testIds, @RequestParam Long trainingIds) {
+    public ResponseEntity<String> assignTestToTrainings(@RequestParam Long testIds, @RequestParam Long trainingIds) {
         try {
-            trainingService.assignTest(testIds, trainingIds);
+            trainingService.assignTestTraining(testIds, trainingIds);
             String responseBody = "{\"statusCode\": 201, \"data\": \"" + "Test successfully assigned to Training." + "\"}";
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(responseBody);
@@ -74,5 +74,10 @@ public class TrainingController {
     	return ResponseEntity.status(HttpStatus.OK).body(trainingService.getEmployeeWiseTestDetails(trainingIds, empId));
     }
 
+
+    @GetMapping("/count-associate-to-added-training")
+    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
+         trainingService.countAssociateToAddedTraining(testIds);
+    }
 
 }

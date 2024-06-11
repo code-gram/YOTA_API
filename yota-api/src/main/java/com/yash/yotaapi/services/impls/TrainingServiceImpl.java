@@ -6,11 +6,13 @@ import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.dto.TrainingsDto;
 import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.entity.UserTrainingTest;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.repositories.TestRepository;
 import com.yash.yotaapi.repositories.TrainingRepository;
+import com.yash.yotaapi.repositories.UserTrainingTestRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITrainingService;
 import com.yash.yotaapi.util.DateUtil;
@@ -23,10 +25,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,6 +47,8 @@ public class TrainingServiceImpl implements ITrainingService {
 
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private UserTrainingTestRepository userTrainingTestRepository;
 
     @Override
     public Trainings addTraining(Trainings training) {
@@ -63,6 +70,7 @@ public class TrainingServiceImpl implements ITrainingService {
                 trainingListDto.setStatus(trainings.getStatus());
                 trainingListDto.setTotalNominations(trainings.getTotalNominations());
                 trainingListDto.setRegisteredInTraining(trainings.getRegisteredInTraining());
+
                 trainingListDtoList.add(trainingListDto);
             }
         });
@@ -133,6 +141,35 @@ public class TrainingServiceImpl implements ITrainingService {
         return training;
     }
 
+    @Override
+    public void assignTestTraining(Long testId, Long trainingId) {
+
+        Trainings training = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
+
+        Tests test = testRepository.findById(testId)
+                .orElseThrow(() -> new TrainingException("Test is not available for testId :-" + testId, HttpStatus.BAD_REQUEST));
+
+        boolean alreadyAssigned = userTrainingTestRepository.existsByTrainingsIdAndTestId(trainingId, testId);
+
+        if (alreadyAssigned) {
+            throw new TrainingException("Test is already assigned to training.", HttpStatus.BAD_REQUEST);
+        }
+
+        List<UserTrainingTest> userTrainingTests = new ArrayList<>();
+        if (training.getAssign().isEmpty()) {
+            throw new TrainingException("No users are assigned to this training. Cannot assign test.", HttpStatus.BAD_REQUEST);
+        } else {
+            for (YotaUser user : training.getAssign()) {
+                UserTrainingTest userTrainingTest = new UserTrainingTest();
+                userTrainingTest.setUser(user);
+                userTrainingTest.setTrainings(training);
+                userTrainingTest.setTest(test);
+                userTrainingTests.add(userTrainingTest);
+            }
+            userTrainingTestRepository.saveAll(userTrainingTests);
+        }
+    }
 
     public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws ApplicationException {
 
@@ -156,61 +193,58 @@ public class TrainingServiceImpl implements ITrainingService {
         return trainingDTOs;
     }
 
-    public void assignTest(Long trainingId, Long testId) {
-        Trainings training = trainingRepository.findById(trainingId)
-                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
-
-        Tests test = testRepository.findById(testId)
-                .orElseThrow(() -> new TrainingException("Test is not available for testId :-" + testId, HttpStatus.BAD_REQUEST));
-
-        if (training.getTests().stream().anyMatch(t -> Objects.equals(t.getId(), testId))) {
-            throw new TrainingException("Test is already assigned to this training.", HttpStatus.BAD_REQUEST);
+    @Override
+    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
+        Integer count = trainingRepository.countAssociateToAddedTraining(testIds);
+        System.out.println("count = " + count);
+        if(count > 0) {
+            testRepository.updateTotalAssociateCount(count, testIds);
         }
-        training.getTests().add(test);
-        trainingRepository.save(training);
     }
+    
+    @Override
+ 	public List<TprReportDto> getTprReport(Integer trainingId) {
+ 		// TODO Auto-generated method stub
+ 		
+ 		Function<Object[],TprReportDto> myfun=(f)-> {
+ 			
+ 			
+ 			TprReportDto tpr=new TprReportDto();
+ 			tpr.setTid(trainingId);
+ 			if(f[1]!=null)
+ 			tpr.setTrainingName(f[1].toString());
+ 			if(f[2]!=null)
+ 			tpr.setEmailId(f[2].toString());
+ 			if(f[3]!=null)
+ 			tpr.setEmpName(f[3].toString());
+ 			if(f[4]!=null)
+ 			tpr.setEmployeeId(Integer.parseInt(f[4].toString()));
+ 			if(f[5]!=null)
+ 			tpr.setAvgPercentageMarks(Double.valueOf(f[5].toString()));
+ 						
+ 			return tpr;
+ 		};
+ 		
+ 		return trainingRepository.getTprReport(trainingId).stream().map(myfun).collect(Collectors.toList());
+ 		
+ 	}
+ 
+ 	@Override
+ 	public List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId, Integer empId) {
+ 		// TODO Auto-generated method stub
+ 		//TestEmployeeResult r;
+ 		Function<Object[],TestEmployeeResult> myfun=(f)->{
+ 			System.out.println(f);
+ 			TestEmployeeResult r=new TestEmployeeResult();
+ 			if(f[0]!=null)r.setTestName(f[0].toString());
+ 			if(f[1]!=null)r.setEmpName(f[1].toString());
+ 			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
+ 			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
+ 			
+ 			
+ 			return r;};		
+ 		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
+ 	}
 
-	@Override
-	public List<TprReportDto> getTprReport(Integer trainingId) {
-		// TODO Auto-generated method stub
-		
-		Function<Object[],TprReportDto> myfun=(f)-> {
-			
-			
-			TprReportDto tpr=new TprReportDto();
-			tpr.setTid(trainingId);
-			if(f[1]!=null)
-			tpr.setTrainingName(f[1].toString());
-			if(f[2]!=null)
-			tpr.setEmailId(f[2].toString());
-			if(f[3]!=null)
-			tpr.setEmpName(f[3].toString());
-			if(f[4]!=null)
-			tpr.setEmployeeId(Integer.parseInt(f[4].toString()));
-			if(f[5]!=null)
-			tpr.setAvgPercentageMarks(Double.valueOf(f[5].toString()));
-						
-			return tpr;
-		};
-		
-		return trainingRepository.getTprReport(trainingId).stream().map(myfun).collect(Collectors.toList());
-		
-	}
 
-	@Override
-	public List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId, Integer empId) {
-		// TODO Auto-generated method stub
-		//TestEmployeeResult r;
-		Function<Object[],TestEmployeeResult> myfun=(f)->{
-			System.out.println(f);
-			TestEmployeeResult r=new TestEmployeeResult();
-			if(f[0]!=null)r.setTestName(f[0].toString());
-			if(f[1]!=null)r.setEmpName(f[1].toString());
-			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
-			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
-			
-			
-			return r;};		
-		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
-	}
 }
