@@ -80,21 +80,27 @@ public class TrainingServiceImpl implements ITrainingService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Integer assignTraining(Integer trainingId, List<String> emailId) {
-        final List<Integer> resultList = new ArrayList<>();
-        Integer registerCounts = 0;
+        final List<String> alreadyRegisteredEmails = new ArrayList<>();
+        List<YotaUser> usersToAdd = new ArrayList<>();
+        Integer registeredCount = 0;
         if (CollectionUtils.isEmpty(emailId)) {
-            throw new ApplicationException("Email is empty");
-        } else {
-            emailId.forEach(email -> {
-                Integer added = trainingRepository.addAssignTraining(trainingId, email);
-                resultList.add(added);
-            });
+            throw new ApplicationException("Email list is empty");
+        }
 
-            if (!CollectionUtils.isEmpty(resultList)) {
-                registerCounts = registeredCount(trainingId);
+        for (String email : emailId) {
+            if (trainingRepository.existsByTrainingsIdAndEmail(trainingId, email)>0) {
+                alreadyRegisteredEmails.add(email);
+            } else {
+                trainingRepository.addAssignTraining(trainingId, email);
+                registeredCount++;
             }
         }
-        return registerCounts;
+
+        if (!alreadyRegisteredEmails.isEmpty()) {
+            throw new ApplicationException("Following users are already assigned to the training: " + alreadyRegisteredEmails);
+        }
+        registeredCount = registeredCount(trainingId);
+        return registeredCount;
     }
 
     @Override

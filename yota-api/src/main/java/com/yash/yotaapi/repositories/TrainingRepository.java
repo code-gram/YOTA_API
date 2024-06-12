@@ -68,4 +68,7 @@ public interface TrainingRepository extends JpaRepository<Trainings, Long> {
     @Query(value = "SELECT COUNT(test_id) FROM user_training_test WHERE test_id= :testId", nativeQuery = true)
     Integer countAssociateToAddedTraining(@Param("testId") Long testIds);
 
+    @Query(value="select count(trainings_id) > 0 from trainings_assign where trainings_id= :trainingId AND assign_email_add = :email", nativeQuery = true)
+     Integer existsByTrainingsIdAndEmail(Integer trainingId, String email);
+
 }
