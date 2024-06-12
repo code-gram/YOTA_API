@@ -16,4 +16,10 @@ public class TestResultDto {
 
     private Long result;
 
+    private String startTime;
+
+    private String endTime;
+
+    private String timeTaken;
+
 }

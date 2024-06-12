@@ -8,4 +8,6 @@ public interface ITestResultService {
 
     public TestResult saveTestResult(TestResultDto testResultDto);
 
+    public TestResult updateTestResult(TestResultDto testResultDto);
+
     }
