@@ -1,5 +1,7 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.TestEmployeeResult;
+import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 
@@ -23,5 +25,10 @@ public interface ITrainingService {
 
     void assignTestTraining(Long trainingId, Long testId);
 
+
     public Set<Map<String, Object>> getAllAssignedTraining();
+
+    void countAssociateToAddedTraining(Long testId);
+    List<TprReportDto> getTprReport(Integer trainingId);
+    List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId,Integer empId);
 }

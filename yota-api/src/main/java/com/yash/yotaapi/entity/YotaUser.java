@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * Project Name - YOTASecurityAPI
@@ -30,7 +31,7 @@ import javax.persistence.Transient;
 @AllArgsConstructor
 @Entity
 @Table(name = "yota_user")
-public class YotaUser {
+public class YotaUser implements Serializable {
 
     @Column(name = "emp_id", unique = true, nullable = false)
     private Long empId;

@@ -43,5 +43,22 @@ public class TestResultServiceImpl implements ITestResultService {
         return testResult1;
     }
 
+    @Override
+    public TestResult updateTestResult(TestResultDto testResultDto) {
+        YotaUser yotaUser = yotaUserRepository.getUserByEmail(testResultDto.getUserEmailId());
+        if (yotaUser == null) {
+            throw new ResourceNotFoundException("User not found with email: " + testResultDto.getUserEmailId());
+        }
+        TestResult existingTestResult = testResultRepository.findByTestIdAndUserIdAndResult(testResultDto.getTestId(), yotaUser.getEmpId(),testResultDto.getResult())
+       .orElseThrow(() -> new ResourceNotFoundException("Test result not found for test ID: " + testResultDto.getTestId() + " and user ID: " + yotaUser.getEmpId()));
+
+        existingTestResult.setStartTime(testResultDto.getStartTime());
+        existingTestResult.setEndTime(testResultDto.getEndTime());
+        existingTestResult.setTimeTaken(testResultDto.getTimeTaken());
+
+        return testResultRepository.save(existingTestResult);
+
+    }
+
 
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,19 @@ public class UserTestAnswersController {
                 throw new ApplicationException("Test Not Submitted");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body("Test Submitted successfully");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-result")
+    public ResponseEntity<String> updateTestResult(@RequestBody TestResultDto testResultDto) {
+        try{
+            TestResult testResult=testResultService.updateTestResult(testResultDto);
+            if(testResult==null){
+                throw new ApplicationException("Test Not Submitted and Close");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("Test Submitted And Close successfully");
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

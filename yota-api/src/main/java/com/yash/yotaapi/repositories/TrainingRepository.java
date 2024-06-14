@@ -39,10 +39,40 @@ public interface TrainingRepository extends JpaRepository<Trainings, Long> {
 
     @Query(value = "select * from trainings where id= :id", nativeQuery = true)
     Trainings getTrainingById(@Param("id") Long trainingId);
+    
+
+    @Query(value = "select tr.id,tr.training_name,u.email_add,u.full_name,u.emp_id, round(sum(r.`result`)*100/sum(tst.max_marks),1) as avginpercentage"
+    		+ " from trainings tr,training_test_assign trt,tests tst,test_results r,yota_user u"
+    		+ "  where tr.id=:trainingId"
+    		+ " and tr.id=trt.training_id"
+    		+ " and tst.test_id=trt.test_id"
+    		+ "  and r.test_id=trt.test_id"
+    		+ " and u.emp_id=r.user_id "
+    		+ "  group by tr.id,tr.training_name,u.email_add,full_name,u.emp_id"
+    		+ "  order by u.full_name", nativeQuery = true)
+    List<Object[]> getTprReport(@Param("trainingId") Integer trainingId);
+    
+    @Query(value = ""
+    		+ "select tst.test_title,u.full_name,u.emp_id,r.`result`,"
+    		+ "round((r.`result`)*100/(tst.max_marks),1) as avginpercentage"
+    		+ " from trainings tr,training_test_assign trt,tests tst,test_results r,yota_user u"
+    		+ "  where tr.id=:trainingId"
+    		+ " and tr.id=trt.training_id"
+    		+ " and tst.test_id=trt.test_id"
+    		+ "  and r.test_id=trt.test_id"
+    		+ " and u.emp_id=r.user_id "
+    		+ " and u.emp_id=:empId"
+    		+ "  order by tst.test_title", nativeQuery = true)
+    List<Object[]> getEmployeeWiseTestReport(@Param("trainingId") Integer trainingId,@Param("empId") Integer empId);
+
 
     @Query(value = "SELECT COUNT(test_id) FROM user_training_test WHERE test_id= :testId", nativeQuery = true)
     Integer countAssociateToAddedTraining(@Param("testId") Long testIds);
 
     @Query(value = "select * from trainings_assign", nativeQuery = true)
     List<?> getAllAssignedTraining();
+
+    @Query(value="select count(trainings_id) > 0 from trainings_assign where trainings_id= :trainingId AND assign_email_add = :email", nativeQuery = true)
+     Integer existsByTrainingsIdAndEmail(Integer trainingId, String email);
+
 }
