@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.services.IServices.ITestService;
-import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 
 @RestController
@@ -21,7 +20,6 @@ public class TestController {
 
     @Autowired
     private ITestService testService;
-
 
     @PostMapping("/add-test")
     @IsTechnicalManagerOrTrainer
@@ -42,12 +40,14 @@ public class TestController {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    @PostMapping("/assign-test-user/{testId}")
-    public ResponseEntity<String> assignTestToUser(@PathVariable Long testId, @RequestBody List<Long> userIds) {
+    @PostMapping("/assign-test-individual-associate")
+    public ResponseEntity<String> assignTestToUser(@RequestParam("testIds") Long testId,
+                                                   @RequestParam("trainingIds") Long trainingId,
+                                                   @RequestParam("userIds") Long userId) {
         try {
-            testService.assignTestToUser(testId, userIds);
+            testService.assignTestToUser(testId, trainingId, userId);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Test successfully assigned to user.");
+                    .body("Test successfully assigned to individual associate.");
         } catch (ApplicationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
@@ -63,13 +63,4 @@ public class TestController {
         return new ResponseEntity<>(responseBody,
                 HttpStatus.CREATED);
     }
-
-    @PutMapping("/total-question-count")
-    @IsTechnicalManagerOrTrainer
-    public ResponseEntity<String> updateQuestionCount(@RequestParam("totalQuestionCounts") Integer totalQuestionCount,
-                                                      @RequestParam("testIds") Long testId) {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(testService.updateTotalQuestionCount(totalQuestionCount, testId));
-    }
-
 }

@@ -2,9 +2,10 @@ package com.yash.yotaapi.services.IServices;
 
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface ITrainingService {
 
@@ -22,5 +23,5 @@ public interface ITrainingService {
 
     void assignTestTraining(Long trainingId, Long testId);
 
-    void countAssociateToAddedTraining(Long testId);
+    public Set<Map<String, Object>> getAllAssignedTraining();
 }
