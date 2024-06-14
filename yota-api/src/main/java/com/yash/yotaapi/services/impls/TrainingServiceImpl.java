@@ -25,11 +25,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -149,7 +145,7 @@ public class TrainingServiceImpl implements ITrainingService {
 
     @Override
     public void assignTestTraining(Long testId, Long trainingId) {
-
+        AtomicInteger atomicInteger = new AtomicInteger(1);
         Trainings training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
 
@@ -173,6 +169,9 @@ public class TrainingServiceImpl implements ITrainingService {
                 userTrainingTest.setTest(test);
                 userTrainingTests.add(userTrainingTest);
             }
+            Integer count = trainingRepository.countAssociateToAddedTraining(testId);
+            int totalCount = count + atomicInteger.getAndIncrement();
+            testRepository.updateTotalAssociateCount(totalCount, testId);
             userTrainingTestRepository.saveAll(userTrainingTests);
         }
     }
@@ -199,15 +198,20 @@ public class TrainingServiceImpl implements ITrainingService {
         return trainingDTOs;
     }
 
-    @Override
-    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
-        Integer count = trainingRepository.countAssociateToAddedTraining(testIds);
-        System.out.println("count = " + count);
-        if(count > 0) {
-            testRepository.updateTotalAssociateCount(count, testIds);
-        }
+    public Set<Map<String, Object>> getAllAssignedTraining() {
+        List<?> allAssignedTraining = trainingRepository.getAllAssignedTraining();
+        return allAssignedTraining.stream()
+                .map(training -> {
+                    Map<String, Object> mapList = new HashMap<>();
+                    Object[] row = (Object[]) training;
+                    mapList.put("email", row[1]);
+                    YotaUser userByEmail = yotaUserRepository.getUserByEmail((String) mapList.get("email"));
+                    mapList.put("userId", userByEmail.getEmpId());
+                    mapList.put("userName", userByEmail.getFullName());
+                    return mapList;
+                }).collect(Collectors.toSet());
     }
-    
+
     @Override
  	public List<TprReportDto> getTprReport(Integer trainingId) {
  		// TODO Auto-generated method stub
@@ -251,6 +255,5 @@ public class TrainingServiceImpl implements ITrainingService {
  			return r;};		
  		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
  	}
-
 
 }

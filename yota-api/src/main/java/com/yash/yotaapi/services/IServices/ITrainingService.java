@@ -4,9 +4,10 @@ import com.yash.yotaapi.dto.TestEmployeeResult;
 import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface ITrainingService {
 
@@ -23,6 +24,9 @@ public interface ITrainingService {
     Trainings assignedAssociated(Integer trainingId);
 
     void assignTestTraining(Long trainingId, Long testId);
+
+
+    public Set<Map<String, Object>> getAllAssignedTraining();
 
     void countAssociateToAddedTraining(Long testId);
     List<TprReportDto> getTprReport(Integer trainingId);

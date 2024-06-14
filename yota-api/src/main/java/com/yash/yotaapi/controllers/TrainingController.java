@@ -5,7 +5,6 @@ import com.yash.yotaapi.dto.TprReportDto;
 import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
-import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
@@ -15,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/training")
@@ -75,9 +76,9 @@ public class TrainingController {
     }
 
 
-    @GetMapping("/count-associate-to-added-training")
-    public void countAssociateToAddedTraining(@RequestParam Long testIds) {
-         trainingService.countAssociateToAddedTraining(testIds);
+    @GetMapping("/get-all-assigned-training")
+    public Set<Map<String, Object>> getAllAssignedTraining() {
+        return trainingService.getAllAssignedTraining();
     }
 
 }

@@ -3,15 +3,21 @@ package com.yash.yotaapi.services.impls;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
 import com.yash.yotaapi.entity.Tests;
+import com.yash.yotaapi.entity.Trainings;
+import com.yash.yotaapi.entity.UserTrainingTest;
 import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TestAvailableException;
+import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.repositories.TrainingRepository;
+import com.yash.yotaapi.repositories.UserTrainingTestRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITestService;
 import io.jsonwebtoken.lang.Assert;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +39,12 @@ public class TestServiceImpl implements ITestService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private UserTrainingTestRepository userTrainingTestRepository;
+
+    @Autowired
+    private TrainingRepository trainingRepository;
 
     @Override
     public TestDto addTest(TestDto testDto) {
@@ -148,31 +160,32 @@ public class TestServiceImpl implements ITestService {
 
     @Override
     @Transactional
-    public void assignTestToUser(Long testId, List<Long> userIds) {
+    public void assignTestToUser(Long testId, Long trainingId, Long empId) {
+        AtomicInteger atomicInteger = new AtomicInteger(1);
+        boolean alreadyExit = userTrainingTestRepository.existsByTestIdAndTrainingsIdAndUserEmpId(testId, trainingId, empId);
         Tests test = testRepository.findById(testId)
                 .orElseThrow(() -> new ApplicationException("Test with ID " + testId + " not found"));
-        List<YotaUser> usersToAdd = new ArrayList<>();
-        List<Long> alreadyAssignedUserIds = new ArrayList<>();
-        for (Long userId : userIds) {
-            YotaUser user = yotaUserRepository.findByempId(userId);
-            if (user == null) {
-                throw new ApplicationException("User with ID " + userId + " not found");
-            }
-            List<Long> assignedTestIds = testRepository.getTestIdByEmailId(user.getEmailAdd());
-            if (assignedTestIds.contains(testId)) {
-                alreadyAssignedUserIds.add(userId);
-            } else {
-                usersToAdd.add(user);
-            }
+
+        Trainings training = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
+
+        YotaUser user = yotaUserRepository.findByempId(empId);
+        if (user == null) {
+            throw new ApplicationException("User with ID " + empId + " not found");
         }
-        if (!alreadyAssignedUserIds.isEmpty()) {
-            String alreadyAssigned = String.join(", ", alreadyAssignedUserIds.stream()
-                    .map(Object::toString)
-                    .collect(Collectors.toList()));
-            throw new ApplicationException("Test is already assigned to users with IDs: " + alreadyAssigned);
+
+        if (alreadyExit) {
+            throw new TrainingException("This data is already present", HttpStatus.BAD_REQUEST);
+        } else {
+            UserTrainingTest userTrainingTest = new UserTrainingTest();
+            userTrainingTest.setUser(user);
+            userTrainingTest.setTrainings(training);
+            userTrainingTest.setTest(test);
+            Integer count = trainingRepository.countAssociateToAddedTraining(testId);
+            int totalCount = count + atomicInteger.getAndIncrement();
+            testRepository.updateTotalAssociateCount(totalCount, testId);
+            userTrainingTestRepository.save(userTrainingTest);
         }
-        test.getAssign().addAll(usersToAdd);
-        testRepository.save(test);
     }
 
     @Override
@@ -199,8 +212,4 @@ public class TestServiceImpl implements ITestService {
         }
     }
 
-    @Override
-    public void updateTotalAssociateCount(Integer totalAssociateCount, Long testId) {
-        testRepository.updateTotalAssociateCount(totalAssociateCount, testId);
-    }
 }

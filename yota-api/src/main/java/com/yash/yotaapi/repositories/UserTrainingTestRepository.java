@@ -10,4 +10,6 @@ public interface UserTrainingTestRepository extends JpaRepository<UserTrainingTe
 
     boolean existsByTrainingsIdAndTestId(Long trainingId, Long testId);
 
+    boolean existsByTestIdAndTrainingsIdAndUserEmpId(Long testId, Long trainingId, Long empId);
+
 }
