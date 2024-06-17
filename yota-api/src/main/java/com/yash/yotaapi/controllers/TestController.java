@@ -2,8 +2,6 @@ package com.yash.yotaapi.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
-
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.validators.IsAssociate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +59,13 @@ public class TestController {
         String s = testService.addQuestionInTest(testId, questionIds);
         String responseBody = "{\"statusCode\": 201, \"data\": \"" + s + "\"}";
         return new ResponseEntity<>(responseBody,
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("/total-question-count")
+    public ResponseEntity<String> updateTotalQuestionCount(@RequestParam("totalQuestionCounts") Integer totalQuestionCount,
+                                                           @RequestParam("testIds") Long testId) {
+        return new ResponseEntity<>(testService.updateTotalQuestionCount(totalQuestionCount, testId),
                 HttpStatus.CREATED);
     }
 }
