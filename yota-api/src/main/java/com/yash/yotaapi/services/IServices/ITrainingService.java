@@ -28,7 +28,7 @@ public interface ITrainingService {
 
     public Set<Map<String, Object>> getAllAssignedTraining();
 
-    void countAssociateToAddedTraining(Long testId);
+    //void countAssociateToAddedTraining(Long testId);
     List<TprReportDto> getTprReport(Integer trainingId);
     List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId,Integer empId);
 }
