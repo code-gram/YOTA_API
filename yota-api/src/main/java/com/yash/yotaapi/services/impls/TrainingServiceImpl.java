@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -159,18 +158,20 @@ public class TrainingServiceImpl implements ITrainingService {
         }
 
         List<UserTrainingTest> userTrainingTests = new ArrayList<>();
+        int totalCount = 0;
         if (training.getAssign().isEmpty()) {
             throw new TrainingException("No users are assigned to this training. Cannot assign test.", HttpStatus.BAD_REQUEST);
         } else {
             for (YotaUser user : training.getAssign()) {
+                Tests t = new Tests();
                 UserTrainingTest userTrainingTest = new UserTrainingTest();
                 userTrainingTest.setUser(user);
                 userTrainingTest.setTrainings(training);
                 userTrainingTest.setTest(test);
                 userTrainingTests.add(userTrainingTest);
+                Integer count = trainingRepository.countAssociateToAddedTraining(testId);
+                totalCount = count + atomicInteger.getAndIncrement();
             }
-            Integer count = trainingRepository.countAssociateToAddedTraining(testId);
-            int totalCount = count + atomicInteger.getAndIncrement();
             testRepository.updateTotalAssociateCount(totalCount, testId);
             userTrainingTestRepository.saveAll(userTrainingTests);
         }
@@ -211,6 +212,7 @@ public class TrainingServiceImpl implements ITrainingService {
                     return mapList;
                 }).collect(Collectors.toSet());
     }
+
 
     @Override
  	public List<TprReportDto> getTprReport(Integer trainingId) {
