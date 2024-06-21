@@ -1,7 +1,6 @@
 package com.yash.yotaapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yash.yotaapi.constants.QuestionLevelTypes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,22 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-/**
- * DTO for {@link com.yash.yotaapi.entity.Questions}
- * <p>
- * Project Name - YOTA_NEW
- * <p>
- * IDE Used - IntelliJ IDEA
- *
- * @author - yashr
- * @since - 22-04-2024
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionsDto {
-
+public class QuestionlistDto {
     private Long id;
 
     private String questionTitle;
@@ -42,12 +30,13 @@ public class QuestionsDto {
 
     private QuestionLevelTypes questionLevel;
 
-    @JsonIgnore
-    private CategoryDto category;
+
+    private CategoryNameDto category;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date created_At;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updated_At;
+
 }

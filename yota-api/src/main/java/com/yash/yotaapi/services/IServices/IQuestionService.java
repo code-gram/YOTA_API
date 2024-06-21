@@ -1,7 +1,10 @@
 package com.yash.yotaapi.services.IServices;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -75,4 +78,19 @@ public interface IQuestionService {
 
    QuestionsDto updateQuestion(Long questionId, QuestionsDto questionsDto);
 
+    List<QuestionlistDto> getQuestionsListUnderTechnology(Long techId);
+
+
+
+    /**
+     * Method to delete question, please provide the question id to delete question
+     *
+     * @param id
+     *
+     * @author amar sawant
+     * @since 21-05-24
+     */
+    public String deleteQuestionById(Long id);
+
+    HashMap<String, Integer> countQuestionDetails(Long techId);
 }

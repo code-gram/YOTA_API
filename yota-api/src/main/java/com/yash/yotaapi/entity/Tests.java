@@ -1,9 +1,10 @@
 package com.yash.yotaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -15,11 +16,11 @@ import java.util.List;
 @Table(name = "tests")
 public class Tests {
 
-        @Id
+    @Id
     @Column(name = "test_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(initialValue = 1, name = "id")
-        private Long id;
+    private Long id;
 
     private String testTitle;
 
@@ -27,17 +28,24 @@ public class Tests {
 
     private String testInstruction;
 
-    private String action;
+    private String type;
 
-    private LocalDateTime startDate;
+    private String status;
 
-    private LocalDateTime endDate;
+    private Date startDate;
+    private Date endDate;
 
-    private LocalDateTime created_at;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date createdAt;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date modifiedAt;
 
-    private LocalDateTime modified_at;
-
+    private String startTime;
     private String endTime;
+
+    private Integer totalQuestions;
+    private int totalTime;
+    private int totalAssociateCount;
 
     @ManyToMany
     private List<YotaUser> assign;
@@ -48,9 +56,14 @@ public class Tests {
     @OneToOne
     private Result result;
 
-    private String testType;
-    private String testName;
-    private int totalQuestions;
-    private int totalTime;
+    @PrePersist
+    public void created_At() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    public void modified_At() {
+        this.modifiedAt = new Date();
+    }
 
 }

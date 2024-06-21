@@ -1,12 +1,12 @@
 package com.yash.yotaapi.dto;
 
-import java.util.Date;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,26 +14,16 @@ import lombok.NoArgsConstructor;
 public class TestDto {
 	
     private Long id;
-
     private String testTitle;
-
+    private String type;
     private String description;
-
     private String instruction;
-    
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date endDate; // Represents the end date
-    
-    private String endTime;
-
-    private String testName;
-
+    private String startTime;
+    private Date createdAt;
     private int totalQuestions;
-
     private int totalMarks;
-
     private int totalTime;
-
-    private String testType;
-
-
+    private int totalAssociateCount;
 }

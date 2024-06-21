@@ -1,10 +1,13 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.QuestionlistDto;
 import com.yash.yotaapi.dto.QuestionsDto;
 import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.services.IServices.IQuestionService;
 import com.yash.yotaapi.util.ExcelHelper;
+import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
@@ -23,6 +27,7 @@ import org.springframework.http.MediaType;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * Project Name - YOTA_NEW
@@ -61,8 +66,8 @@ public class QuestionsController {
 
     @GetMapping("/get/all/cat")
     @IsTechnicalManagerOrTrainer
-    public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId,
-    		@RequestParam Long catId) {
+    public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderCategory(@RequestParam Long techId, @RequestParam Long catId) {
+
         List<QuestionsDto> questions = this
                 .questionService
                 .getAllQuestionsUnderCategory(techId, catId);
@@ -75,6 +80,15 @@ public class QuestionsController {
         List<QuestionsDto> questions = this
                 .questionService
                 .getAllQuestionsUnderTechnology(techId);
+        return ResponseEntity.ok(questions);
+    }
+
+    @GetMapping("/get/list/tech")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionlistDto>> getQuestionsListUnderTechnology(@RequestParam Long techId) {
+        List<QuestionlistDto> questions = this
+                .questionService
+                .getQuestionsListUnderTechnology(techId);
         return ResponseEntity.ok(questions);
     }
 
@@ -137,4 +151,18 @@ public class QuestionsController {
     }
 
 
+
+    @DeleteMapping("/{id}")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
+        String message = questionService.deleteQuestionById(id);
+        return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/count-details")
+    @IsTechnicalManager
+    public ResponseEntity<HashMap<String, Integer>> countQuestionDetails(@RequestParam Long techId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(questionService.countQuestionDetails(techId));
+    }
 }

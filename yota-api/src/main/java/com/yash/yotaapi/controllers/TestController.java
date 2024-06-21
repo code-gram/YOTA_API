@@ -2,47 +2,70 @@ package com.yash.yotaapi.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
+import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.validators.IsAssociate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.services.IServices.ITestService;
-import com.yash.yotaapi.validators.IsTechnicalManager;
+import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 
 @RestController
 @RequestMapping("/tests")
 public class TestController {
-	
-	@Autowired
-	private ITestService testService;
-	
 
- 	@PostMapping("/addTest")
-    @IsTechnicalManager
-    public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto
-    		) {
+    @Autowired
+    private ITestService testService;
+
+    @PostMapping("/add-test")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<TestDto> addTest(@RequestBody TestDto testDto) {
         return new ResponseEntity<>(this.testService.addTest(testDto), HttpStatus.OK);
     }
-		
- 	 @GetMapping("/")
-	    public ResponseEntity<List<TestDto>> fetchAllTest() {
-	        return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
-	    }
 
-	@GetMapping("/testPaper")
-	@IsAssociate
-	public ResponseEntity<Optional<TestDto>> testPaper(@RequestParam("id") Long id) {
-		Optional<TestDto> test = this.testService.findById(id);
-		return new ResponseEntity<>(test, HttpStatus.OK);
-	}
-	   
+    @GetMapping("/all-test")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<TestDto>> fetchAllTest() {
+        return new ResponseEntity<List<TestDto>>(testService.fetchAllTest(), HttpStatus.OK);
+    }
+
+    @GetMapping("/testPaper")
+    @IsAssociate
+    public ResponseEntity<Optional<TestDto>> testPaper(@RequestParam("id") Long id) {
+        Optional<TestDto> test = this.testService.findById(id);
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    @PostMapping("/assign-test-individual-associate")
+    public ResponseEntity<String> assignTestToUser(@RequestParam("testIds") Long testId,
+                                                   @RequestParam("trainingIds") Long trainingId,
+                                                   @RequestParam("userIds") Long userId) {
+        try {
+            testService.assignTestToUser(testId, trainingId, userId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Test successfully assigned to individual associate.");
+        } catch (ApplicationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-question-in-test")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<String> addQuestionInTest(@RequestParam("testId") Long testId,
+                                                    @RequestBody List<Long> questionIds) {
+        String s = testService.addQuestionInTest(testId, questionIds);
+        String responseBody = "{\"statusCode\": 201, \"data\": \"" + s + "\"}";
+        return new ResponseEntity<>(responseBody,
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("/total-question-count")
+    public ResponseEntity<String> updateTotalQuestionCount(@RequestParam("totalQuestionCounts") Integer totalQuestionCount,
+                                                           @RequestParam("testIds") Long testId) {
+        return new ResponseEntity<>(testService.updateTotalQuestionCount(totalQuestionCount, testId),
+                HttpStatus.CREATED);
+    }
 }
