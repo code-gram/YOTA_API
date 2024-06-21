@@ -239,10 +239,10 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public List<QuestionsDto> getQuestionByAssociateEmail(String email, Long testid) {
-        List<Long> testIds = testRepository.getTestIdByEmailId(email);
-        if (testIds.isEmpty() || !testIds.contains(testid)) {
-            throw new ApplicationException("Check emailId : " + email+ "  And testId:-"+testid+ " which you provided has not assign any test");
-        }
+        // List<Long> testIds = testRepository.getTestIdByEmailId(email);
+        // if (testIds.isEmpty() || !testIds.contains(testid)) {
+        //     throw new ApplicationException("Check emailId : " + email+ "  And testId:-"+testid+ " which you provided has not assign any test");
+        // }
         List<QuestionsDto> questionsDtos = new ArrayList<>();
             List<Long> questionIds = testRepository.getQuestionIdByTestId(testid);
             for (Long questionId : questionIds) {
