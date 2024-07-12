@@ -42,6 +42,7 @@ public class Tests {
 
     private String startTime;
     private String endTime;
+    private String durationTime;
 
     private Integer totalQuestions;
     private int totalTime;
