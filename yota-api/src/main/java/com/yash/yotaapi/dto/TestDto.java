@@ -21,7 +21,7 @@ public class TestDto {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private String startTime;
     private Date endDate; // Represents the end date
-    private String durationTime;
+    private Integer durationTime;
     private Date createdAt;
     private int totalQuestions;
     private int totalMarks;
