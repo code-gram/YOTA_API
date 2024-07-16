@@ -27,4 +27,5 @@ public class TestDto {
     private int totalMarks;
     private int totalTime;
     private int totalAssociateCount;
+    private String status="UNASSIGNED";
 }

@@ -25,4 +25,5 @@ public interface ITestService {
 
     String updateTotalQuestionCount(Integer totalQuestionCount, Long testId);
 
+    boolean updateTestStatus(long testId);
 }

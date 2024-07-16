@@ -16,6 +16,8 @@ import com.yash.yotaapi.repositories.YotaUserRepository;
 import com.yash.yotaapi.services.IServices.ITestService;
 import io.jsonwebtoken.lang.Assert;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,8 @@ public class TestServiceImpl implements ITestService {
 
     @Autowired
     private TrainingRepository trainingRepository;
+
+    private Logger logger = LoggerFactory.getLogger(TestServiceImpl.class);
 
     @Override
     public TestDto addTest(TestDto testDto) {
@@ -210,6 +214,26 @@ public class TestServiceImpl implements ITestService {
         } else {
             return "Something went wrong while updating question count";
         }
+    }
+
+    @Override
+    public boolean updateTestStatus(long testTitle) {
+        boolean status = false;
+        try {
+            Tests tests = testRepository.findById(testTitle).orElseThrow(() -> new NullPointerException("Test Not Found!! "));
+            logger.info("{} ", tests);
+
+            String strStatus = tests.getStatus();
+            if ("UNASSIGNED".equals(strStatus)) {
+                tests.setStatus("ASSIGNED");
+                testRepository.save(tests);
+                status = true;
+            }
+        } catch (Exception e) {
+            logger.error("Error updating test assignment status: {}", e.getMessage());
+            throw new RuntimeException("Error updating test assignment status", e);
+        }
+        return status;
     }
 
 }

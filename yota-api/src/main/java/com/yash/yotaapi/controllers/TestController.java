@@ -68,4 +68,13 @@ public class TestController {
         return new ResponseEntity<>(testService.updateTotalQuestionCount(totalQuestionCount, testId),
                 HttpStatus.CREATED);
     }
+
+    @PutMapping("/update/{testId}")
+    public ResponseEntity<String> updateTestAsign(@PathVariable("testId") long testId) {
+        boolean status = testService.updateTestStatus(testId);
+        if (status) {
+            return ResponseEntity.status(HttpStatus.OK).body("Deafult Test Status is Changed To ASSIGNED !!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Deafult Test Status is Not Changed To ASSIGNED !! ");
+    }
 }
