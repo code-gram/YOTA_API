@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
@@ -15,6 +16,7 @@ public class TechnologyDto {
 
     private Long id;
 
+    @NotEmpty(message = "Please provide a technology name.")
     private String technology;
 
     private Integer questionCountUnderTechnology = 0;
