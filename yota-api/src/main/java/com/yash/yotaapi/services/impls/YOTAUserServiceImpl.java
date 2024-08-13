@@ -173,9 +173,9 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-    public Boolean declinePendingUser(String emailAdd) {
+    public Boolean declinePendingUser(String emailAdd, String reason) {
         if (StringUtils.isNotEmpty(emailAdd)) {
-            Integer status = this.userRepository.declinePendingUser(emailAdd);
+            Integer status = this.userRepository.declinePendingUser(emailAdd,reason);
             if (status == 1)
                 return true;
             else
@@ -242,5 +242,39 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         }
         return userDto;
 
+    }
+
+    @Override
+    public List<YotaUserDto> getAllRejectedAssociatesByStatus(String status) {
+        List<YotaUserDto> yotaUserDto = null;
+        List<YotaUser> user = null;
+        if (StringUtils.isNotEmpty(status)) {
+            UserAccountStatusTypes userAccountStatusTypes = UserAccountStatusTypes.valueOf(status);
+            user = this.userRepository.getAllRejectedAssociatesByStatus(userAccountStatusTypes);
+            if (CollectionUtils.isEmpty(user)) {
+                throw new ApplicationException("No associates found with the provided status : " + status);
+            }
+
+            yotaUserDto = user.stream().filter(users-> users.getUserRole().getRoleTypes().equals(UserRoleTypes.ROLE_ASSOCIATE.toString()))
+                    .map(users-> modelMapper.map(users, YotaUserDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            throw new ApplicationException("Status is empty");
+        }
+        return yotaUserDto;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public Boolean pendingDeclinedAssociate(String emailAdd) {
+        if (StringUtils.isNotEmpty(emailAdd)) {
+            Integer status = this.userRepository.pendingDeclinedAssociate(emailAdd);
+            if (status == 1)
+                return true;
+            else
+                throw new ApplicationException("User not Pending");
+        } else {
+            throw new ApplicationException("Email address is empty.");
+        }
     }
 }

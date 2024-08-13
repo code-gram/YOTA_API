@@ -27,11 +27,19 @@ public interface YotaUserRepository extends JpaRepository<YotaUser, String> {
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query("update YotaUser yur set yur.accountStatus=com.yash.yotaapi.constants.UserAccountStatusTypes.DECLINED where yur.emailAdd=?1")
-    Integer declinePendingUser(String emailAdd);
+    @Query("update YotaUser yur set yur.accountStatus=com.yash.yotaapi.constants.UserAccountStatusTypes.DECLINED, yur.reason = :reason where yur.emailAdd= :emailAdd")
+    Integer declinePendingUser(String emailAdd, String reason);
 
     @Query("select yur from YotaUser yur where yur.accountStatus=?1")
     List<YotaUser> getAllUserByStatus(UserAccountStatusTypes accountStatus);
 
     YotaUser findByempId(Long empId);
+
+    @Query("select yur from YotaUser yur where yur.accountStatus=?1")
+    List<YotaUser> getAllRejectedAssociatesByStatus(UserAccountStatusTypes userAccountStatusTypes);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query("update YotaUser yur set yur.accountStatus=com.yash.yotaapi.constants.UserAccountStatusTypes.PENDING where yur.emailAdd=?1")
+    Integer pendingDeclinedAssociate(String emailAdd);
 }

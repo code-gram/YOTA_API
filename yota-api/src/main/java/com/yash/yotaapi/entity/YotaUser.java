@@ -56,4 +56,7 @@ public class YotaUser implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_role")
     private UserRole userRole;
+
+    @Column(name = "reason")
+    private String reason;
 }
