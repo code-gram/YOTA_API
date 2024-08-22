@@ -1,5 +1,7 @@
 package com.yash.yotaapi.util;
 
+import java.util.Date;
+
 public class ValidationUtility {
 
     private static final String ALPHABETIC_PATTERN = "^[a-zA-Z]+$";
@@ -23,4 +25,10 @@ public class ValidationUtility {
         }
     }
 
+    public static boolean isEndDateGreater(Date startDate, Date endDate) {
+        if(startDate.after(endDate)){
+            return false;
+        }
+        return true;
+    }
 }

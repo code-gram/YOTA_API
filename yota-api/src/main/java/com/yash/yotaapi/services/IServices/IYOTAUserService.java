@@ -32,9 +32,13 @@ public interface IYOTAUserService {
 
     Boolean approvePendingUser(String emailAdd);
 
-    Boolean declinePendingUser(String emailAdd);
+    Boolean declinePendingUser(String emailAdd, String reason);
 
     List<YotaUserDto> getAllAssociatesByStatus(String status);
 
     public String resetPassword(PasswordDto passwordDto);
+
+    List<YotaUserDto> getAllRejectedAssociatesByStatus(String status);
+
+    Boolean pendingDeclinedAssociate(String emailAdd);
 }

@@ -63,8 +63,8 @@ public class UsersController {
 
     @IsTechnicalManager
     @PutMapping("/decline/associate")
-    public ResponseEntity<Boolean> declinePendingUser(@RequestParam("email") String emailAdd) {
-        Boolean status = this.userService.declinePendingUser(emailAdd);
+    public ResponseEntity<Boolean> declinePendingUser(@RequestParam("email") String emailAdd, @RequestParam("reason") String reason) {
+        Boolean status = this.userService.declinePendingUser(emailAdd,reason);
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
@@ -73,6 +73,20 @@ public class UsersController {
     public ResponseEntity<List<YotaUserDto>> getAllAssociatesByStatus(@RequestParam("status") String status) {
         List<YotaUserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
         return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
+    }
+    //Get ALl Rejected Associates
+    @GetMapping("/all-rejected-associates-status")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<YotaUserDto>> getAllRejectedAssociatesByStatus(@RequestParam("status") String status) {
+        List<YotaUserDto> allRejectedAssociatesByStatus = this.userService.getAllRejectedAssociatesByStatus(status);
+        return new ResponseEntity<>(allRejectedAssociatesByStatus, HttpStatus.OK);
+    }
+    //Pending Associates
+    @IsTechnicalManager
+    @PutMapping("/pending/associate")
+    public ResponseEntity<Boolean> pendingDeclinedAssociate(@RequestParam("email") String emailAdd) {
+        Boolean status = this.userService.pendingDeclinedAssociate(emailAdd);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
 
