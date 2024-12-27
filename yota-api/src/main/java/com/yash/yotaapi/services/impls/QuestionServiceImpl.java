@@ -322,5 +322,22 @@ public class QuestionServiceImpl implements IQuestionService {
         integerHashMap.put("hardCount", questionsRepository.hardQuestionCount(techId));
         return integerHashMap;
     }
+    @Override
+    public List<QuestionsDto> getAllQuestionsUnderTest(Long testId) {
+        if (ObjectUtils.isNotEmpty(testId)) {
+            List<Questions> questionsSet = this
+                    .testRepository
+                    .findQuestionsByTestId(testId)
+                    .orElseThrow(() -> new ApplicationException("No questions found under this particular test..."));
+
+            return questionsSet
+                    .stream()
+                    .map(ques -> this
+                            .mapper
+                            .map(ques, QuestionsDto.class))
+                    .collect(Collectors.toList());
+        } else
+            throw new ApplicationException("Provided details are invalid or empty, please check and try again...");
+    }
 
 }

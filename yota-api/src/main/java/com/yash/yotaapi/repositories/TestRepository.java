@@ -1,5 +1,6 @@
 package com.yash.yotaapi.repositories;
 
+import com.yash.yotaapi.entity.Questions;
 import com.yash.yotaapi.entity.Tests;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -50,5 +51,8 @@ public interface TestRepository extends JpaRepository<Tests, Long>  {
 
 	@Query(value = "select test_id from user_training_test test_id where test_id.emp_id=?1", nativeQuery = true)
 	List<Long> getTestIdByEmpId(Long empId);
+
+	@Query("SELECT t.questions FROM Tests t WHERE t.id = :testId")
+	Optional<List<Questions>> findQuestionsByTestId(Long testId);
 }
 
