@@ -4,6 +4,7 @@ import com.yash.yotaapi.constants.AppConstants;
 import com.yash.yotaapi.constants.RequestStatusTypes;
 import com.yash.yotaapi.constants.UserAccountStatusTypes;
 import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.exceptions.InvalidUserException;
 import com.yash.yotaapi.security.jwt.JwtAuthRequest;
 import com.yash.yotaapi.security.jwt.JwtAuthResponse;
 import com.yash.yotaapi.security.jwt.JwtTokenHelper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -83,8 +85,8 @@ public class AuthServiceImpl implements IAuthService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userName, password);
         try {
             this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        } catch (BadCredentialsException credentialsException) {
-            throw new ApplicationException("Invalid username or password");
+        } catch (AuthenticationException credentialsException) {
+            throw new InvalidUserException("Invalid username or password");
         }
     }
 }

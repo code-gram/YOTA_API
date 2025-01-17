@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -57,47 +59,55 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         YotaUser user = null;
         String message = null;
         if (ObjectUtils.isNotEmpty(userDto)) {
+        	if(validateEmail(userDto.getEmailAdd())) {
+                if(validatePassword(userDto)){
+                    user = this
+                            .userRepository
+                            .getUserByEmail(userDto.getEmailAdd());
+                    if (ObjectUtils.isEmpty(user)) {
+                        //user do not exist, new user will be created
+                        if (StringUtils.equals(userDto.getPassword(), userDto.getConfirmPassword())) {
 
-            user = this
-                    .userRepository
-                    .getUserByEmail(userDto.getEmailAdd());
+                            if (ObjectUtils.isNotEmpty(userDto.getEmpId())) {
+                                if(String.valueOf(userDto.getEmpId()).length() == 6) {
+                                    UserRoleDto userRoleDto = this
+                                            .userRoleService
+                                            .getUserRoleByRoleName(UserRoleTypes.ROLE_ASSOCIATE.toString());
 
-            if (ObjectUtils.isEmpty(user)) {
-                //user do not exist, new user will be created
-                if (StringUtils.equals(userDto.getPassword(), userDto.getConfirmPassword())) {
+                                    userDto.setUserRole(userRoleDto);
 
-                    if (ObjectUtils.isNotEmpty(userDto.getEmpId())) {
-                        UserRoleDto userRoleDto = this
-                                .userRoleService
-                                .getUserRoleByRoleName(UserRoleTypes.ROLE_ASSOCIATE.toString());
+                                    user = this
+                                            .modelMapper
+                                            .map(userDto, YotaUser.class);
 
-                        userDto.setUserRole(userRoleDto);
+                                    user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+                                    user.setAccountStatus(UserAccountStatusTypes.PENDING);
 
-                        user = this
-                                .modelMapper
-                                .map(userDto, YotaUser.class);
+                                    //reassigned with the new created data
+                                    user = this
+                                            .userRepository
+                                            .save(user);
 
-                        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
-                        user.setAccountStatus(UserAccountStatusTypes.PENDING);
+                                    if (ObjectUtils.isNotEmpty(user))
+                                        message = AppConstants.NEW_USER_REGISTRATION_SUCCESS_MESSAGE;
+                                    else
+                                        message = "YOTA User creation failed";
 
-                        //reassigned with the new created data
-                        user = this
-                                .userRepository
-                                .save(user);
-
-                        if (ObjectUtils.isNotEmpty(user))
-                            message = AppConstants.NEW_USER_REGISTRATION_SUCCESS_MESSAGE;
-                        else
-                            message = "YOTA User creation failed";
+                                }else {
+                                    throw new ApplicationException("Employee ID must be a 6-digit integer.");
+                                }
+                            } else
+                                throw new ApplicationException("Employee Id is empty or null, please enter valid employee id");
+                        } else
+                            throw new ApplicationException("Password did not matched, please try again");
                     } else
-                        throw new ApplicationException("Employee Id is empty or null, please enter valid employee id");
-                } else
-                    throw new ApplicationException("Password did not matched, please try again");
-            } else
-                throw new ApplicationException("User already exists with this email address");
+                        throw new ApplicationException("User already exists with this email address");
+                }else
+                    throw new ApplicationException("Password is empty or null, please enter valid password.");
+        	}else
+        		throw new ApplicationException("Email must contain @ and end with @yash.com.");
         } else
             throw new ApplicationException("Invalid user details");
-
         return message;
     }
 
@@ -276,5 +286,26 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
         } else {
             throw new ApplicationException("Email address is empty.");
         }
+    }
+    
+    private boolean validateEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        Pattern regexPattern = Pattern.compile("^[^@\\s]+@yash\\.com$");
+        Matcher regMatcher = regexPattern.matcher(email);
+        return regMatcher.matches();
+    }
+
+    private boolean validatePassword(YotaUserDto userDto){
+
+        if(userDto.getPassword() == null || userDto.getPassword().isEmpty()){
+            return false;
+        }
+
+        if(userDto.getConfirmPassword() == null || userDto.getConfirmPassword().isEmpty()){
+            return false;
+        }
+        return  true;
     }
 }
