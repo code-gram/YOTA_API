@@ -74,4 +74,9 @@ public class GlobalExceptionHandler {
         map.put("status", trainingException.getHttpStatus());
         return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<String> handleInvalidUserException(InvalidUserException trainingException) {
+        return new ResponseEntity<>(trainingException.getMessage(), HttpStatus.FORBIDDEN);
+    }
 }
