@@ -18,13 +18,20 @@ import com.yash.yotaapi.services.IServices.ITrainingService;
 import com.yash.yotaapi.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -263,5 +270,30 @@ public class TrainingServiceImpl implements ITrainingService {
          };
  		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
  	}
+    public ByteArrayResource export(String filename, Integer trainingId) throws IOException {
+        byte[] bytes = new byte[1024];
+        try (Workbook workbook = generateExcel()) {
+            FileOutputStream fos = write(workbook, filename);
+            fos.write(bytes);
+            fos.flush();
+            fos.close();
+        }
 
+        return new ByteArrayResource(bytes);
+    }
+
+    private Workbook generateExcel() {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("TrainingPerformanceReport");
+        //create columns and rows
+
+        return workbook;
+    }
+
+    private FileOutputStream write(final Workbook workbook, final String filename) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filename);
+        workbook.write(fos);
+        fos.close();
+        return fos;
+    }
 }

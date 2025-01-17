@@ -11,10 +11,15 @@ import com.yash.yotaapi.util.ValidationUtility;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -97,4 +102,19 @@ public class TrainingController {
         return trainingService.getAllAssignedTraining();
     }
 
+    @GetMapping("/getTrainingPerformanceReport/{trainingId}")
+    public ResponseEntity<?> downloadTPReport(@PathVariable("trainingId") Integer trainingId) throws IOException {
+        //Resource responseFile = trainingService.export();
+        String filename = "TrainingPerformanceReport.xlsx";
+        ByteArrayResource resource = trainingService.export(filename, trainingId);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders) // add headers if any
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(resource);
+    }
 }
