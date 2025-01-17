@@ -68,10 +68,10 @@ public class Questions {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date created_At;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date updated_At;
 
     @PrePersist

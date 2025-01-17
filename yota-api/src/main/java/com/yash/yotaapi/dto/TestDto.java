@@ -12,20 +12,27 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class TestDto {
-	
+
     private Long id;
     private String testTitle;
     private String type;
     private String description;
     private String instruction;
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    private String startTime;
-    private Date endDate; // Represents the end date
+
+    // Assuming startTime should be a String representing time
+    private String startTime; // Consider changing to LocalTime if needed
+
+    // Corrected the pattern for endDate and ensured proper date format
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Date endDate; // Ensure frontend sends a valid date
+
     private Integer durationTime;
-    private Date createdAt;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Date createdAt; // Ensure frontend sends a valid date
+
     private int totalQuestions;
     private int totalMarks;
     private int totalTime;
     private int totalAssociateCount;
-    private String status="UNASSIGNED";
 }

@@ -207,8 +207,14 @@ public class TrainingServiceImpl implements ITrainingService {
                     Object[] row = (Object[]) training;
                     mapList.put("email", row[1]);
                     YotaUser userByEmail = yotaUserRepository.getUserByEmail((String) mapList.get("email"));
-                    mapList.put("userId", userByEmail.getEmpId());
-                    mapList.put("userName", userByEmail.getFullName());
+                    if(userByEmail!=null){
+                        mapList.put("userId", userByEmail.getEmpId());
+                        mapList.put("userName", userByEmail.getFullName());
+                    }else{
+                        // Handle the case where user is not found
+                        mapList.put("userId", null);
+                        mapList.put("userName", "User not found");
+                    }
                     return mapList;
                 }).collect(Collectors.toSet());
     }
@@ -252,9 +258,9 @@ public class TrainingServiceImpl implements ITrainingService {
  			if(f[1]!=null)r.setEmpName(f[1].toString());
  			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
  			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
- 			
- 			
- 			return r;};		
+
+             return r;
+         };
  		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
  	}
 
