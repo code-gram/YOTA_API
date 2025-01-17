@@ -45,9 +45,9 @@ public class QuestionsDto {
     @JsonIgnore
     private CategoryDto category;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date created_At;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date updated_At;
 }
