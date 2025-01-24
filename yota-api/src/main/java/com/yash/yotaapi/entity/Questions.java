@@ -7,18 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -43,21 +32,27 @@ public class Questions {
     private Long id;
 
     @Column(name = "question_title" )
+    @Lob
     private String questionTitle;
 
     @Column(name = "correct_answer")
+    @Lob
     private String correctAnswer;
 
     @Column(name = "option_a")
+    @Lob
     private String option_A;
 
     @Column(name = "option_b")
+    @Lob
     private String option_B;
 
     @Column(name = "option_c")
+    @Lob
     private String option_C;
 
     @Column(name = "option_d")
+    @Lob
     private String option_D;
 
     @Enumerated(EnumType.STRING)
