@@ -54,5 +54,8 @@ public interface TestRepository extends JpaRepository<Tests, Long>  {
 
 	@Query("SELECT t.questions FROM Tests t WHERE t.id = :testId")
 	Optional<List<Questions>> findQuestionsByTestId(Long testId);
+
+	@Query(value = "select test_id from user_training_test test_id where test_id.training_id=?1 and test_id.emp_id=?2", nativeQuery = true)
+	List<Long> findByTrainingIdAndEmpId(Integer trainingId, Long empId);
 }
 
