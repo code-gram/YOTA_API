@@ -1,6 +1,7 @@
 package com.yash.yotaapi.services.IServices;
 
 import com.yash.yotaapi.dto.UserProfileDto;
+import com.yash.yotaapi.dto.PageResponseDto;
 import com.yash.yotaapi.dto.PasswordDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.entity.YotaUser;
@@ -18,27 +19,27 @@ import java.util.List;
  */
 public interface IYOTAUserService {
 
-    String createNewUser(YotaUserDto userDto);
+	String createNewUser(YotaUserDto userDto);
 
-    YotaUserDto getUserByEmailAdd(String emailAdd);
+	YotaUserDto getUserByEmailAdd(String emailAdd);
 
-    UserProfileDto getUserByEmailAddress(String emailAdd);
+	UserProfileDto getUserByEmailAddress(String emailAdd);
 
-    List<YotaUserDto> getAllTrainers();
+	List<YotaUserDto> getAllTrainers();
 
-    List<YotaUserDto> getAllAssociates();
+	List<YotaUserDto> getAllAssociates();
 
-    List<YotaUserDto> getAllPendingUsers();
+	List<YotaUserDto> getAllPendingUsers();
 
-    Boolean approvePendingUser(String emailAdd);
+	Boolean approvePendingUser(String emailAdd);
 
-    Boolean declinePendingUser(String emailAdd, String reason);
+	Boolean declinePendingUser(String emailAdd, String reason);
 
-    List<YotaUserDto> getAllAssociatesByStatus(String status);
+	PageResponseDto getAllAssociatesByStatus(String status, Integer pageNumber, Integer pageSize);
 
-    public String resetPassword(PasswordDto passwordDto);
+	public String resetPassword(PasswordDto passwordDto);
 
-    List<YotaUserDto> getAllRejectedAssociatesByStatus(String status);
+	List<YotaUserDto> getAllRejectedAssociatesByStatus(String status);
 
-    Boolean pendingDeclinedAssociate(String emailAdd);
+	Boolean pendingDeclinedAssociate(String emailAdd);
 }
