@@ -9,6 +9,8 @@ public interface ITechnologyService {
 
     TechnologyDto addTechnology(TechnologyDto technology);
 
+    TechnologyDto updateTechnology(Long techId, TechnologyDto technology);
+
     TechnologyDto findTechnologyById(Long techId);
 
     List<TechnologyDto> fetchAllTechnology();

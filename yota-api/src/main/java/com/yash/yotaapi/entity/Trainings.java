@@ -1,5 +1,7 @@
 package com.yash.yotaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yash.yotaapi.dto.TPRDto;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
@@ -25,8 +27,10 @@ public class Trainings {
 	
 	private String assignTo;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date startDate;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date endDate;
 
 	private String status;
@@ -37,6 +41,9 @@ public class Trainings {
 
 	@ManyToMany
 	private List<YotaUser> assign;
+
+	@Transient
+	private List<TPRDto> assignTest;
 
 	@ManyToMany
 	@JoinTable(name = "training_test_assign",

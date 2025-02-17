@@ -32,12 +32,14 @@ public class Tests {
 
     private String status;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date startDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date endDate;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date createdAt;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date modifiedAt;
 
     private String startTime;

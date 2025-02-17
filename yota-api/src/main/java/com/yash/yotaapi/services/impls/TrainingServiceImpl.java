@@ -1,19 +1,10 @@
 package com.yash.yotaapi.services.impls;
 
-import com.yash.yotaapi.dto.TestEmployeeResult;
-import com.yash.yotaapi.dto.TprReportDto;
-import com.yash.yotaapi.dto.TrainingListDto;
-import com.yash.yotaapi.dto.TrainingsDto;
-import com.yash.yotaapi.entity.Tests;
-import com.yash.yotaapi.entity.Trainings;
-import com.yash.yotaapi.entity.UserTrainingTest;
-import com.yash.yotaapi.entity.YotaUser;
+import com.yash.yotaapi.dto.*;
+import com.yash.yotaapi.entity.*;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TrainingException;
-import com.yash.yotaapi.repositories.TestRepository;
-import com.yash.yotaapi.repositories.TrainingRepository;
-import com.yash.yotaapi.repositories.UserTrainingTestRepository;
-import com.yash.yotaapi.repositories.YotaUserRepository;
+import com.yash.yotaapi.repositories.*;
 import com.yash.yotaapi.services.IServices.ITrainingService;
 import com.yash.yotaapi.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +33,15 @@ public class TrainingServiceImpl implements ITrainingService {
 
     @Autowired
     private TestRepository testRepository;
+
     @Autowired
     private UserTrainingTestRepository userTrainingTestRepository;
+
+    @Autowired
+    private TPRRepository tprRepository;
+
+    @Autowired
+    private TestResultRepository testResultRepository;
 
     @Override
     public Trainings addTraining(Trainings training) {
@@ -126,18 +124,51 @@ public class TrainingServiceImpl implements ITrainingService {
     }
 
     public Trainings assignedAssociated(Integer trainingIds) {
-        Trainings training = null;
-        final List<YotaUser> yotaUserList = new ArrayList<>();
+        Trainings training;
+        final List<TPRDto> yotaUserList = new ArrayList<>();
         final List<Object[]> trainings = trainingRepository.assignedAssociated(trainingIds);
         if (CollectionUtils.isEmpty(trainings)) {
-            throw new ApplicationException("Training hasn't been assigned yet");
+            throw new ApplicationException("Training hasn't been assigned yet.");
         } else {
             training = trainingRepository.findById(trainingIds.longValue()).get();
             trainings.forEach(email -> {
-                YotaUser userByEmail = yotaUserRepository.getUserByEmail(String.valueOf(email[1]));
-                yotaUserList.add(userByEmail);
+                String emailId = String.valueOf(email[1]);
+                YotaUser user = yotaUserRepository.getUserByEmail(emailId);
+                List<Long> testIdList = testRepository.findByTrainingIdAndEmpId(trainingIds, user.getEmpId());
+                double avgResult = 0.0;
+                final double[] avgFinalResult = new double[1];
+                String testIds = testIdList.stream().map(String::valueOf).collect(Collectors.joining(","));
+
+                TPR tpr = TPR.builder()
+                        .testsIds(testIds)
+                        .empId(user.getEmpId())
+                        .trainingId(training.getId())
+                        .avgPercentage(avgFinalResult[0])
+                        .build();
+                tprRepository.save(tpr);
+
+                testIdList.forEach(testObj -> {
+                    Optional<TestResult> testTaken = testResultRepository.findByTestIdAndUserId(testObj, user.getEmpId());
+                    Optional<Tests> testDto = testRepository.findById(testObj);
+                    double percentage = testTaken.map(testResult -> (((double) testResult.getResult() / testDto.get().getTotalQuestions()) * 100)).orElse(0.0);
+                    double avgPercentageMarks = avgResult + percentage;
+                    avgFinalResult[0] = avgPercentageMarks / testIdList.size();
+                });
+
+                TPRDto tprReportDto = TPRDto.builder()
+                        .fullName(user.getFullName())
+                        .avgPercentageMarks(avgFinalResult[0])
+                        .empId(user.getEmpId())
+                        .trainingName(training.getTrainingName())
+                        .tid(Math.toIntExact(training.getId()))
+                        .testIds(testIds)
+                        .accountStatus(user.getAccountStatus())
+                        .emailId(emailId)
+                        .feedback("Some feedback......")
+                        .build();
+                yotaUserList.add(tprReportDto);
             });
-            training.setAssign(yotaUserList);
+            training.setAssignTest(yotaUserList);
         }
         return training;
     }
@@ -207,8 +238,14 @@ public class TrainingServiceImpl implements ITrainingService {
                     Object[] row = (Object[]) training;
                     mapList.put("email", row[1]);
                     YotaUser userByEmail = yotaUserRepository.getUserByEmail((String) mapList.get("email"));
-                    mapList.put("userId", userByEmail.getEmpId());
-                    mapList.put("userName", userByEmail.getFullName());
+                    if(userByEmail!=null){
+                        mapList.put("userId", userByEmail.getEmpId());
+                        mapList.put("userName", userByEmail.getFullName());
+                    }else{
+                        // Handle the case where user is not found
+                        mapList.put("userId", null);
+                        mapList.put("userName", "User not found");
+                    }
                     return mapList;
                 }).collect(Collectors.toSet());
     }
@@ -252,9 +289,9 @@ public class TrainingServiceImpl implements ITrainingService {
  			if(f[1]!=null)r.setEmpName(f[1].toString());
  			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
  			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
- 			
- 			
- 			return r;};		
+
+             return r;
+         };
  		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
  	}
 

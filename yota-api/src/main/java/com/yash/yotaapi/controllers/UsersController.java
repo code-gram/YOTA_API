@@ -1,5 +1,6 @@
 package com.yash.yotaapi.controllers;
 
+import com.yash.yotaapi.dto.PageResponseDto;
 import com.yash.yotaapi.dto.YotaUserDto;
 import com.yash.yotaapi.services.IServices.IYOTAUserService;
 import com.yash.yotaapi.validators.IsTechnicalManager;
@@ -28,52 +29,69 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UsersController {
 
-    @Autowired
-    private IYOTAUserService userService;
+	@Autowired
+	private IYOTAUserService userService;
 
+	@GetMapping("/get/all-trainers")
+	@IsTechnicalManager
+	public ResponseEntity<List<YotaUserDto>> getAllTrainers() {
+		List<YotaUserDto> allTrainers = this.userService.getAllTrainers();
+		return new ResponseEntity<>(allTrainers, HttpStatus.OK);
+	}
 
+	@GetMapping("/get/all-pending/associates")
+	@IsTechnicalManager
+	public ResponseEntity<List<YotaUserDto>> getAllPendingAssociates() {
+		List<YotaUserDto> allPendingUsers = this.userService.getAllPendingUsers();
+		return new ResponseEntity<>(allPendingUsers, HttpStatus.OK);
+	}
 
-    @GetMapping("/get/all-trainers")
-    @IsTechnicalManager
-    public ResponseEntity<List<YotaUserDto>> getAllTrainers() {
-        List<YotaUserDto> allTrainers = this.userService.getAllTrainers();
-        return new ResponseEntity<>(allTrainers, HttpStatus.OK);
-    }
+	@GetMapping("/get/all-associates")
+	@IsTechnicalManagerOrTrainer
+	public ResponseEntity<List<YotaUserDto>> getAllAssociates() {
+		List<YotaUserDto> allStudents = this.userService.getAllAssociates();
+		return new ResponseEntity<>(allStudents, HttpStatus.OK);
+	}
 
-    @GetMapping("/get/all-pending/associates")
-    @IsTechnicalManager
-    public ResponseEntity<List<YotaUserDto>> getAllPendingAssociates() {
-        List<YotaUserDto> allPendingUsers = this.userService.getAllPendingUsers();
-        return new ResponseEntity<>(allPendingUsers, HttpStatus.OK);
-    }
+	@IsTechnicalManager
+	@PutMapping("/approve/associate")
+	public ResponseEntity<Boolean> approvePendingUser(@RequestParam("email") String emailAdd) {
+		Boolean status = this.userService.approvePendingUser(emailAdd);
+		return new ResponseEntity<>(status, HttpStatus.OK);
+	}
 
-    @GetMapping("/get/all-associates")
-    @IsTechnicalManagerOrTrainer
-    public ResponseEntity<List<YotaUserDto>> getAllAssociates() {
-        List<YotaUserDto> allStudents = this.userService.getAllAssociates();
-        return new ResponseEntity<>(allStudents, HttpStatus.OK);
-    }
+	@IsTechnicalManager
+	@PutMapping("/decline/associate")
+	public ResponseEntity<Boolean> declinePendingUser(@RequestParam("email") String emailAdd,
+			@RequestParam("reason") String reason) {
+		Boolean status = this.userService.declinePendingUser(emailAdd, reason);
+		return new ResponseEntity<>(status, HttpStatus.OK);
+	}
 
-    @IsTechnicalManager
-    @PutMapping("/approve/associate")
-    public ResponseEntity<Boolean> approvePendingUser(@RequestParam("email") String emailAdd) {
-        Boolean status = this.userService.approvePendingUser(emailAdd);
-        return new ResponseEntity<>(status, HttpStatus.OK);
-    }
+	// Get Associates by status
+	@GetMapping("/all-associates-status")
+	@IsTechnicalManagerOrTrainer
+	public ResponseEntity<PageResponseDto> getAllAssociatesByStatus(@RequestParam("status") String status,
+			@RequestParam(value = "pageNumber") Integer pageNumber,
+			@RequestParam(value = "pageSize") Integer pageSize) {
+		PageResponseDto allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status, pageNumber, pageSize);
+		return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
+	}
 
-    @IsTechnicalManager
-    @PutMapping("/decline/associate")
-    public ResponseEntity<Boolean> declinePendingUser(@RequestParam("email") String emailAdd) {
-        Boolean status = this.userService.declinePendingUser(emailAdd);
-        return new ResponseEntity<>(status, HttpStatus.OK);
-    }
+	// Get ALl Rejected Associates
+	@GetMapping("/all-rejected-associates-status")
+	@IsTechnicalManagerOrTrainer
+	public ResponseEntity<List<YotaUserDto>> getAllRejectedAssociatesByStatus(@RequestParam("status") String status) {
+		List<YotaUserDto> allRejectedAssociatesByStatus = this.userService.getAllRejectedAssociatesByStatus(status);
+		return new ResponseEntity<>(allRejectedAssociatesByStatus, HttpStatus.OK);
+	}
 
-    @GetMapping("/all-associates-status")
-    @IsTechnicalManagerOrTrainer
-    public ResponseEntity<List<YotaUserDto>> getAllAssociatesByStatus(@RequestParam("status") String status) {
-        List<YotaUserDto> allAssociatesByStatus = this.userService.getAllAssociatesByStatus(status);
-        return new ResponseEntity<>(allAssociatesByStatus, HttpStatus.OK);
-    }
-
+	// Pending Associates
+	@IsTechnicalManager
+	@PutMapping("/pending/associate")
+	public ResponseEntity<Boolean> pendingDeclinedAssociate(@RequestParam("email") String emailAdd) {
+		Boolean status = this.userService.pendingDeclinedAssociate(emailAdd);
+		return new ResponseEntity<>(status, HttpStatus.OK);
+	}
 
 }

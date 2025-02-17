@@ -6,6 +6,8 @@ import com.yash.yotaapi.dto.TrainingListDto;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.services.impls.TrainingServiceImpl;
+import com.yash.yotaapi.util.ValidateRequestUtility;
+import com.yash.yotaapi.util.ValidationUtility;
 import com.yash.yotaapi.validators.IsTechnicalManager;
 import com.yash.yotaapi.validators.IsTechnicalManagerOrTrainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +26,24 @@ public class TrainingController {
 
     @Autowired
     private TrainingServiceImpl trainingService;
+    @Autowired
+    ValidateRequestUtility validateRequestUtility;
 
     @PostMapping("/addTraining")
     @IsTechnicalManager
-    public ResponseEntity<Trainings> addTraining(@RequestBody Trainings training) {
+    public ResponseEntity<?> addTraining(@RequestBody Trainings training) {
+        Map<String, String> validationErrors = validateRequestUtility.validateRequest(training);
+
+        if (!validationErrors.isEmpty()  ||!ValidationUtility.isEndDateGreater(training.getStartDate(),training.getEndDate())){
+            if(!ValidationUtility.isAlphabetic(training.getTrainingName())){
+                validationErrors.put("tName", "Training Name should not be empty");
+            }
+            if(training.getStartDate()!=null && training.getEndDate()!=null) {
+                validationErrors.put("sDate", "Start Date should be before end date");
+                validationErrors.put("eDate", "End Date should be after start date");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationErrors);
+        }
         return new ResponseEntity<Trainings>(trainingService.addTraining(training), HttpStatus.CREATED);
     }
 

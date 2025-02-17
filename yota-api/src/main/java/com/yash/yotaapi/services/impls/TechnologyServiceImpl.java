@@ -1,5 +1,14 @@
 package com.yash.yotaapi.services.impls;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.yash.yotaapi.dto.CategoryDto;
 import com.yash.yotaapi.dto.TechnologyDto;
 import com.yash.yotaapi.entity.Technology;
@@ -7,14 +16,6 @@ import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TechnologyAlreadyAvailableException;
 import com.yash.yotaapi.repositories.TechnologyRepository;
 import com.yash.yotaapi.services.IServices.ITechnologyService;
-import io.jsonwebtoken.lang.Assert;
-import org.apache.commons.lang3.ObjectUtils;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TechnologyServiceImpl implements ITechnologyService {
@@ -83,6 +84,27 @@ public class TechnologyServiceImpl implements ITechnologyService {
                 });
         return technologyDtoList;
     }
+
+    @Override
+    public TechnologyDto updateTechnology(Long techId, TechnologyDto technology) {
+        Optional<Technology> existingTechnologyOptional = technologyRepository.findById(techId);
+        if (!existingTechnologyOptional.isPresent()) {
+            throw new ApplicationException("Technology not found for update with id: " + techId);
+        }
+
+        if (!technology.getTechnology().equals(existingTechnologyOptional.get().getTechnology())) {
+            Technology existingByName = technologyRepository.findByTechnology(technology.getTechnology());
+            if (existingByName != null) {
+                throw new TechnologyAlreadyAvailableException("Technology name already exists: " + technology.getTechnology());
+            }
+        }
+
+        Technology existingTechnology = existingTechnologyOptional.get();
+        existingTechnology.setTechnology(technology.getTechnology()); // Update other fields as needed
+        Technology updatedTechnology = technologyRepository.save(existingTechnology);
+
+        return mapper.map(updatedTechnology, TechnologyDto.class);
+    }
+
+
 }
-
-

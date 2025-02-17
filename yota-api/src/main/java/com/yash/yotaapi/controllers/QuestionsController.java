@@ -83,6 +83,15 @@ public class QuestionsController {
         return ResponseEntity.ok(questions);
     }
 
+    @GetMapping("/getTestQuestions")
+    @IsTechnicalManagerOrTrainer
+    public ResponseEntity<List<QuestionsDto>> getAllQuestionsUnderTest(@RequestParam Long testId) {
+        List<QuestionsDto> questions = this
+                .questionService
+                .getAllQuestionsUnderTest(testId);
+        return ResponseEntity.ok(questions);
+    }
+
     @GetMapping("/get/list/tech")
     @IsTechnicalManagerOrTrainer
     public ResponseEntity<List<QuestionlistDto>> getQuestionsListUnderTechnology(@RequestParam Long techId) {

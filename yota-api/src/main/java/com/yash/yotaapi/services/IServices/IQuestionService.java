@@ -61,7 +61,7 @@ public interface IQuestionService {
      * @since 24-04-24
      */
     List<QuestionsDto> getAllQuestionsUnderTechnology(Long techId);
-
+    List<QuestionsDto> getAllQuestionsUnderTest(Long testId);
     /**
      * Method to upload new question bank, please provide the technology id and category id to upload question bank
      *
