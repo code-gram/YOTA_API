@@ -19,7 +19,7 @@ public interface ITestService {
 
     public TestsDto getTestResultByUserEmailAndTestId(String email, Long testId);
 
-    public void assignTestToUser(Long testId, Long questionId, Long userIds);
+    public void assignTestToUser(Long testId, Long userIds);
 
     String addQuestionInTest(Long testId, List<Long> questionIds);
 

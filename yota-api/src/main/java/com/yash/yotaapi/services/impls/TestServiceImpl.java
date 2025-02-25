@@ -164,14 +164,14 @@ public class TestServiceImpl implements ITestService {
 
     @Override
     @Transactional
-    public void assignTestToUser(Long testId, Long trainingId, Long empId) {
+    public void assignTestToUser(Long testId, Long empId) {
         AtomicInteger atomicInteger = new AtomicInteger(1);
-        boolean alreadyExit = userTrainingTestRepository.existsByTestIdAndTrainingsIdAndUserEmpId(testId, trainingId, empId);
+        boolean alreadyExit = userTrainingTestRepository.existsByTestIdAndUserEmpId(testId, empId);
         Tests test = testRepository.findById(testId)
                 .orElseThrow(() -> new ApplicationException("Test with ID " + testId + " not found"));
 
-        Trainings training = trainingRepository.findById(trainingId)
-                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
+//        Trainings training = trainingRepository.findById(trainingId)
+//                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
 
         YotaUser user = yotaUserRepository.findByempId(empId);
         if (user == null) {
@@ -183,7 +183,7 @@ public class TestServiceImpl implements ITestService {
         } else {
             UserTrainingTest userTrainingTest = new UserTrainingTest();
             userTrainingTest.setUser(user);
-            userTrainingTest.setTrainings(training);
+//            userTrainingTest.setTrainings(training);
             userTrainingTest.setTest(test);
             Integer count = trainingRepository.countAssociateToAddedTraining(testId);
             int totalCount = count + atomicInteger.getAndIncrement();
