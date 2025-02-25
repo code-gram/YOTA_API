@@ -54,5 +54,9 @@ public interface TestRepository extends JpaRepository<Tests, Long>  {
 
 	@Query("SELECT t.questions FROM Tests t WHERE t.id = :testId")
 	Optional<List<Questions>> findQuestionsByTestId(Long testId);
+	
+	//@Query(value="update Tests t set t.status=?2 where t.test_id=?1", nativeQuery = true)
+	//Integer updateStatus(Long testId, String status);
+	
 }
 

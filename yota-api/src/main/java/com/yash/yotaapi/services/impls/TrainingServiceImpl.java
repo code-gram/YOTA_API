@@ -11,6 +11,7 @@ import com.yash.yotaapi.entity.YotaUser;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.repositories.TestResultRepository;
 import com.yash.yotaapi.repositories.TrainingRepository;
 import com.yash.yotaapi.repositories.UserTrainingTestRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
@@ -44,6 +45,9 @@ public class TrainingServiceImpl implements ITrainingService {
     private TestRepository testRepository;
     @Autowired
     private UserTrainingTestRepository userTrainingTestRepository;
+    
+    @Autowired
+    private TestResultRepository testResultRepository;
 
     @Override
     public Trainings addTraining(Trainings training) {
@@ -65,7 +69,6 @@ public class TrainingServiceImpl implements ITrainingService {
                 trainingListDto.setStatus(trainings.getStatus());
                 trainingListDto.setTotalNominations(trainings.getTotalNominations());
                 trainingListDto.setRegisteredInTraining(trainings.getRegisteredInTraining());
-
                 trainingListDtoList.add(trainingListDto);
             }
         });
@@ -178,12 +181,11 @@ public class TrainingServiceImpl implements ITrainingService {
     }
 
     public List<TrainingsDto> getTrainingByAssociateEmail(String email) throws ApplicationException {
-
-        List<Long> trainingIds = trainingRepository.getTrainingIdByEmailId(email);
-        List<TrainingsDto> trainingDTOs = new ArrayList<>();
-        for (Long trainingId : trainingIds) {
+    	List<Long> trainingIds = trainingRepository.getTrainingIdByEmailId(email);
+    	List<TrainingsDto> trainingDTOs = new ArrayList<>();
+       for (Long trainingId : trainingIds) {
             Trainings training = trainingRepository.getTrainingById(trainingId);
-            if (training != null) {
+            	if (training != null) {
                 TrainingsDto trainingDTO = new TrainingsDto();
                 trainingDTO.setId(training.getId());
                 trainingDTO.setTrainingName(training.getTrainingName());

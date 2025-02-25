@@ -46,17 +46,19 @@ public class TestResultServiceImpl implements ITestResultService {
     @Override
     public TestResult updateTestResult(TestResultDto testResultDto) {
         YotaUser yotaUser = yotaUserRepository.getUserByEmail(testResultDto.getUserEmailId());
-        if (yotaUser == null) {
+       if (yotaUser == null) {
             throw new ResourceNotFoundException("User not found with email: " + testResultDto.getUserEmailId());
         }
-        TestResult existingTestResult = testResultRepository.findByTestIdAndUserIdAndResult(testResultDto.getTestId(), yotaUser.getEmpId(),testResultDto.getResult())
-       .orElseThrow(() -> new ResourceNotFoundException("Test result not found for test ID: " + testResultDto.getTestId() + " and user ID: " + yotaUser.getEmpId()));
-
+       TestResult existingTestResult = testResultRepository.findByTestIdAndUserIdAndResult(testResultDto.getTestId(), yotaUser.getEmpId(),testResultDto.getResult())
+        .orElseThrow(() -> new ResourceNotFoundException("Test result not found for test ID: " + testResultDto.getTestId() + " and user ID: " + yotaUser.getEmpId()));
+       
         existingTestResult.setStartTime(testResultDto.getStartTime());
         existingTestResult.setEndTime(testResultDto.getEndTime());
         existingTestResult.setTimeTaken(testResultDto.getTimeTaken());
-
-        return testResultRepository.save(existingTestResult);
+      
+        /* updating the test status*/
+       existingTestResult.setTestStatus(testResultDto.getTestStatus());
+       return testResultRepository.save(existingTestResult);
 
     }
 

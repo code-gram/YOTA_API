@@ -2,6 +2,7 @@ package com.yash.yotaapi.services.impls;
 
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
+import com.yash.yotaapi.entity.TestResult;
 import com.yash.yotaapi.entity.Tests;
 import com.yash.yotaapi.entity.Trainings;
 import com.yash.yotaapi.entity.UserTrainingTest;
@@ -10,6 +11,7 @@ import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TestAvailableException;
 import com.yash.yotaapi.exceptions.TrainingException;
 import com.yash.yotaapi.repositories.TestRepository;
+import com.yash.yotaapi.repositories.TestResultRepository;
 import com.yash.yotaapi.repositories.TrainingRepository;
 import com.yash.yotaapi.repositories.UserTrainingTestRepository;
 import com.yash.yotaapi.repositories.YotaUserRepository;
@@ -34,7 +36,9 @@ public class TestServiceImpl implements ITestService {
 
     @Autowired
     private TestRepository testRepository;
-
+    
+    @Autowired
+    private TestResultRepository testResultRepository;
     @Autowired
     private YotaUserRepository yotaUserRepository;
 
@@ -79,8 +83,9 @@ public class TestServiceImpl implements ITestService {
             testDto.setInstruction(test.getTestInstruction());
             testDto.setType(test.getType());
             testDto.setTotalQuestions(test.getTotalQuestions());
-            testDto.setTotalTime(test.getTotalTime());
-        });
+            testDto.setTotalTime(test.getDurationTime());
+            //testDto.setDurationTime(test.getDurationTime());
+            });
 
         return Optional.of(testDto);
     }
@@ -106,12 +111,20 @@ public class TestServiceImpl implements ITestService {
     }
 
     public List<TestsDto> getTestsByAssociateEmail(String email) throws ApplicationException {
+    	
+    	
         YotaUser userByEmail = yotaUserRepository.getUserByEmail(email);
         List<Long> testIds = testRepository.getTestIdByEmpId(userByEmail.getEmpId());
+       System.out.println(userByEmail.getEmpId());
+       
+       
+       //TestResult testResult = testResultRepository.findByUserEmpId(userByEmail.getEmpId(),);
+        
+        
+        
         List<TestsDto> testsDTOs = new ArrayList<>();
-
-
         for (Long testId : testIds) {
+        	
             Optional<Tests> optionalTests = testRepository.findById(testId); // Fetch test by ID
             optionalTests.ifPresent(tests -> {
                 TestsDto testsDTO = new TestsDto();
@@ -126,8 +139,12 @@ public class TestServiceImpl implements ITestService {
                 testsDTO.setModified_at(tests.getModifiedAt());
                 testsDTO.setEndTime(tests.getEndTime());
                 testsDTO.setTestType(tests.getType());
+               TestResult testResult = testResultRepository.findByUserEmpIdAndTestId(userByEmail.getEmpId(), testId);
+               if(testResult !=null) {
+               testsDTO.setTestStatus(testResult.getTestStatus());
+               }
                 testsDTOs.add(testsDTO);
-            });
+                 });
         }
 
         if (testsDTOs.isEmpty()) {

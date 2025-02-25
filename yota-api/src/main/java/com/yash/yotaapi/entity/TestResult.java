@@ -34,4 +34,6 @@ public class TestResult {
     private String endTime;
 
     private String timeTaken;
+    
+    private String  testStatus;
 }

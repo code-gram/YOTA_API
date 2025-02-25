@@ -31,4 +31,6 @@ public class TestsDto {
 //    private List<YotaUser> assign;
     private Result result;
     private String testType;
+    
+    private String testStatus;
 }
