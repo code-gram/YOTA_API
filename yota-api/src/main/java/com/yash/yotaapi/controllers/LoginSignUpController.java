@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.yash.yotaapi.exceptions.ApplicationException;
+import com.yash.yotaapi.util.ValidationUtility;
 
 /**
  * Project Name - YOTASecurityAPI
@@ -26,10 +28,18 @@ public class LoginSignUpController {
     private IAuthService authService;
 
     @Autowired
+    private ValidationUtility validationUtility;
+
+    @Autowired
     private IYOTAUserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@RequestBody JwtAuthRequest authRequest) {
+
+        if(!validationUtility.validateEmail(authRequest.getEmail())) {
+            throw new ApplicationException("Email must contain @ and end with @yash.com.");
+        }
+
         JwtAuthResponse authResponse = this
                 .authService
                 .login(authRequest);

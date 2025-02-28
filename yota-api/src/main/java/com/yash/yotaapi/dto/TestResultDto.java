@@ -22,4 +22,5 @@ public class TestResultDto {
 
     private String timeTaken;
 
+    private String testStatus;
 }

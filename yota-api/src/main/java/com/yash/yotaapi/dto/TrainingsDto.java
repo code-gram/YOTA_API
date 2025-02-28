@@ -16,9 +16,13 @@ public class TrainingsDto {
 
     private String trainingName;
 
+    private String assignTo;
+
     private String startDate;
 
     private String endDate;
+
+    private int totalNominations;
 
     private String status;
 }

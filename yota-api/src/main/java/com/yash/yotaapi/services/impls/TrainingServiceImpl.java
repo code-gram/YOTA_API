@@ -9,6 +9,7 @@ import com.yash.yotaapi.services.IServices.ITrainingService;
 import com.yash.yotaapi.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -139,6 +140,22 @@ public class TrainingServiceImpl implements ITrainingService {
                 final double[] avgFinalResult = new double[1];
                 String testIds = testIdList.stream().map(String::valueOf).collect(Collectors.joining(","));
 
+//                TPR tpr = TPR.builder()
+//                        .testsIds(testIds)
+//                        .empId(user.getEmpId())
+//                        .trainingId(training.getId())
+//                        .avgPercentage(avgFinalResult[0])
+//                        .build();
+//                tprRepository.save(tpr);
+
+                testIdList.forEach(testObj -> {
+                    Optional<TestResult> testTaken = testResultRepository.findByTestIdAndUserId(testObj, user.getEmpId());
+                    Optional<Tests> testDto = testRepository.findById(testObj);
+                    double percentage = testTaken.map(testResult -> (((double) testResult.getResult() / testDto.get().getTotalQuestions()) * 100)).orElse(0.0);
+                    double avgPercentageMarks = avgResult + percentage;
+                    avgFinalResult[0] = Precision.round(avgPercentageMarks / testIdList.size(), 2);
+                });
+
                 TPR tpr = TPR.builder()
                         .testsIds(testIds)
                         .empId(user.getEmpId())
@@ -146,14 +163,6 @@ public class TrainingServiceImpl implements ITrainingService {
                         .avgPercentage(avgFinalResult[0])
                         .build();
                 tprRepository.save(tpr);
-
-                testIdList.forEach(testObj -> {
-                    Optional<TestResult> testTaken = testResultRepository.findByTestIdAndUserId(testObj, user.getEmpId());
-                    Optional<Tests> testDto = testRepository.findById(testObj);
-                    double percentage = testTaken.map(testResult -> (((double) testResult.getResult() / testDto.get().getTotalQuestions()) * 100)).orElse(0.0);
-                    double avgPercentageMarks = avgResult + percentage;
-                    avgFinalResult[0] = avgPercentageMarks / testIdList.size();
-                });
 
                 TPRDto tprReportDto = TPRDto.builder()
                         .fullName(user.getFullName())
@@ -252,47 +261,47 @@ public class TrainingServiceImpl implements ITrainingService {
 
 
     @Override
- 	public List<TprReportDto> getTprReport(Integer trainingId) {
- 		// TODO Auto-generated method stub
- 		
- 		Function<Object[],TprReportDto> myfun=(f)-> {
- 			
- 			
- 			TprReportDto tpr=new TprReportDto();
- 			tpr.setTid(trainingId);
- 			if(f[1]!=null)
- 			tpr.setTrainingName(f[1].toString());
- 			if(f[2]!=null)
- 			tpr.setEmailId(f[2].toString());
- 			if(f[3]!=null)
- 			tpr.setEmpName(f[3].toString());
- 			if(f[4]!=null)
- 			tpr.setEmployeeId(Integer.parseInt(f[4].toString()));
- 			if(f[5]!=null)
- 			tpr.setAvgPercentageMarks(Double.valueOf(f[5].toString()));
- 						
- 			return tpr;
- 		};
- 		
- 		return trainingRepository.getTprReport(trainingId).stream().map(myfun).collect(Collectors.toList());
- 		
- 	}
- 
- 	@Override
- 	public List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId, Integer empId) {
- 		// TODO Auto-generated method stub
- 		//TestEmployeeResult r;
- 		Function<Object[],TestEmployeeResult> myfun=(f)->{
- 			System.out.println(f);
- 			TestEmployeeResult r=new TestEmployeeResult();
- 			if(f[0]!=null)r.setTestName(f[0].toString());
- 			if(f[1]!=null)r.setEmpName(f[1].toString());
- 			if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
- 			if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
+    public List<TprReportDto> getTprReport(Integer trainingId) {
+        // TODO Auto-generated method stub
 
-             return r;
-         };
- 		return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
- 	}
+        Function<Object[],TprReportDto> myfun=(f)-> {
+
+
+            TprReportDto tpr=new TprReportDto();
+            tpr.setTid(trainingId);
+            if(f[1]!=null)
+                tpr.setTrainingName(f[1].toString());
+            if(f[2]!=null)
+                tpr.setEmailId(f[2].toString());
+            if(f[3]!=null)
+                tpr.setEmpName(f[3].toString());
+            if(f[4]!=null)
+                tpr.setEmployeeId(Integer.parseInt(f[4].toString()));
+            if(f[5]!=null)
+                tpr.setAvgPercentageMarks(Double.valueOf(f[5].toString()));
+
+            return tpr;
+        };
+
+        return trainingRepository.getTprReport(trainingId).stream().map(myfun).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<TestEmployeeResult> getEmployeeWiseTestDetails(Integer trainingId, Integer empId) {
+        // TODO Auto-generated method stub
+        //TestEmployeeResult r;
+        Function<Object[],TestEmployeeResult> myfun=(f)->{
+            System.out.println(f);
+            TestEmployeeResult r=new TestEmployeeResult();
+            if(f[0]!=null)r.setTestName(f[0].toString());
+            if(f[1]!=null)r.setEmpName(f[1].toString());
+            if(f[2]!=null)r.setMarks(Integer.parseInt(f[3].toString()));
+            if(f[3]!=null)r.setMarksinPercentage(Double.valueOf(f[4].toString()));
+
+            return r;
+        };
+        return trainingRepository.getEmployeeWiseTestReport(trainingId, empId).stream().map(myfun).collect(Collectors.toList());
+    }
 
 }

@@ -1,7 +1,11 @@
 package com.yash.yotaapi.util;
 
 import java.util.Date;
+import org.springframework.stereotype.Component;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Component
 public class ValidationUtility {
 
     private static final String ALPHABETIC_PATTERN = "^[a-zA-Z]+$";
@@ -30,5 +34,14 @@ public class ValidationUtility {
             return false;
         }
         return true;
+    }
+
+    public boolean validateEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        Pattern regexPattern = Pattern.compile("^[^@\\s]+@yash\\.com$");
+        Matcher regMatcher = regexPattern.matcher(email);
+        return regMatcher.matches();
     }
 }

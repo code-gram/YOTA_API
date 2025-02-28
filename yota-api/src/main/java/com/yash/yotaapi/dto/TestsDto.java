@@ -20,15 +20,16 @@ public class TestsDto {
     private String testDescription;
     private String testInstruction;
     private String status;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date created_at;
     private Date modified_at;
     private String endTime;
-//    private List<YotaUser> assign;
+    //    private List<YotaUser> assign;
     private Result result;
     private String testType;
+    private String testStatus;
 }

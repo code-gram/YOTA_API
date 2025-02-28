@@ -24,22 +24,24 @@ public class Tests {
 
     private String testTitle;
 
+    @Lob
     private String testDescription;
 
+    @Lob
     private String testInstruction;
 
     private String type;
 
     private String status;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date modifiedAt;
 
     private String startTime;

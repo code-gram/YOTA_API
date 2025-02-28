@@ -15,4 +15,5 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
 
     @Query(value = "select  * from test_results where test_id= :testId AND user_id= :userId", nativeQuery = true)
     Optional<TestResult> findByTestIdAndUserId(Long testId, Long userId);
+    TestResult findByUserEmpIdAndTestId(Long empId, Long testId);
 }

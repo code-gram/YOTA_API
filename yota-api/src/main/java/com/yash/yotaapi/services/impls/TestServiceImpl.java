@@ -2,17 +2,11 @@ package com.yash.yotaapi.services.impls;
 
 import com.yash.yotaapi.dto.TestDto;
 import com.yash.yotaapi.dto.TestsDto;
-import com.yash.yotaapi.entity.Tests;
-import com.yash.yotaapi.entity.Trainings;
-import com.yash.yotaapi.entity.UserTrainingTest;
-import com.yash.yotaapi.entity.YotaUser;
+import com.yash.yotaapi.entity.*;
 import com.yash.yotaapi.exceptions.ApplicationException;
 import com.yash.yotaapi.exceptions.TestAvailableException;
 import com.yash.yotaapi.exceptions.TrainingException;
-import com.yash.yotaapi.repositories.TestRepository;
-import com.yash.yotaapi.repositories.TrainingRepository;
-import com.yash.yotaapi.repositories.UserTrainingTestRepository;
-import com.yash.yotaapi.repositories.YotaUserRepository;
+import com.yash.yotaapi.repositories.*;
 import com.yash.yotaapi.services.IServices.ITestService;
 import io.jsonwebtoken.lang.Assert;
 import org.modelmapper.ModelMapper;
@@ -37,6 +31,9 @@ public class TestServiceImpl implements ITestService {
 
     @Autowired
     private YotaUserRepository yotaUserRepository;
+
+    @Autowired
+    private TestResultRepository testResultRepository;
 
     @Autowired
     private ModelMapper mapper;
@@ -80,6 +77,7 @@ public class TestServiceImpl implements ITestService {
             testDto.setType(test.getType());
             testDto.setTotalQuestions(test.getTotalQuestions());
             testDto.setTotalTime(test.getTotalTime());
+            testDto.setDurationTime(test.getDurationTime());
         });
 
         return Optional.of(testDto);
@@ -126,6 +124,10 @@ public class TestServiceImpl implements ITestService {
                 testsDTO.setModified_at(tests.getModifiedAt());
                 testsDTO.setEndTime(tests.getEndTime());
                 testsDTO.setTestType(tests.getType());
+                TestResult testResult = testResultRepository.findByUserEmpIdAndTestId(userByEmail.getEmpId(), testId);
+                if(testResult !=null) {
+                    testsDTO.setTestStatus(testResult.getTestStatus());
+                }
                 testsDTOs.add(testsDTO);
             });
         }
@@ -164,14 +166,14 @@ public class TestServiceImpl implements ITestService {
 
     @Override
     @Transactional
-    public void assignTestToUser(Long testId, Long trainingId, Long empId) {
+    public void assignTestToUser(Long testId, Long empId) {
         AtomicInteger atomicInteger = new AtomicInteger(1);
-        boolean alreadyExit = userTrainingTestRepository.existsByTestIdAndTrainingsIdAndUserEmpId(testId, trainingId, empId);
+        boolean alreadyExit = userTrainingTestRepository.existsByTestIdAndUserEmpId(testId, empId);
         Tests test = testRepository.findById(testId)
                 .orElseThrow(() -> new ApplicationException("Test with ID " + testId + " not found"));
 
-        Trainings training = trainingRepository.findById(trainingId)
-                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
+//        Trainings training = trainingRepository.findById(trainingId)
+//                .orElseThrow(() -> new TrainingException("Training is not available for trainingId :-" + trainingId, HttpStatus.BAD_REQUEST));
 
         YotaUser user = yotaUserRepository.findByempId(empId);
         if (user == null) {
@@ -183,7 +185,7 @@ public class TestServiceImpl implements ITestService {
         } else {
             UserTrainingTest userTrainingTest = new UserTrainingTest();
             userTrainingTest.setUser(user);
-            userTrainingTest.setTrainings(training);
+            //userTrainingTest.setTrainings(training);
             userTrainingTest.setTest(test);
             Integer count = trainingRepository.countAssociateToAddedTraining(testId);
             int totalCount = count + atomicInteger.getAndIncrement();
@@ -202,7 +204,8 @@ public class TestServiceImpl implements ITestService {
         if (atomicInteger.get() == 0) {
             return "Something went wrong while adding question in test";
         } else {
-            return "Question added successfully in test.!!";
+//            return "Question added successfully in test!!";
+            return "Test added successfully!!!";
         }
     }
 

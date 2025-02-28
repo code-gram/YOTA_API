@@ -23,16 +23,18 @@ public class TestDto {
     private String startTime; // Consider changing to LocalTime if needed
 
     // Corrected the pattern for endDate and ensured proper date format
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate; // Ensure frontend sends a valid date
 
     private Integer durationTime;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt; // Ensure frontend sends a valid date
 
     private int totalQuestions;
     private int totalMarks;
     private int totalTime;
     private int totalAssociateCount;
+    private String status;
+
 }

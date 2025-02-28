@@ -40,10 +40,9 @@ public class TestController {
 
     @PostMapping("/assign-test-individual-associate")
     public ResponseEntity<String> assignTestToUser(@RequestParam("testIds") Long testId,
-                                                   @RequestParam("trainingIds") Long trainingId,
                                                    @RequestParam("userIds") Long userId) {
         try {
-            testService.assignTestToUser(testId, trainingId, userId);
+            testService.assignTestToUser(testId, userId);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Test successfully assigned to individual associate.");
         } catch (ApplicationException e) {

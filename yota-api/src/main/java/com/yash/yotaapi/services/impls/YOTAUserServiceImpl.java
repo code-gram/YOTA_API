@@ -71,7 +71,13 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
 						if (StringUtils.equals(userDto.getPassword(), userDto.getConfirmPassword())) {
 
 							if (ObjectUtils.isNotEmpty(userDto.getEmpId())) {
-								if (String.valueOf(userDto.getEmpId()).length() == 6) {
+
+								if (String.valueOf(userDto.getEmpId()).length() == 6 && String.valueOf(userDto.getEmpId()).matches("[0-9]+")) {
+
+									if(userRepository.findByempId(userDto.getEmpId()) != null) {
+										throw new ApplicationException("Employee ID already exists in database.");
+									}
+
 									UserRoleDto userRoleDto = this.userRoleService
 											.getUserRoleByRoleName(UserRoleTypes.ROLE_ASSOCIATE.toString());
 
@@ -190,7 +196,7 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
 			}
 			try {
 				List<YotaUserDto> yotaUserDto = user.stream().filter(
-						users -> users.getUserRole().getRoleTypes().equals(UserRoleTypes.ROLE_ASSOCIATE.toString()))
+								users -> users.getUserRole().getRoleTypes().equals(UserRoleTypes.ROLE_ASSOCIATE.toString()))
 						.map(users -> modelMapper.map(users, YotaUserDto.class)).collect(Collectors.toList());
 				// adding paginate method logic
 				Page<YotaUserDto> paginate = PaginationUtility.paginate(yotaUserDto, pageNumber, pageSize);
