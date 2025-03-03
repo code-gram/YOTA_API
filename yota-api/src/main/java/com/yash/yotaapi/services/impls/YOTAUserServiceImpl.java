@@ -72,7 +72,7 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
 
 							if (ObjectUtils.isNotEmpty(userDto.getEmpId())) {
 
-								if (String.valueOf(userDto.getEmpId()).length() == 6 && String.valueOf(userDto.getEmpId()).matches("[0-9]+")) {
+								if (String.valueOf(userDto.getEmpId()).length() == 7 && String.valueOf(userDto.getEmpId()).matches("[0-9]+")) {
 
 									if(userRepository.findByempId(userDto.getEmpId()) != null) {
 										throw new ApplicationException("Employee ID already exists in database.");
@@ -97,7 +97,7 @@ public class YOTAUserServiceImpl implements IYOTAUserService {
 										message = "YOTA User creation failed";
 
 								} else {
-									throw new ApplicationException("Employee ID must be a 6-digit integer.");
+									throw new ApplicationException("Employee ID must be a 7-digit integer.");
 								}
 							} else
 								throw new ApplicationException(
