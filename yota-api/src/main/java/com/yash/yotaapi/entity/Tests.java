@@ -51,6 +51,7 @@ public class Tests {
     private Integer totalQuestions;
     private int totalTime;
     private int totalAssociateCount;
+    private String testStatus;
 
     @ManyToMany
     private List<YotaUser> assign;

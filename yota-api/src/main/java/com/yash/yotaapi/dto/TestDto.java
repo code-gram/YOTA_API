@@ -36,5 +36,6 @@ public class TestDto {
     private int totalTime;
     private int totalAssociateCount;
     private String status;
+    private String testStatus;
 
 }
